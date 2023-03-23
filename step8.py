@@ -1,16 +1,56 @@
-# This is a sample Python script.
+#1978번 소수 찾기
 
-# Press ⌃R to execute it or replace it with your code.
-# Press Double ⇧ to search everywhere for classes, files, tool windows, actions, and settings.
+import math
+
+def primeNumber(x):
+    if x == 1:
+        return False
+    for i in range(2, int(math.sqrt(x) + 1)):
+        if x % i == 0:
+            return False
+
+    return True
 
 
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press ⌘F8 to toggle the breakpoint.
+cnt = int(input())
+inputList = list(map(int, input().split()))
+
+res = []
+for i in range(len(inputList)):
+    res.append(primeNumber(inputList[i]))
+
+# print(res)
+
+answer = 0
+for input in res:
+    if input == True:
+        answer = answer + 1
+print(answer)
 
 
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    print_hi('PyCharm')
+#2581번 소수
+import math
 
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+def primeNumber(x):
+    if x == 1:
+        return False
+    for i in range(2, int(math.sqrt(x) + 1)):
+        if x % i == 0:
+            return False
+
+    return True
+
+
+M = int(input())
+N = int(input())
+
+answer = []
+for i in range(M, N + 1):
+    if primeNumber(i):
+        answer.append(i)
+
+if len(answer) == 0:
+    print(-1)
+else:
+    print(sum(answer))
+    print(min(answer))
