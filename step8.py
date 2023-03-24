@@ -54,3 +54,18 @@ if len(answer) == 0:
 else:
     print(sum(answer))
     print(min(answer))
+
+#11653 소인수분해
+num = int(input())
+res = []
+i = 2
+while i <= num:
+  if num % i == 0:
+    res.append(i)
+    num = num // i
+    i = 2
+  else:
+    i += 1
+
+for i in range(len(res)):
+  print(res[i])
