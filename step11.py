@@ -29,3 +29,65 @@ for i in range(1, num + 1):
 
 if existYN == 'N':
   print(0)
+
+#19532번 수학은 비대면강의입니다.
+a, b, c, d, e, f = map(int, input().split())
+#완전탐색, 브루트포스 범위값 모두 대입
+for x in range(-999, 1000):
+  for y in range(-999, 1000):
+    if a*x + b*y == c and d*x + e*y == f:
+      print(x, y)
+
+
+#1018번 체스판 다시 칠하기 (미해결)
+n, m = map(int, input().split())
+chessBoard = []
+cntList = []
+for i in range(n):
+  inputStr = input()
+  chessBoard.append(list(inputStr))
+
+for row in range(n - 8 + 1):  # 012
+  for col in range(m - 8 + 1):  # 012345
+    cnt = 0
+    if chessBoard[row][col] == 'W':
+      for i in range(8):
+        if i % 2 == 0:
+          for j in range(0, 8, 2):
+            if chessBoard[row + i][col + j] != 'W':
+              cnt += 1
+
+          for k in range(1, 8, 2):
+            if chessBoard[row + i][col + k] != 'B':
+              cnt += 1
+        if i % 2 != 0:
+          for j in range(0, 8, 2):
+            if chessBoard[row + i][col + j] != 'B':
+              cnt += 1
+
+          for k in range(1, 8, 2):
+            if chessBoard[row + i][col + k] != 'W':
+              cnt += 1
+
+    if chessBoard[row][col] == 'B':
+      for i in range(8):
+        if i % 2 == 0:
+          for j in range(0, 8, 2):
+            if chessBoard[row + i][col + j] != 'B':
+              cnt += 1
+
+          for k in range(1, 8, 2):
+            if chessBoard[row + i][col + k] != 'W':
+              cnt += 1
+        if i % 2 != 0:
+          for j in range(0, 8, 2):
+            if chessBoard[row + i][col + j] != 'W':
+              cnt += 1
+
+          for k in range(1, 8, 2):
+            if chessBoard[row + i][col + k] != 'B':
+              cnt += 1
+    cntList.append(cnt)
+
+print(cntList)
+print(min(cntList))
