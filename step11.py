@@ -91,3 +91,10 @@ for row in range(n - 8 + 1):  # 012
 
 print(cntList)
 print(min(cntList))
+
+
+
+
+
+
+
