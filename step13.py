@@ -60,7 +60,7 @@ for i in range(10001):
     for _ in range(numList[i]):
       print(i)
 
-#1427qjs 소트인사이드
+#1427번 소트인사이드
 import sys
 n = sys.stdin.readline().rstrip()
 nList = list(n)
@@ -72,3 +72,39 @@ nListInt.sort(reverse=True)
 
 for i in range(len(nListInt)):
   print(nListInt[i], end='')
+
+#11650번 좌표 정렬하기
+import sys
+cnt = int(sys.stdin.readline())
+
+numList = []
+# print(cnt)
+for _ in range(cnt):
+  inputList = list(map(int, sys.stdin.readline().split()))
+  # print(inputList)
+  numList.append(inputList)
+
+#자동으로 1차원 순으로 동일 1차원에서는 2차원 순으로 정렬됨
+numList.sort()
+
+for i in range(cnt):
+  print(numList[i][0], numList[i][1])
+
+
+#11651번 좌표 정렬하기 2
+import sys
+cnt = int(sys.stdin.readline())
+numList = []
+
+for _ in range(cnt):
+  n1, n2 = map(int, sys.stdin.readline().split())
+  tempList = []
+  tempList.append(n2)
+  tempList.append(n1)
+  numList.append(tempList)
+
+numList.sort()
+
+for i in range(cnt):
+  print(numList[i][1], numList[i][0])
+
