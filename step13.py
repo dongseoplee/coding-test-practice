@@ -108,3 +108,72 @@ numList.sort()
 for i in range(cnt):
   print(numList[i][1], numList[i][0])
 
+#1181번 단어 정렬
+import sys
+cnt = int(sys.stdin.readline())
+
+resList = []
+tempList = []
+#글자수 계산해서 2중 리스트로 문자랑 같이 append
+for _ in range(cnt):
+  tempStr = sys.stdin.readline().rstrip()
+  tempList.append(tempStr)
+
+resList = list(set(tempList))
+# print(resList)
+
+finalList = []
+for resData in resList:
+  tempStoreList = []
+  resDataLen = len(resData)
+  tempStoreList.append(resDataLen)
+  tempStoreList.append(resData)
+  finalList.append(tempStoreList)
+
+finalList.sort()
+# print(finalList)
+
+for i in range(len(finalList)):
+  print(finalList[i][1])
+
+#10814번 나이순 정렬
+import sys
+n = int(sys.stdin.readline())
+#나이 가입순서 이름
+resList = []
+for i in range(n):
+  tempList = []
+  age, name = sys.stdin.readline().split()
+  age = int(age)
+  tempList.append(age)
+  tempList.append(i)
+  tempList.append(name)
+  resList.append(tempList)
+
+resList.sort()
+#정렬후 출력은 나이와 이름만
+for i in range(n):
+  print(resList[i][0], end=' ')
+  print(resList[i][2])
+
+#18870번 좌표 압축
+import sys
+n = int(sys.stdin.readline())
+inputList = list(map(int, sys.stdin.readline().split()))
+
+setInputList = list(set(inputList))
+
+
+setInputList.sort()
+# print(setInputList)
+# print(type(setInputList))
+
+dict = {}
+
+for i in range(len(setInputList)):
+  dict[setInputList[i]] = i
+
+# print(dict)
+for inputListData in inputList:
+  print(dict.get(inputListData), end=' ') #시간복잡도 O(1)
+  # print(setInputList.index(inputListData), end=' ') #시간복잡도 O(n)
