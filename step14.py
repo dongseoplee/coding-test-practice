@@ -45,3 +45,77 @@ for i in range(len(inputList)):
     print(0, end=' ')
   else:
     print(1, end=' ')
+
+#14425번
+import sys
+
+n, m = map(int, sys.stdin.readline().split())
+setList = []
+inputList = []
+for _ in range(n):
+  setList.append(sys.stdin.readline().rstrip())
+for _ in range(m):
+  inputList.append(sys.stdin.readline().rstrip())
+
+# print(inputList)
+# print(setList)
+#inputList 값 중 setList에 포함된 갯수
+cnt = 0
+for i in range(m):
+  if inputList[i] in setList:
+    cnt += 1
+
+print(cnt)
+
+#7785번 회사에 있는 사람
+import sys
+n = int(sys.stdin.readline())
+res = dict()
+
+for _ in range(n):
+  name, status = sys.stdin.readline().split()
+
+  if status == 'enter':
+    res[name] = status
+  else:
+    del res[name]
+
+#역순으로 출력
+res = sorted(res.keys(), reverse=True)
+for resData in res:
+  print(resData)
+
+#1620번
+import sys
+
+n, m = map(int, sys.stdin.readline().split())
+
+dogam = []
+question = []
+pokeDict = dict()
+pokeDict2 = dict()
+
+for i in range(n):
+  # dogam.append(sys.stdin.readline().rstrip())
+  inputName = sys.stdin.readline().rstrip()
+  pokeDict[i + 1] = inputName
+  pokeDict2[inputName] = i + 1
+for _ in range(m):
+  question.append(sys.stdin.readline().rstrip())
+
+# print(pokeDict)
+# print(pokeDict2)
+
+# 시간초과 딕셔너리 2개 만들어서 해결!!!
+for i in range(m):
+  try:
+    question[i] = int(question[i])
+  except:
+    question[i]
+
+for i in range(m):
+  if type(question[i]) is int:
+    print(pokeDict.get(question[i]))
+  else:
+    print(pokeDict2.get(question[i]))
+
