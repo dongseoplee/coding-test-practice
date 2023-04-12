@@ -119,3 +119,43 @@ for i in range(m):
   else:
     print(pokeDict2.get(question[i]))
 
+#10816 숫자 카드 2
+import sys
+import copy
+
+inputDict = dict()
+resDict = dict()
+n = int(sys.stdin.readline())
+nList = list(map(int, sys.stdin.readline().split()))
+
+for i in range(n):
+  inputDict[nList[i]] = 0
+
+m = int(sys.stdin.readline())
+mList = (list(map(int, sys.stdin.readline().split())))
+mListCopy = copy.deepcopy(mList)
+mList = sorted(mList)
+
+for j in range(m):
+  resDict[mList[j]] = 0
+# print(nList)
+# print(mList)
+# nList에서 검색후 resDict 키 값에 value + 1
+for i in range(n):
+  start = 0
+  end = len(mList) - 1
+
+  while start <= end:
+    mid = (start + end) // 2
+    if mList[mid] > nList[i]:
+      end = mid - 1
+    elif mList[mid] < nList[i]:
+      start = mid + 1
+    elif mList[mid] == nList[i]:  # 같으면 return이나 break로 while문 빠져나와야함!!
+      # print(nList[i])
+      resDict[nList[i]] += 1
+      break
+
+# print(resDict)
+for i in range(m):
+  print(resDict[mListCopy[i]], end=' ')
