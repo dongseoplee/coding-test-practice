@@ -155,3 +155,87 @@ print(res - 1)
 
 # 큐를 밖에서 선언 후 바로 1인 row, col append 하는 것
 # 결과 그래프를 이중 for문으로 행별로 읽고 행의 값을 판별 하는 것
+
+#2606번 바이러스
+import sys
+from collections import deque
+
+n = int(sys.stdin.readline())
+pairNum = int(sys.stdin.readline())
+pList = []
+aList = []
+bList = []
+for _ in range(pairNum):
+  a, b = map(int, sys.stdin.readline().split())
+  aList.append(a)
+  bList.append(b)
+visited = []
+# 1의 pair를 큐에 넣기
+# 큐에 popleft한것의 pair를 visited에 없으면 다시 큐에 넣기,
+queue = deque()
+for i in range(pairNum):
+  if aList[i] == 1:
+    queue.append(bList[i])
+
+
+def bfs():
+  while queue:
+    x = queue.popleft()
+    visited.append(x)
+    for i in range(pairNum):
+      #양방향으로 생각해야 됨 -> if문 2개
+      if aList[i] == x and bList[i] not in visited:
+        queue.append(bList[i])
+      if bList[i] == x and aList[i] not in visited:
+        queue.append(aList[i])
+
+
+bfs()
+# print(visited)
+setVisited = set(visited)
+print(len(setVisited) - 1)
+
+#1012번 유기농 배추
+import sys
+from collections import deque
+
+testNum = int(sys.stdin.readline())
+for _ in range(testNum):
+    m, n, k = map(int, sys.stdin.readline().split())
+    graph = [[0 for _ in range(n)] for _ in range(m)]
+    for _ in range(k):
+        row, col = map(int, sys.stdin.readline().split())
+        graph[row][col] = 1
+    # print(graph)
+
+    queue = deque()
+
+    dx = [-1, 1, 0, 0]
+    dy = [0, 0, -1, 1]
+
+
+    def bfs(i, j):
+        queue.append((i, j))
+        while queue:
+            x, y = queue.popleft()
+            for i in range(4):
+                nx = x + dx[i]  # row n
+                ny = y + dy[i]  # col m
+                if nx < 0 or nx >= m or ny < 0 or ny >= n:
+                    continue
+
+                if graph[nx][ny] == 1:
+                    queue.append((nx, ny))
+                    graph[nx][ny] = 2
+
+        return 1  # bfs결과 배추가 단독으로 1개 있는 것은 값이 1로 됨
+
+
+    # m:5 n:3
+    cnt = 0
+    for i in range(m):
+        for j in range(n):
+            if graph[i][j] == 1:
+                cnt += bfs(i, j)  # bfs의 리턴 값을 1로 하여 cnt + 하는 방법
+
+    print(cnt)
