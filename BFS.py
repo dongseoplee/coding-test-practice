@@ -239,3 +239,42 @@ for _ in range(testNum):
                 cnt += bfs(i, j)  # bfs의 리턴 값을 1로 하여 cnt + 하는 방법
 
     print(cnt)
+
+#7562번 나이트의 이동
+import sys
+from collections import deque
+
+testNum = int(sys.stdin.readline())
+
+
+def bfs(length, sx, sy, fx, fy):
+    dx = [-1, -2, -2, -1, 1, 2, 2, 1]
+    dy = [2, 1, -1, -2, -2, -1, 1, 2]
+    visited = set()
+    graph = [[0 for _ in range(length)] for _ in range(length)]
+    queue = deque()
+    queue.append((sx, sy))
+    while queue:
+        ox, oy = queue.popleft()
+        visited.add((ox, oy))
+        for i in range(8):
+            nx = ox + dx[i]
+            ny = oy + dy[i]
+
+            if nx < 0 or nx >= length or ny < 0 or ny >= length or (nx, ny) in visited:
+                continue
+
+            graph[nx][ny] = graph[ox][oy] + 1
+            visited.add((nx, ny))
+            queue.append((nx, ny))
+
+    print(graph[fx][fy])
+
+
+for _ in range(testNum):
+    length = int(sys.stdin.readline())
+    sx, sy = map(int, sys.stdin.readline().split())
+    fx, fy = map(int, sys.stdin.readline().split())
+    bfs(length, sx, sy, fx, fy)
+
+
