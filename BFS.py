@@ -277,4 +277,59 @@ for _ in range(testNum):
     fx, fy = map(int, sys.stdin.readline().split())
     bfs(length, sx, sy, fx, fy)
 
+#2583번 영역 구하기
+import sys
+from collections import deque
+
+queue = deque()
+dx = [-1, 1, 0, 0]
+dy = [0, 0, -1, 1]
+
+
+def bfs(a, b):
+    cnt = 0
+    queue.append((a, b))
+    visited[a][b] = True
+    while queue:
+        x, y = queue.popleft()
+        cnt += 1
+        # print(x, y)
+        for ai in range(4):
+            nx = x + dx[ai]
+            ny = y + dy[ai]
+            if nx < 0 or nx >= m or ny < 0 or ny >= n:
+                continue
+            if visited[nx][ny] == True:
+                continue
+            visited[nx][ny] = True
+            queue.append((nx, ny))
+
+    return cnt
+
+
+m, n, k = map(int, sys.stdin.readline().split())
+# print(m,n,k)
+graph = [[0 for _ in range(n)] for _ in range(m)]
+# bfs visited 배열 쓰던 안쓰던 만들고 시작
+visited = [[False for _ in range(n)] for _ in range(m)]  # m행 n열
+for _ in range(k):
+    x1, y1, x2, y2 = map(int, sys.stdin.readline().split())
+    for i in range(y1, y2):
+        for j in range(x1, x2):
+            graph[i][j] = 1
+            visited[i][j] = True
+
+resList = []
+for a in range(m):
+    for b in range(n):
+        if graph[a][b] == 0 and visited[a][b] == False:
+            resList.append(bfs(a, b))
+
+resList = sorted(resList)
+print(len(resList))
+for resListData in resList:
+    print(resListData, end=' ')
+
+
+
 
