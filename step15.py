@@ -59,3 +59,22 @@ while (1):
 
 print(int(a * b / GCD))
 
+#1735번 분수 합
+import sys
+a1, b1 = map(int, sys.stdin.readline().split())
+a2, b2 = map(int, sys.stdin.readline().split())
+
+bm = b1 * b2
+bj = a1*b2 + a2*b1
+
+# print(bj, bm)
+
+def GCD(a, b):
+  if a%b == 0:
+    return b
+  else:
+    return GCD(b, a%b) #함수 내에서 본인 함수 호출할때 return 써야한다.
+
+resGCD = GCD(bm, bj) # 21 35
+print(int(bj/resGCD), end = ' ')
+print(int(bm/resGCD), end = ' ')
