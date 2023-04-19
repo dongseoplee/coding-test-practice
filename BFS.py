@@ -330,6 +330,54 @@ print(len(resList))
 for resListData in resList:
     print(resListData, end=' ')
 
+#2667번 단지번호붙이기
+import sys
+from collections import deque
+
+n = int(sys.stdin.readline())
+graph = []
+visited = [[False for _ in range(n)] for _ in range(n)]
+for _ in range(n):
+    tempList = list(map(int, sys.stdin.readline().rstrip()))
+    graph.append(tempList)
+
+queue = deque()
+dx = [-1, 1, 0, 0]
+dy = [0, 0, -1, 1]
+
+
+def bfs(i, j):
+    count = 0
+    queue.append((i, j))
+    graph[i][j] = 0
+    while queue:
+        a, b = queue.popleft()
+        count += 1
+        # print(a, b)
+        for k in range(4):
+            nx = a + dx[k]
+            ny = b + dy[k]
+            if nx < 0 or nx >= n or ny < 0 or ny >= n:
+                continue
+            if graph[nx][ny] == 1:
+                graph[nx][ny] = 0
+                queue.append((nx, ny))
+
+    return count
+
+
+total = 0
+resList = []
+for i in range(n):
+    for j in range(n):
+        if graph[i][j] == 1:
+            resList.append(bfs(i, j))
+            total += 1
+
+print(total)
+for x in sorted(resList):
+    print(x)
+
 
 
 
