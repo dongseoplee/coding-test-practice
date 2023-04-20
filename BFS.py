@@ -378,6 +378,41 @@ print(total)
 for x in sorted(resList):
     print(x)
 
+#5014번 스타트링크
+import sys
+from collections import deque
+queue = deque()
+f, s, g, u, d = map(int, sys.stdin.readline().split())
+if s == g:
+  print(0)
+  exit()
+arr = [0 for _ in range(f+1)]
+visited = [False for _ in range(f+1)]
 
+dx=[]
+dx.append(u)
+dx.append(d*(-1))
+
+def bfs(a):
+  queue.append(a)
+  visited[a] = True
+  while queue:
+    x = queue.popleft()
+    for i in range(2):
+      nx = x + dx[i]
+      if nx < 1 or nx > f:
+        continue
+      if visited[nx] == False:
+        queue.append(nx)
+        visited[nx] = True
+        arr[nx] = arr[x] + 1
+
+bfs(s)
+# print(arr)
+if arr[g] != 0:
+  print(arr[g])
+
+else:
+  print('use the stairs')
 
 
