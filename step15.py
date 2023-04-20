@@ -78,3 +78,43 @@ def GCD(a, b):
 resGCD = GCD(bm, bj) # 21 35
 print(int(bj/resGCD), end = ' ')
 print(int(bm/resGCD), end = ' ')
+
+#2485번 가로수
+import sys
+
+n = int(sys.stdin.readline())
+tree = []
+dis = []
+for _ in range(n):
+    tree.append(int(sys.stdin.readline()))
+
+# print(tree)
+for i in range(n - 1):
+    dis.append(tree[i + 1] - tree[i])
+
+
+# print(dis)
+# dis의 최대 공약수
+def gcd(a, b):
+    if a % b == 0:
+        return b
+    else:
+        return gcd(b, a % b)
+
+
+res = dis[0]
+for j in range(1, len(dis)):
+    res = gcd(res, dis[j])
+# (가로수 간격 // 2) - 1 이 간격에 세워질 갯수!!!
+cnt = 0
+for k in range(len(dis)):
+    cnt += dis[k] // res - 1
+print(cnt)
+
+#13909번 창문 닫기
+#약수의 갯수가 홀수인 수는 제곱수 밖에 없다.
+import sys
+import math
+#제곱수의 갯수 n**2 이하의 수중 제곱근의 갯수는 n 개
+n = int(sys.stdin.readline())
+print(int(math.sqrt(n)))
