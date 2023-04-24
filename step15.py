@@ -118,3 +118,37 @@ import math
 #제곱수의 갯수 n**2 이하의 수중 제곱근의 갯수는 n 개
 n = int(sys.stdin.readline())
 print(int(math.sqrt(n)))
+
+#4143번 다음 소수
+#1은 소수가 아니다
+import sys
+import math
+
+
+def isPrime(num):
+    primeYN = True
+
+    for i in range(2, int(math.sqrt(num)) + 1):  # 루트값 + 1
+        if num % i == 0:
+            return False
+
+    return True
+
+
+testNum = int(sys.stdin.readline())
+inputList = []
+for _ in range(testNum):
+    inputList.append(int(sys.stdin.readline()))
+
+for j in range(testNum):
+    num = inputList[j]
+    if num < 2:
+        print(2)  # 1은 소수가 아님
+        continue
+    while True:
+        if isPrime(num):  # 소수면
+            print(num)
+            break
+        else:
+            num += 1
+

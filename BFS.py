@@ -415,4 +415,58 @@ if arr[g] != 0:
 else:
   print('use the stairs')
 
+#2468번 안전영역
+import sys
+from collections import deque
+import copy
+n = int(sys.stdin.readline())
+graph = []
+for _ in range(n):
+  graph.append(list(map(int, sys.stdin.readline().split())))
+queue = deque()
 
+dx = [-1, 1, 0, 0]
+dy = [0, 0, -1, 1]
+def bfs(a, b):
+  queue.append((a, b))
+
+  while queue:
+    x, y = queue.popleft()
+    for e in range(4):
+      nx = x + dx[e]
+      ny = y + dy[e]
+      if nx < 0 or nx >= n or ny < 0 or ny >= n:
+        continue
+      if tempList[nx][ny] != 0:
+        queue.append((nx, ny))
+        tempList[nx][ny] = 0
+
+
+maxNum = max(max(graph))
+minNum = min(min(graph))
+if minNum == maxNum: #0이건 다른 값이건 모두 같으면 최대 갯수는 1개
+  print(1)
+  exit()
+
+resList = []
+
+for i in range(minNum, maxNum+1):
+  global safeCnt
+  tempList = copy.deepcopy(graph)
+
+  for j in range(n):
+    for k in range(n):
+      if tempList[j][k] <= i:
+        tempList[j][k] = 0
+
+  #tempList 가지고 bfs 돌려라
+  # print(tempList)
+  rescnt = 0
+  for p in range(n):
+    for q in range(n):
+      if tempList[p][q] != 0:
+        bfs(p, q)
+        rescnt += 1
+  resList.append(rescnt)
+
+print(max(resList))
