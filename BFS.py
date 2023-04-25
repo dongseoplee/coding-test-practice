@@ -470,3 +470,71 @@ for i in range(minNum, maxNum+1):
   resList.append(rescnt)
 
 print(max(resList))
+
+#10026번 적록색약
+import sys
+from collections import deque
+
+n = int(sys.stdin.readline())
+graph = []
+visited = [[False for _ in range(n)] for _ in range(n)]
+for _ in range(n):
+    graph.append(list(sys.stdin.readline().rstrip()))
+
+# print(graph)
+# print(visited)
+dx = [-1, 1, 0, 0]
+dy = [0, 0, -1, 1]
+queue = deque()
+
+
+def bfs(x, y, cnt):
+    queue.append((x, y))
+    visited[x][y] = cnt
+
+    while queue:
+        a, b = queue.popleft()
+        for i in range(4):
+            nx = a + dx[i]
+            ny = b + dy[i]
+            if nx < 0 or nx >= n or ny < 0 or ny >= n:
+                continue
+            if graph[nx][ny] == graph[a][b] and visited[nx][ny] == False:  # 주변과 같고 아직 방문하지 않은 노드
+                queue.append((nx, ny))
+                visited[nx][ny] = cnt
+
+
+# 미방문 노드면 bfs 돌아라
+cnt = 1
+for k in range(n):
+    for l in range(n):
+        if visited[k][l] == False:
+            bfs(k, l, cnt)
+            cnt += 1  # 거리, 갯수 출력은 for문 돌릴때 사용한 cnt 값을 사용한다. visited의 max max 사용 안함
+
+# print(graph)
+# print(visited)
+
+# print(max(max(visited)), end=' ')
+
+# 적록색약
+visited = [[False for _ in range(n)] for _ in range(n)]
+# R을 G로 변경
+for p in range(n):
+    for q in range(n):
+        if graph[p][q] == 'G':
+            graph[p][q] = 'R'
+
+# print(graph)
+# print(visited)
+cnt2 = 1
+for a1 in range(n):
+    for b1 in range(n):
+        if visited[a1][b1] == False:
+            bfs(a1, b1, cnt2)
+            cnt2 += 1
+# print(graph)
+# print(visited)
+# print(max(max(visited)), end=' ')
+print(cnt - 1, cnt2 - 1)
+
