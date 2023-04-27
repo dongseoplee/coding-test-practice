@@ -538,3 +538,68 @@ for a1 in range(n):
 # print(max(max(visited)), end=' ')
 print(cnt - 1, cnt2 - 1)
 
+#6593번 상범빌딩
+import sys
+from collections import deque
+
+while True:
+    # 동일 명의 변수 선언하지 말자
+    dx = [-1, 1, 0, 0, 0, 0]
+    dy = [0, 0, -1, 1, 0, 0]
+    dz = [0, 0, 0, 0, -1, 1]
+
+
+    def bfs(z, x, y):
+        queue.append((z, x, y))
+        visited[z][x][y] = 1
+        # print(queue)
+        # print(1)
+        while queue:
+            z, x, y = queue.popleft()
+            # print(z, x, y)
+            # print(1)
+            for k in range(6):
+                nz = z + dz[k]
+                nx = x + dx[k]
+                ny = y + dy[k]
+                # print(nz, nx, ny)
+                # print(1)
+                # print(l, r, c)
+                if nz < 0 or nz >= l or nx < 0 or nx >= r or ny < 0 or ny >= c:  # c가 왜 0이지? #동일 명의 변수 선언하지 말자
+                    # print(3)
+                    continue
+
+                if (visited[nz][nx][ny] == 0 and graph[nz][nx][ny] == '.') or graph[nz][nx][ny] == 'E':
+                    # print(2)
+                    visited[nz][nx][ny] = visited[z][x][y] + 1
+                    queue.append((nz, nx, ny))
+                    if graph[nz][nx][ny] == 'E':
+                        print('Escaped in', end=' ')
+                        print(visited[nz][nx][ny] - 1, end=' ')
+                        print('minute(s).')
+                        return  # 함수 끝내는 명령어 return
+        print('Trapped!')
+
+
+    l, r, c = map(int, sys.stdin.readline().split())
+    if l == 0 and r == 0 and c == 0:
+        break
+    visited = [[[0 for _ in range(c)] for _ in range(r)] for _ in range(l)]  # 열, 행, 높이
+    graph = [[] * r for _ in range(l)]  # 행, 높이로 2차원 배열 만들고 여기에 입력값 넣어서 3차원 배열 만듬
+    # print(visited)
+    # print(l,r,c)
+    for i in range(l):
+        for j in range(r):
+            graph[i].append(list(map(str, sys.stdin.readline().rstrip())))
+        sys.stdin.readline()
+    # print(graph)
+
+    queue = deque()
+
+    for a in range(l):
+        for b in range(r):
+            for d in range(c):
+                if graph[a][b][d] == 'S':
+                    bfs(a, b, d)
+
+    # print(visited)
