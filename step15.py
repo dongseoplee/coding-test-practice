@@ -152,3 +152,53 @@ for j in range(testNum):
         else:
             num += 1
 
+#1929번 소수 구하기
+import sys
+import math
+m, n = map(int, sys.stdin.readline().split())
+resList = []
+
+def isPrime(x):
+  if x == 1:
+    return False
+  for i in range(2, int(math.sqrt(x)) + 1): #루트 값 +1 !!!
+    if x % i == 0:
+      return False
+  return True
+for k in range(m, n+1):
+  if isPrime(k):
+    resList.append(k)
+
+
+for resListData in resList:
+  print(resListData)
+
+#4948번 베르트랑 공준
+import sys
+import math
+
+while True:
+    n = int(sys.stdin.readline())
+    if n == 0:
+        break
+
+
+    def isPrime(n):  # 에라토스테네스의 체
+        arr = [True] * (2 * n + 1)
+        for i in range(2, 2 * n + 1):  # 자신을 제외하고 배수들은 다 False 처리
+            if arr[i] == True:  # 처음 발견된 수
+                for j in range(i ** 2, 2 * n + 1, i):
+                    arr[j] = False
+
+        return arr
+
+
+    arr = isPrime(n)
+    # print(arr)
+    cnt = 0
+    for p in range(n + 1, 2 * n + 1):
+        if arr[p]:
+            cnt += 1
+    print(cnt)
+
+    # 에라토스테네스의 체가 더 빠르다.
