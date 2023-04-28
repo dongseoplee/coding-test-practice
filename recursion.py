@@ -42,3 +42,17 @@ def rec(i):
 
 rec(i)
 print('라고 답변하였지.')
+
+#27433번 팩토리얼2
+import sys
+n = int(sys.stdin.readline())
+if n == 0:
+  print(1)
+  exit()
+def fac(n):
+  if n == 1: #재귀함수 탈출 조건이 있어야 함
+    return 1
+  else:
+    return n * fac(n-1)
+
+print(fac(n))

@@ -51,3 +51,37 @@ def bt(cur):
 
 bt(0)
 print(res)
+
+#1182번 부분수열의 합
+import sys
+
+n, s = map(int, sys.stdin.readline().split())
+inputList = list(map(int, sys.stdin.readline().split()))
+# print(n, s)
+
+global res
+res = 0
+
+
+def bt(idx, sum):
+    global res
+    # 갯수가 n이면 탈출
+    if idx == n:
+        if sum == s:
+            res += 1
+        return
+
+    bt(idx + 1, sum + 0)
+    bt(idx + 1, sum + inputList[idx])
+    # 트리 구조
+    # 왼쪽 0 을 더하는 곳
+    # 오른쪽 다음 수를 더하는 곳
+
+
+bt(0, 0)
+
+# 문제 조건 공집합 제외
+if s == 0:
+    print(res - 1)
+else:
+    print(res)

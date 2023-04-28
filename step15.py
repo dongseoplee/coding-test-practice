@@ -202,3 +202,22 @@ while True:
     print(cnt)
 
     # 에라토스테네스의 체가 더 빠르다.
+
+#17103번 골드바흐 파티션
+import sys
+
+testNum = int(sys.stdin.readline())
+# 에라토스테네스의 체 생성
+primeList = [False, False] + [True] * 999999
+for i in range(2, 1000001):
+    if primeList[i] == True:
+        for j in range(i * 2, 1000001, i):
+            primeList[j] = False
+
+for _ in range(testNum):
+    cnt = 0
+    n = int(sys.stdin.readline())
+    for k in range(2, n // 2 + 1):
+        if primeList[k] and primeList[n - k]:  # k와 n-k의 합은 n 이다. k는 n//2 까지만 확인
+            cnt += 1
+    print(cnt)
