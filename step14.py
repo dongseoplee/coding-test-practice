@@ -159,3 +159,62 @@ for i in range(n):
 # print(resDict)
 for i in range(m):
   print(resDict[mListCopy[i]], end=' ')
+
+#1764번 듣보잡
+import sys
+
+n, m = map(int, sys.stdin.readline().split())  # n: 듣도 못한, m: 보도 못한
+nList = []
+mList = []
+# print(n, m)
+nDict = dict()
+mDict = dict()
+for i in range(n):
+  nList.append(sys.stdin.readline().rstrip())
+  # nDict[sys.stdin.readline().rstrip()] = 1
+for j in range(m):
+  # mList.append(sys.stdin.readline().rstrip())
+  mDict[sys.stdin.readline().rstrip()] = 1
+
+# print(nList, mList)
+resList = []
+# print(nList, mDict)
+# 리스트와 딕셔너리 두개를 이용해서 중복되는 것 찾음!!
+for nListData in nList:
+
+  if nListData in mDict:
+    # print(nListData)
+    resList.append(nListData)
+
+resList = sorted(resList)
+print(len(resList))
+for resListData in resList:
+  print(resListData)
+
+#1269번 대칭 차집합
+import sys
+aNum, bNum = map(int, sys.stdin.readline().split())
+
+# print(aNum, bNum)
+aSet = set(list(map(int, sys.stdin.readline().split())))
+
+bSet = set(list(map(int, sys.stdin.readline().split())))
+
+a = aSet - bSet
+b = bSet - aSet
+print(len(a) + len(b))
+
+#11478번 서로 다른 부분 문자열의 개수
+import sys
+s = sys.stdin.readline()
+resList = []
+size = 0
+for i in range(len(s)):
+  size += 1
+  for j in range(len(s) - size):
+    resList.append(s[j:j+size])
+
+# print(resList)
+resSet = set(resList)
+# print(resSet)
+print(len(resSet))
