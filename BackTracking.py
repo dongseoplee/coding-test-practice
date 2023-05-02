@@ -85,3 +85,34 @@ if s == 0:
     print(res - 1)
 else:
     print(res)
+
+#15651번 N과 M (3)
+import sys
+n, m = map(int, sys.stdin.readline().split())
+res = []
+def bt(cnt):
+  #탈출조건
+  if cnt == m:
+    print(*res)
+    return
+  for i in range(n):
+    res.append(i+1)
+    bt(cnt + 1)
+    res.pop()
+
+bt(0)
+
+#15652번 N과 M (4)
+import sys
+n, m = map(int, sys.stdin.readline().split())
+res = []
+def bt(start):
+  if len(res) == m:
+    print(*res)
+    return
+  for i in range(start, n+1):
+    res.append(i)
+    bt(i)
+    res.pop()
+
+bt(1)

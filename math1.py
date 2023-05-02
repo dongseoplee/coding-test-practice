@@ -38,3 +38,18 @@ for k in range(65, 91):
 #idx 큰것부터 출력해야함
 for i in range(len(modList)):
   print(numDict[modList[len(modList) - i - 1]], end='')
+
+#2720번 세탁소 사장 동혁
+import sys
+testNum = int(sys.stdin.readline())
+for _ in range(testNum):
+  res = []
+  price = int(sys.stdin.readline())
+  res.append(price // 25)
+  price = price % 25
+  res.append(price // 10)
+  price = price % 10
+  res.append(price // 5)
+  price = price % 5
+  res.append(price)
+  print(*res)
