@@ -53,3 +53,23 @@ for _ in range(testNum):
   price = price % 5
   res.append(price)
   print(*res)
+
+
+#2903번 중앙 이동 알고리즘
+import sys
+import math
+n = int(sys.stdin.readline())
+dotList = []
+dotList.append(4)
+cnt = 0
+idx = 0
+
+while True:
+  if cnt == n:
+    break
+  res = (math.sqrt(dotList[len(dotList)-1]) + (2**idx))**2
+  dotList.append(res)
+  idx += 1
+  cnt += 1
+
+print(int(dotList[len(dotList) - 1]))
