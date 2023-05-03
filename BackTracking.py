@@ -116,3 +116,27 @@ def bt(start):
     res.pop()
 
 bt(1)
+
+#15654번 N과 M (5)
+import sys
+
+n, m = map(int, sys.stdin.readline().split())
+inputList = list(map(int, sys.stdin.readline().split()))
+inputList = sorted(inputList)
+# print(inputList)
+res = []
+
+
+def bt():
+    if len(res) == m:
+        print(*res)
+        return
+
+    for i in range(n):
+        if inputList[i] not in res:
+            res.append(inputList[i])
+            bt()
+            res.pop()
+
+
+bt()
