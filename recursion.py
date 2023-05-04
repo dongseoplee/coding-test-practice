@@ -71,3 +71,29 @@ def fibo(n):
 
 
 print(fibo(n))
+
+#1992번 쿼드트리
+import sys
+n = int(sys.stdin.readline())
+graph = []
+for _ in range(n):
+  graph.append(list(map(int, list(sys.stdin.readline().rstrip()))))
+
+# print(graph)
+def recur(x, y, n):
+  for i in range(x, x + n):
+    for j in range(y, y + n):
+      if graph[x][y] != graph[i][j]:
+        print('(', end='')
+        recur(x, y, n//2)
+        recur(x, y+n//2, n//2)
+        recur(x+n//2, y, n//2)
+        recur(x+n//2, y+n//2, n//2)
+        print(')', end='')
+        return
+  if graph[x][y] == 1:
+    print(1, end='')
+  else:
+    print(0, end='')
+
+recur(0, 0, n)
