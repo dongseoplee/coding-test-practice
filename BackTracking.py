@@ -140,3 +140,52 @@ def bt():
 
 
 bt()
+
+#15655번 N과 M (6)
+import sys
+
+n, m = map(int, sys.stdin.readline().split())
+inputList = []
+inputList = list(map(int, sys.stdin.readline().split()))
+inputList = sorted(inputList)
+# print(inputList)
+
+resList = []
+
+
+def bt(start):
+    if len(resList) == m:
+        print(*resList)
+        return
+    for i in range(start, len(inputList)):
+        resList.append(inputList[i])
+        bt(i + 1)
+        resList.pop()
+
+
+bt(0)
+
+#15656번 N과 M (7)
+import sys
+
+n, m = map(int, sys.stdin.readline().split())
+inputList = []
+inputList = list(map(int, sys.stdin.readline().split()))
+inputList = sorted(inputList)
+# print(inputList)
+
+resList = []
+
+
+def bt():
+    if len(resList) == m:
+        print(*resList)
+        return
+
+    for i in range(len(inputList)):
+        resList.append(inputList[i])
+        bt()
+        resList.pop()
+
+
+bt()
