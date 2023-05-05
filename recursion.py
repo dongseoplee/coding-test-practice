@@ -83,7 +83,7 @@ for _ in range(n):
 def recur(x, y, n):
   for i in range(x, x + n):
     for j in range(y, y + n):
-      if graph[x][y] != graph[i][j]:
+      if graph[x][y] != graph[i][j]: #첫번째로 다른게 파악되어 들어오면 if문 실행하고 if 안에 return 있어서 종료됨
         print('(', end='')
         recur(x, y, n//2)
         recur(x, y+n//2, n//2)
