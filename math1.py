@@ -73,3 +73,9 @@ while True:
   cnt += 1
 
 print(int(dotList[len(dotList) - 1]))
+
+#10757번 큰 수 A + B
+import sys
+a, b = map(int, sys.stdin.readline().split())
+print(a+b)
+
