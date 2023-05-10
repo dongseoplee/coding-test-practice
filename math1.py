@@ -79,3 +79,21 @@ import sys
 a, b = map(int, sys.stdin.readline().split())
 print(a+b)
 
+#2292번 벌집
+import sys
+
+n = int(sys.stdin.readline())
+nums, cnt = 1, 1
+while n > nums:
+  nums += 6 * cnt
+  cnt += 1
+
+print(cnt)
+
+#2869번 달팽이는 올라가고 싶다.
+import sys
+import math
+a, b, v = map(int, sys.stdin.readline().split())
+
+day = (v-b) / (a-b)
+print(math.ceil(day))
