@@ -97,3 +97,29 @@ a, b, v = map(int, sys.stdin.readline().split())
 
 day = (v-b) / (a-b)
 print(math.ceil(day))
+
+#1193번 분수찾기
+import sys
+
+n = int(sys.stdin.readline())
+
+line = 0
+maxNum = 0
+while n > maxNum:
+  line += 1
+  maxNum += line
+
+# print(line)
+# print(maxNum)
+# 짝수 라인
+if line % 2 == 0:
+  bj = line - (maxNum - n)
+  bm = maxNum - n + 1
+# 홀수 라인
+else:
+  bj = maxNum - n + 1
+  bm = line - (maxNum - n)
+
+print(bj, end='')
+print('/', end='')
+print(bm)
