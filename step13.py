@@ -177,3 +177,29 @@ for i in range(len(setInputList)):
 for inputListData in inputList:
   print(dict.get(inputListData), end=' ') #시간복잡도 O(1)
   # print(setInputList.index(inputListData), end=' ') #시간복잡도 O(n)
+
+
+#11931번 수 정렬하기 4
+import sys
+n = int(sys.stdin.readline())
+inputList = []
+for _ in range(n):
+  inputList.append(int(sys.stdin.readline()))
+
+# print(inputList)
+inputList.sort(reverse=True)
+for inputListData in inputList:
+  print(inputListData)
+
+
+#15688번 수 정렬하기 5
+import sys
+n = int(sys.stdin.readline())
+inputList = []
+for _ in range(n):
+  inputList.append(int(sys.stdin.readline()))
+
+# print(inputList)
+inputList.sort()
+for inputListData in inputList:
+  print(inputListData)
