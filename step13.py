@@ -203,3 +203,40 @@ for _ in range(n):
 inputList.sort()
 for inputListData in inputList:
   print(inputListData)
+
+#1431번 시리얼 번호
+
+import sys
+n = int(sys.stdin.readline())
+inputList = []
+def get_sum(x):
+  sum = 0
+  for i in x:
+    if i.isdigit(): #문자열로 저장됐지만 숫자인지 판별하는 라이브러리 isdigit
+      sum += int(i)
+  return sum
+for _ in range(n):
+  inputList.append(sys.stdin.readline().rstrip())
+
+inputList.sort(key = lambda x: (len(x), get_sum(x), x)) #기준값 3개
+
+
+for inputListData in inputList:
+  print(inputListData)
+
+#11652번 카드
+import sys
+dic = {}
+n = int(sys.stdin.readline())
+for n in range(n):
+  a = int(sys.stdin.readline())
+  if a in dic.keys():
+    dic[a] += 1
+  else:
+    dic[a] = 1
+
+dic = sorted(dic.items(), key=lambda x:(-x[1], x[0]))
+'''정렬 기준 key를 lamda를 이용하여-x[1], x[0]순으로 한다.
+즉, x[1] (카드의 개수)의 -(내림차순)으로 정렬하고
+x[0] (카드 숫자)의 오름차순으로 정렬한다.'''
+print(dic[0][0])
