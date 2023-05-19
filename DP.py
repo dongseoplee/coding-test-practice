@@ -39,3 +39,68 @@ for _ in range(testNum):
     print(2)
   if n == 3:
     print(4)
+
+#2579번 계단 오르기
+import sys
+
+'''
+DP는 이전의 값을 재활용해서 불필요한 반복을 없애고, 그만큼 시간 복잡도를 줄이도록 구현하면 된다.
+점화식 생성
+동적계획법의 핵심은 첫 몇 개의 케이스를 하드코딩해주고 나머지 경우들을 점화식을 통해 처리
+'''
+n = int(sys.stdin.readline())
+stairList = [0]
+dp = [0] * (n + 1)
+for _ in range(0, n):
+    stairList.append(int(sys.stdin.readline()))
+
+if n == 1:
+    print(stairList[1])
+elif n == 2:
+    print(stairList[1] + stairList[2])
+elif n == 3:
+    print(max(stairList[1] + stairList[3], stairList[2] + stairList[3]))
+else:
+    dp[1] = stairList[1]
+    dp[2] = dp[1] + stairList[2]
+    dp[3] = max(stairList[2] + stairList[3], stairList[1] + stairList[3])
+    for i in range(4, n + 1):
+        dp[i] = max(dp[i - 2] + stairList[i], dp[i - 3] + stairList[i - 1] + stairList[i])
+    print(dp[n])
+
+#1149번 RGB거리
+import sys
+houseCnt = int(sys.stdin.readline())
+houseList = [0] * (houseCnt + 1)
+dp = [0] * (houseCnt + 1)
+costList = []
+for _ in range(houseCnt):
+  costList.append(list(map(int, sys.stdin.readline().split())))
+
+# print(costList)
+
+for i in range(1, houseCnt):
+  costList[i][0] += min(costList[i-1][1], costList[i-1][2])
+  costList[i][1] += min(costList[i-1][0], costList[i-1][2])
+  costList[i][2] += min(costList[i-1][1], costList[i-1][0])
+
+print(min(costList[houseCnt-1]))
+
+#11726번 2×n 타일링
+import sys
+n = int(sys.stdin.readline())
+dp = [0] * (n+1)
+
+if n == 1:
+  print(1)
+elif n == 2:
+  print(2)
+else:
+  dp[1] = 1
+  dp[2] = 2
+  for i in range(3, n+1):
+    dp[i] = dp[i-1] + dp[i-2]
+  print(dp[n] % 10007)
+
+
+
