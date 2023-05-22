@@ -103,4 +103,26 @@ else:
   print(dp[n] % 10007)
 
 
+#9461번 파도반 수열
+import sys
+
+t = int(sys.stdin.readline())
+for _ in range(t):
+    n = int(sys.stdin.readline())
+    dp = [0] * (n + 1)
+    if n == 1:
+        print(1)
+    elif n == 2:
+        print(1)
+    elif n == 3:
+        print(1)
+    else:
+        dp[1] = 1
+        dp[2] = 1
+        dp[3] = 1
+        for i in range(1, n - 2):  # n = 4 , 1
+            dp[i + 3] = dp[i] + dp[i + 1]
+
+        # print(dp)
+        print(dp[n])
 
