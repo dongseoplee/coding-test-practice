@@ -126,3 +126,67 @@ for _ in range(t):
         # print(dp)
         print(dp[n])
 
+#1965번 상자넣기
+import sys
+n = int(sys.stdin.readline())
+box = list(map(int, sys.stdin.readline().split()))
+dp = [1] * n
+for i in range(n):
+  for j in range(i):
+    if box[i] > box[j]:
+      dp[i] = max(dp[i], dp[j] + 1)
+
+print(max(dp))
+
+#11053번 가장 긴 증가하는 부분 수열
+import sys
+n = int(sys.stdin.readline())
+a = list(map(int, sys.stdin.readline().split()))
+dp = [1] * n
+for i in range(n):
+  for j in range(i):
+    if a[i] > a[j]:
+      dp[i] = max(dp[i], dp[j] + 1)
+
+print(max(dp))
+
+#11055번 가장 큰 증가하는 부분 수열
+import sys
+n = int(sys.stdin.readline())
+a = list(map(int, sys.stdin.readline().split()))
+dp = [1] * n
+dp[0] = a[0]
+for i in range(1, n):
+  for j in range(i):
+    if a[i] > a[j]:
+      dp[i] = max(dp[i], dp[j] + a[i])
+    else:
+      dp[i] = max(dp[i], a[i])
+
+print(max(dp))
+# print(dp)
+
+#1003번 피보나치 함수
+import sys
+
+t = int(sys.stdin.readline())
+for _ in range(t):
+    n = int(sys.stdin.readline())
+    if n == 0:
+        zeroNum = 1
+        oneNum = 0
+        print(zeroNum, oneNum)
+    elif n == 1:
+        zeroNum = 0
+        oneNum = 1
+        print(zeroNum, oneNum)
+    else:
+        dp = []
+        dp.append([1, 0])
+        dp.append([0, 1])
+        for i in range(2, n + 1):
+            zeroNum = dp[i - 1][0] + dp[i - 2][0]
+            oneNum = dp[i - 1][1] + dp[i - 2][1]
+            dp.append([zeroNum, oneNum])
+
+        print(dp[n][0], dp[n][1])
