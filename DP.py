@@ -190,3 +190,24 @@ for _ in range(t):
             dp.append([zeroNum, oneNum])
 
         print(dp[n][0], dp[n][1])
+#2156번 포도주 시식
+import sys  # 최대합 구하기 단, 3개 연속은 선택 불가
+
+n = int(sys.stdin.readline())
+podo = []
+dp = [0] * (n)
+for _ in range(n):
+    podo.append(int(sys.stdin.readline()))
+
+if n == 1:
+    print(podo[0])
+elif n == 2:
+    print(podo[0] + podo[1])
+else:  # 3잔 연속으로 선택 불가
+    dp[0] = podo[0]
+    dp[1] = podo[0] + podo[1]
+    dp[2] = max(podo[0] + podo[2], podo[1] + podo[2], dp[1])  # dp[1]은 podo[0] + podo[1]과 같다.
+    for i in range(3,
+                   n):  # i번째가 선택안될때 (앞에 연속 2개가 선택된 경우), i가 선택될떄 (i랑 i-1번째가 선택됨) i가 2일때를 예시로 생각해보기 (0, 2) (1, 2) (0, 1)
+        dp[i] = max(dp[i - 2] + podo[i], dp[i - 3] + podo[i - 1] + podo[i], dp[i - 1])
+    print(dp[n - 1])
