@@ -211,3 +211,45 @@ else:  # 3잔 연속으로 선택 불가
                    n):  # i번째가 선택안될때 (앞에 연속 2개가 선택된 경우), i가 선택될떄 (i랑 i-1번째가 선택됨) i가 2일때를 예시로 생각해보기 (0, 2) (1, 2) (0, 1)
         dp[i] = max(dp[i - 2] + podo[i], dp[i - 3] + podo[i - 1] + podo[i], dp[i - 1])
     print(dp[n - 1])
+
+#1921번 연속합
+import sys
+n = int(sys.stdin.readline())
+inputList = list(map(int, sys.stdin.readline().split()))
+
+# print(inputList)
+for i in range(1, n):
+  inputList[i] = max(inputList[i], inputList[i-1] + inputList[i])
+
+print(max(inputList))
+
+#11727번 2×n 타일링 2
+import sys
+n = int(sys.stdin.readline())
+dp = [0] * (n+1)
+if n == 1:
+  print(1)
+elif n == 2:
+  print(3)
+else:
+  dp[1] = 1
+  dp[2] = 3
+  for i in range(3, n+1):
+    dp[i] = dp[i-1] + dp[i-2]*2
+
+  print(dp[n]%10007)
+
+#2193번 이친수
+import sys #dp 단계별로 적어보고 그려보면서  앞 앞앞을 보고 규칙을 찾아라
+n = int(sys.stdin.readline())
+if n == 1:
+  print(1)
+elif n == 2:
+  print(1)
+else:
+  dp = [0] * (n)
+  dp[0] = 1
+  dp[1] = 1
+  for i in range(2, n):
+    dp[i] = dp[i-2] + dp[i-1]
+  print(dp[n-1])
