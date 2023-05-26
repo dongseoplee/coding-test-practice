@@ -253,3 +253,39 @@ else:
   for i in range(2, n):
     dp[i] = dp[i-2] + dp[i-1]
   print(dp[n-1])
+
+#24416번 알고리즘 수업 - 피보나치 수 1
+import sys
+n = int(sys.stdin.readline())
+dpRes = n - 2
+#n은 5이상
+dp = [0] * (n+1)
+dp[1] = 1
+dp[2] = 1
+for i in range(3, n+1):
+  dp[i] = dp[i-2] + dp[i-1]
+
+print(dp[n], end=' ')
+print(dpRes)
+
+#10844번 쉬운 계단 수
+import sys
+n = int(sys.stdin.readline()) #2차원 배열을 생성해서 규칙찾아보기
+dp = [[0 for _ in range(10)] for _ in range(n+1)]
+
+for i in range(n+1): #행
+  for j in range(10): #열
+    if i == 1 and j >= 1:
+      dp[i][j] = 1
+    elif i == 1 and j == 0:
+      dp[i][j] = 0
+    elif i != 1 and j == 0:
+      dp[i][j] = dp[i-1][j+1]
+    elif i != 1 and j == 9:
+      dp[i][j] = dp[i-1][j-1]
+    else:
+      dp[i][j] = dp[i-1][j-1] + dp[i-1][j+1]
+
+print(sum(dp[n])%1000000000)
+
+
