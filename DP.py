@@ -300,5 +300,17 @@ else:
   dp[1] = 1
   dp[2] = 2
   for i in range(3, n+1):
-    dp[i] = (dp[i-1] + dp[i-2])%15746
+    dp[i] = (dp[i-1] + dp[i-2])%15746 #합의 나머지를 다시 합해서 나머지와 같다...???
   print(dp[n])
+
+#11052번 카드 구매하기
+import sys
+n = int(sys.stdin.readline())
+price = [0] + list(map(int, sys.stdin.readline().split()))
+
+dp = [0] * (n+1)
+for j in range(1, n+1): #dp[]
+  for i in range(1, j+1):
+    dp[j] = max(dp[j], dp[j-i] + price[i])
+
+print(dp[n])
