@@ -314,3 +314,12 @@ for j in range(1, n+1): #dp[]
     dp[j] = max(dp[j], dp[j-i] + price[i])
 
 print(dp[n])
+
+#9655번 돌 게임
+import sys
+n = int(sys.stdin.readline())
+# dp = [0] * (n+1)
+if n % 2 == 0:
+  print('CY')
+else:
+  print('SK')
