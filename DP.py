@@ -323,3 +323,45 @@ if n % 2 == 0:
   print('CY')
 else:
   print('SK')
+
+
+#11057번 오르막 수
+import sys
+n = int(sys.stdin.readline())
+dp = [[0 for i in range(10)] for _ in range(n+1)] #열: 맨뒷자리수의 갯수, 열: 길이
+
+for i in range(1, n+1):
+  for j in range(10):
+    if i == 1:
+      dp[i][j] = 1
+    else:
+      dp[i][j] = dp[i][j-1] + dp[i-1][j]
+
+# print(dp)
+print(sum(dp[n])%10007)
+
+#9465번 스티커
+import sys
+
+testNum = int(sys.stdin.readline())
+for _ in range(testNum):
+    n = int(sys.stdin.readline())
+    s = []
+    s.append(list(map(int, sys.stdin.readline().split())))
+    s.append(list(map(int, sys.stdin.readline().split())))
+    dp = [[0 for _ in range(n)] for _ in range(2)]
+    if n == 1:
+        print(max(s[0][0], s[1][0]))
+
+    else:
+        dp[0][0] = s[0][0]
+        dp[1][0] = s[1][0]
+
+        dp[0][1] = dp[1][0] + s[0][1]
+        dp[1][1] = dp[0][0] + s[1][1]
+        for i in range(2, n):
+            dp[0][i] += max(dp[1][i - 2], dp[1][i - 1]) + s[0][i]
+            dp[1][i] += max(dp[0][i - 2], dp[0][i - 1]) + s[1][i]
+        print(max(dp[0][n - 1], dp[1][n - 1]))
+
+    # print(dp)
