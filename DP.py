@@ -365,3 +365,25 @@ for _ in range(testNum):
         print(max(dp[0][n - 1], dp[1][n - 1]))
 
     # print(dp)
+
+#11660번 구간 합 구하기 5
+import sys
+#4~7까지의 누적합은 (1~7) - (1~3)
+#2차원 누적합 (1, 1) 에서 (3, 4) 까지의 대각선으로 누적합 계산한다.
+n, m = map(int, sys.stdin.readline().split())
+graph = [[0] * (n+1)]
+for _ in range(n):
+  graph.append([0] + list(map(int, sys.stdin.readline().split())))
+
+print(graph)
+xy = []
+
+
+# print(xy)
+#누적합 2차원 그래프 만들기
+for i in range(1, n+1):
+  for j in range(1, n+1):
+    graph[i][j] = graph[i-1][j] + graph[i][j-1] - graph[i-1][j-1] + graph[i][j]
+for _ in range(m):
+  x1, y1, x2, y2 = map(int, sys.stdin.readline().split())
+  print(graph[x2][y2] - graph[x2][y1-1] - graph[x1-1][y2] + graph[x1-1][y1-1])
