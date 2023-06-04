@@ -387,3 +387,36 @@ for i in range(1, n+1):
 for _ in range(m):
   x1, y1, x2, y2 = map(int, sys.stdin.readline().split())
   print(graph[x2][y2] - graph[x2][y1-1] - graph[x1-1][y2] + graph[x1-1][y1-1])
+
+#11051번 이항 계수 2
+import sys  #dp -> 조합론이면 파스칼의 삼각형 이용!!!
+
+n, k = map(int, sys.stdin.readline().split())
+dp = [[0 for _ in range(n + 1)] for _ in range(n + 1)]
+for i in range(n + 1):
+  for j in range(i + 1):
+    if j == 0:
+      dp[i][j] = 1
+    elif j == i:
+      dp[i][j] = 1
+    else:
+      dp[i][j] = dp[i-1][j-1] + dp[i-1][j]
+
+print(dp[n][k]%10007)
+
+#1699번 제곱수의 합
+import sys
+
+n = int(sys.stdin.readline())
+dp = [0] * (n + 1)
+
+for i in range(1, n + 1):
+    dp[i] = i
+    for j in range(1, i):
+        if j ** 2 > i:
+            break
+        elif dp[i] > dp[i - j ** 2] + 1:
+            dp[i] = dp[i - j ** 2] + 1
+
+# dp[14] = dp[14 - 9] + 1 -> dp[9] + dp[5] -> dp[9] + dp[5 - 4] + 1 -> dp[9] + dp[4] + dp[1]
+print(dp[n])
