@@ -26,3 +26,27 @@ for j in range(1, n + 1):
         cnt += 1
 
 print(cnt)
+
+#11725번 트리의 부모 찾기
+import sys
+
+sys.setrecursionlimit(10 ** 6)
+n = int(sys.stdin.readline())  # dfs는 항상 부모에서 자식으로 이동한다.
+graph = [[] for _ in range(n + 1)]
+visited = [False] * (n + 1)
+for _ in range(n - 1):
+    a, b = map(int, sys.stdin.readline().split())
+    graph[a].append(b)
+    graph[b].append(a)
+
+
+def dfs(i):
+    for node in graph[i]:
+        if visited[node] == False:  # 방문하지 않았다면
+            visited[node] = i
+            dfs(node)
+
+
+dfs(1)  # dfs는 항상 부모에서 자식으로 이동한다.
+for k in range(2, n + 1):
+    print(visited[k])

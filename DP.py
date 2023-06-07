@@ -434,3 +434,25 @@ for i in range(1, n):
 
 # print(dp)
 print(max(dp))
+
+#11048번 이동하기
+import sys
+n, m = map(int, sys.stdin.readline().split())
+graph = []
+dp = [[0 for _ in range(m)] for _ in range(n)]
+for _ in range(n):
+  graph.append(list(map(int, sys.stdin.readline().split())))
+
+# print(graph)
+# print(dp)
+dp[0][0] = graph[0][0]
+for k in range(1, m):
+  dp[0][k] = graph[0][k] + dp[0][k-1]
+for j in range(1, n):
+  dp[j][0] = graph[j][0] + dp[j-1][0]
+
+for a in range(1, n):
+  for b in range(1, m):
+    dp[a][b] = graph[a][b] + max(dp[a-1][b-1], dp[a][b-1], dp[a-1][b])
+
+print(dp[n-1][m-1])
