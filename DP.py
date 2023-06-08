@@ -456,3 +456,20 @@ for a in range(1, n):
     dp[a][b] = graph[a][b] + max(dp[a-1][b-1], dp[a][b-1], dp[a-1][b])
 
 print(dp[n-1][m-1])
+
+#1309번 동물원
+import sys #이전단계에서 밑에 2칸 추가하는 방법으로 해야함, 메모리 초과때문에 9901로 나눈값을 리스트에 저장해라
+n = int(sys.stdin.readline())
+dp = [[0 for _ in range(2)] for _ in range(n+1)]
+
+if n == 1:
+  print(3)
+else:
+  dp[1][0] = 1
+  dp[1][1] = 2
+  for i in range(2, n+1):
+    dp[i][0] = (dp[i-1][0] + dp[i-1][1]) % 9901
+    dp[i][1] = (2*dp[i-1][0] + dp[i-1][1]) % 9901
+
+  print(sum(dp[n]) % 9901)
+  # 마지막에 결과값 도출을 위해 %9901 한 값과 매번 %9901한 결과값을 이용해 진행한뒤 마지막에 결과값 도출을 위해 %9901 한 값은 같다.
