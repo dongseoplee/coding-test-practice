@@ -473,3 +473,28 @@ else:
 
   print(sum(dp[n]) % 9901)
   # 마지막에 결과값 도출을 위해 %9901 한 값과 매번 %9901한 결과값을 이용해 진행한뒤 마지막에 결과값 도출을 위해 %9901 한 값은 같다.
+
+
+#1890번 점프
+import sys #답지를 봐도 이해가 안가는 문제
+
+n = int(sys.stdin.readline())
+graph = []
+dp = [[0 for _ in range(n)] for _ in range(n)]
+dp[0][0] = 1
+for _ in range(n):
+    graph.append(list(map(int, sys.stdin.readline().split())))
+
+# print(graph)
+# print(dp)
+for i in range(n):
+    for j in range(n):
+        if i == n - 1 and j == n - 1:
+            print(dp[i][j])
+        dis = graph[i][j]
+        if j + dis < n:
+            dp[i][j + dis] += dp[i][j]
+        if i + dis < n:
+            dp[i + dis][j] += dp[i][j]
+
+print(dp)
