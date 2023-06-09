@@ -649,3 +649,49 @@ def bfs(x, y, z):
 
 print(bfs(0, 0, 0))
 
+#4963번 섬의 개수
+
+import sys
+from collections import deque
+
+while (1):
+    h, w = map(int, sys.stdin.readline().split())  # h: 5, w: 4
+    if h == 0 and w == 0:
+        break
+    graph = []
+    visited = [[False for _ in range(h)] for _ in range(w)]
+    for _ in range(w):
+        graph.append(list(map(int, sys.stdin.readline().split())))
+
+    # print(graph)
+    # print(visited)
+    queue = deque()
+    # 상하좌우 대각선
+    dx = [-1, 1, 0, 0, -1, -1, 1, 1]  # 행
+    dy = [0, 0, 1, -1, -1, 1, -1, 1]  # 열
+
+
+    def bfs(a, b, cnt):
+        queue.append((a, b))
+        visited[a][b] = cnt
+        while queue:
+            x, y = queue.popleft()
+            for k in range(8):  # 8번
+                nx = x + dx[k]
+                ny = y + dy[k]
+                if nx < 0 or nx >= w or ny < 0 or ny >= h:
+                    continue
+                if graph[nx][ny] == 1 and visited[nx][ny] == False:
+                    queue.append((nx, ny))
+                    visited[nx][ny] = cnt
+
+
+    cnt = 0
+    for i in range(w):
+        for j in range(h):
+            if graph[i][j] == 1 and visited[i][j] == False:
+                cnt += 1
+                bfs(i, j, cnt)
+
+    # print(visited)
+    print(cnt)
