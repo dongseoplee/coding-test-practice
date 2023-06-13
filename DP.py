@@ -518,3 +518,21 @@ for i in range(2, n+1):
 
 print(dp[n][0])
 print(*dp[n][1][::-1])
+
+#15988번 1, 2, 3 더하기 3
+import sys #시간초과 이슈로 n의 최대까지 dp를 만들어두고 배열에서 값을 가져와 출력하는 형식
+testNum = int(sys.stdin.readline())
+dp = [0] * (1000001)
+for i in range(1, 1000001):
+  if i == 1:
+    dp[i] = 1
+  elif i == 2:
+    dp[i] = 2
+  elif i == 3:
+    dp[i] = 4
+  else:
+    dp[i] = (dp[i-1] + dp[i-2] + dp[i-3])%1000000009
+
+for k in range(testNum):
+  n = int(sys.stdin.readline())
+  print(dp[n]%1000000009)
