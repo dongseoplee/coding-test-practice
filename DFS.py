@@ -50,3 +50,33 @@ def dfs(i):
 dfs(1)  # dfs는 항상 부모에서 자식으로 이동한다.
 for k in range(2, n + 1):
     print(visited[k])
+
+#2644번 촌수 계산
+import sys
+sys.setrecursionlimit(10**6)
+n = int(sys.stdin.readline())
+a, b = map(int, sys.stdin.readline().split())
+m = int(sys.stdin.readline())
+graph = [[] for _ in range(n+1)]
+visited = [False] * (n+1)
+for _ in range(m):
+  x, y = map(int, sys.stdin.readline().split())
+  graph[x].append(y)
+  graph[y].append(x)
+
+# print(graph)
+
+def dfs(i, cnt): #촌수 계산을 위해 dfs 함수 실행할때마다 cnt + 1 해줌
+  cnt += 1
+  for node in graph[i]:
+    if visited[node] == False:
+      visited[node] = cnt
+      dfs(node, cnt)
+
+dfs(a, 0)
+# print(visited)
+
+if visited[b] == False:
+  print(-1)
+elif visited[b] != False:
+  print(visited[b])
