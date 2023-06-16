@@ -550,3 +550,20 @@ for i in range(1, n+1):
       dp[i] = dp[i-j**2] + 1
 
 print(dp[n])
+
+#14916번 거스름돈
+import sys #dp[n-2]에서 2원 추가 dp[n-5]에서  5원 추가 비교해서 작은값에 +1
+n = int(sys.stdin.readline())
+dp = [0] * (100001)
+dp[1] = -1
+dp[2] = 1
+dp[3] = -1
+dp[4] = 2
+dp[5] = 1
+dp[6] = 3
+dp[7] = 2
+dp[8] = 4
+for i in range(9, 100001):
+  dp[i] = min(dp[i-2], dp[i-5]) + 1
+
+print(dp[n])
