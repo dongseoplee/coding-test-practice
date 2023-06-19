@@ -567,3 +567,11 @@ for i in range(9, 100001):
   dp[i] = min(dp[i-2], dp[i-5]) + 1
 
 print(dp[n])
+
+#9656번 돌 게임 2
+import sys
+n = int(sys.stdin.readline())
+if n % 2 == 0:
+  print('SK')
+else:
+  print('CY')
