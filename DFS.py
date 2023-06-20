@@ -80,3 +80,37 @@ if visited[b] == False:
   print(-1)
 elif visited[b] != False:
   print(visited[b])
+
+#1325번 효율적인 해킹
+import sys
+
+sys.setrecursionlimit(10 ** 6)
+n, m = map(int, sys.stdin.readline().split())
+graph = [[] for _ in range(n + 1)]
+visited = [False for _ in range(n + 1)]
+res = [0 for _ in range(n + 1)]
+for _ in range(m):
+    a, b = map(int, sys.stdin.readline().split())
+    graph[b].append(a)
+
+
+# print(graph)
+# print(visited)
+
+def dfs(i, cnt):
+    cnt += 1
+    for node in graph[i]:
+        if visited[node] == False:
+            visited[node] = cnt
+            dfs(node, cnt)
+
+
+for i in range(1, n + 1):
+    dfs(i, 1)
+    res[i] = max(visited)
+    visited = [False for _ in range(n + 1)]
+
+for j in range(1, n + 1):
+    if res[j] == max(res):
+        print(j, end=' ')
+

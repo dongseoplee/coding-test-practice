@@ -695,3 +695,43 @@ while (1):
 
     # print(visited)
     print(cnt)
+
+#1325번 효율적인 해킹
+import sys
+from collections import deque
+
+n, m = map(int, sys.stdin.readline().split())
+graph = [[] for _ in range(n + 1)]
+visited = [False for _ in range(n + 1)]
+res = [0 for _ in range(n + 1)]
+for _ in range(m):
+    a, b = map(int, sys.stdin.readline().split())
+    graph[b].append(a)
+
+queue = deque()
+
+
+def bfs(a):
+    queue.append(a)
+    visited[a] = True
+    cnt = 0
+    while queue:
+        x = queue.popleft()
+        for node in graph[x]:
+            if visited[node] == False:
+                queue.append(node)
+                visited[node] = True
+                cnt += 1
+    return cnt
+
+
+for i in range(1, n + 1):
+    res[i] = bfs(i)
+    visited = [False for _ in range(n + 1)]
+
+# print(res)
+for j in range(1, n + 1):
+    if res[j] == max(res):
+        print(j, end=' ')
+
+
