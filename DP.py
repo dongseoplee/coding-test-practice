@@ -589,3 +589,15 @@ for i in range(1, n+1):
   dp[i][1] = dp[i-1][0] + dp[i-1][1]
 
 print(*dp[n])
+
+#16194번 카드 구매하기 2
+import sys
+n = int(sys.stdin.readline())
+price = [0] + list(map(int, sys.stdin.readline().split()))
+dp = price
+
+for j in range(1, n+1):
+  for i in range(1, j+1):
+    dp[j] = min(dp[j], dp[j-i] + price[i])
+
+print(dp[n])

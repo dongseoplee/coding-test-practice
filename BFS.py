@@ -734,4 +734,50 @@ for j in range(1, n + 1):
     if res[j] == max(res):
         print(j, end=' ')
 
+#1743번 음식물 피하기
+import sys
+from collections import deque
 
+n, m, k = map(int, sys.stdin.readline().split())
+graph = [[0 for _ in range(m)] for _ in range(n)]
+visited = [[False for _ in range(m)] for _ in range(n)]
+for _ in range(k):
+    a, b = map(int, sys.stdin.readline().split())
+    graph[a - 1][b - 1] = 1
+
+# print(graph)
+queue = deque()
+
+
+def bfs(x, y):
+    cnt = 0
+    queue.append((x, y))
+    visited[x][y] = True
+    cnt += 1
+    dx = [-1, 1, 0, 0]
+    dy = [0, 0, -1, 1]
+    while queue:
+        (px, py) = queue.popleft()
+        for k in range(4):
+            nx = px + dx[k]
+            ny = py + dy[k]
+            if nx < 0 or nx >= n or ny < 0 or ny >= m:  # continue 조건 적는 걸 까먹음
+                continue
+            if graph[nx][ny] == 1 and visited[nx][ny] == False:
+                queue.append((nx, ny))
+                visited[nx][ny] = True
+                cnt += 1
+
+    return cnt
+
+
+trashSize = []
+for i in range(n):
+    for j in range(m):
+        if visited[i][j] == False and graph[i][j] == 1:
+            # print(i, j)
+            # print(bfs(i, j))
+            trashSize.append(bfs(i, j))
+
+# print(trashSize)
+print(max(trashSize))
