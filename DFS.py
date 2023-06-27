@@ -114,3 +114,33 @@ for j in range(1, n + 1):
     if res[j] == max(res):
         print(j, end=' ')
 
+#2210번 숫자판 점프
+import sys  # 2차원 그래프에서 dfs 적용법
+
+graph = []
+result = []
+for _ in range(5):
+    graph.append(list(map(str, sys.stdin.readline().split())))  # map에서 int가 아닌 str로 선언
+
+
+def dfs(x, y, number):
+    if len(number) == 6:
+        if number not in result:
+            result.append(number)
+        return
+    dx = [-1, 1, 0, 0]
+    dy = [0, 0, -1, 1]
+    for k in range(4):
+        nx = x + dx[k]
+        ny = y + dy[k]
+        if nx < 0 or nx >= 5 or ny < 0 or ny >= 5:
+            continue
+        else:
+            dfs(nx, ny, number + graph[nx][ny])
+
+
+for i in range(5):
+    for j in range(5):
+        dfs(i, j, graph[i][j])
+    # print(graph)
+print(len(result))
