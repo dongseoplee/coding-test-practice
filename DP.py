@@ -630,3 +630,60 @@ for i in range(2, 10001):
   dp[i] = dp[i-1] + dp[i-2]
 
 print(dp[n])
+
+#신나는 함수 실행
+import sys
+
+
+# 값을 저장해두고 저장된 값이 있다면 꺼내오면서 시간을 단축한다.
+def w(a, b, c):
+    if a <= 0 or b <= 0 or c <= 0:
+        return 1
+    if a > 20 or b > 20 or c > 20:
+        return w(20, 20, 20)
+    if dp[a][b][c]:  # 값이 있다면
+        return dp[a][b][c]
+    if a < b < c:
+        dp[a][b][c] = w(a, b, c - 1) + w(a, b - 1, c - 1) - w(a, b - 1, c)
+        return dp[a][b][c]
+    else:
+        dp[a][b][c] = w(a - 1, b, c) + w(a - 1, b - 1, c) + w(a - 1, b, c - 1) - w(a - 1, b - 1, c - 1)
+        return dp[a][b][c]
+
+
+dp = [[[0] * 21 for _ in range(21)] for _ in range(21)]  # dp[a][b][c] 이렇게 사용하기 위함
+
+# print(dp)
+while (1):
+    x, y, z = map(int, sys.stdin.readline().split())
+    if x == -1 and y == -1 and z == -1:
+        exit()
+    res = w(x, y, z)
+    print("w(%d, %d, %d) = %d" % (x, y, z, res))  # 표현식
+
+#1495번 기타리스트
+import sys
+
+n, s, m = map(int, sys.stdin.readline().split())
+v = [0] + list(map(int, sys.stdin.readline().split()))
+dp = [[0] * (m + 1) for _ in range(n + 1)]
+res = -1
+if 0 <= s + v[1] <= m:
+    dp[1][s + v[1]] = 1
+if 0 <= s - v[1] <= m:
+    dp[1][s - v[1]] = 1
+
+for i in range(1, n):
+    for j in range(m + 1):
+        if dp[i][j] == 1:
+            if 0 <= j + v[i + 1] <= m:
+                dp[i + 1][j + v[i + 1]] = 1
+            if 0 <= j - v[i + 1] <= m:
+                dp[i + 1][j - v[i + 1]] = 1
+
+for k in range(m + 1):
+    if dp[n][k] == 1:
+        res = max(res, k)
+
+print(res)
+
