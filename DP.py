@@ -687,4 +687,30 @@ for k in range(m + 1):
 
 print(res)
 
-
+#10164번 격자상의 경로
+import sys
+n, m, k = map(int, sys.stdin.readline().split())
+graph = [[0]*(m+1) for _ in range(n+1)]
+dp = [[0]*(m+1) for _ in range(n+1)]
+cnt = 1
+x, y = 0, 0
+for i in range(1, n+1):
+  for j in range(1, m+1):
+    graph[i][j] = cnt
+    if cnt == k:
+      x = i
+      y = j
+    cnt += 1
+    if i==1:
+      dp[i][j] = 1
+    elif j==1:
+      dp[i][j] = 1
+for p in range(2, n+1):
+  for q in range(2, m+1):
+    dp[p][q] = dp[p][q-1] + dp[p-1][q]
+# print(dp)
+# print(graph)
+if k == 0:
+  print(dp[n][m])
+else:
+  print(dp[x][y] * dp[n-x+1][m-y+1])
