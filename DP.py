@@ -714,3 +714,22 @@ if k == 0:
   print(dp[n][m])
 else:
   print(dp[x][y] * dp[n-x+1][m-y+1])
+
+#13301번 타일 장식물
+import sys
+n = int(sys.stdin.readline())
+dp = [0] * (81)
+shortSide = [0] * (81)
+longSide = [0] * (81)
+dp = [0] * (81)
+shortSide[1] = 1
+shortSide[2] = 1
+longSide[1] = 1
+longSide[2] = 2
+dp[1] = 4
+for j in range(3, 81):
+  shortSide[j] = shortSide[j-1] + shortSide[j-2]
+for i in range(2, 81):
+  dp[i] = shortSide[i]*4 + 2*shortSide[i-1]
+
+print(dp[n])
