@@ -733,3 +733,31 @@ for i in range(2, 81):
   dp[i] = shortSide[i]*4 + 2*shortSide[i-1]
 
 print(dp[n])
+
+#2491번 수열
+import sys
+
+n = int(sys.stdin.readline())
+graph = list(map(int, sys.stdin.readline().split()))
+dp = [0] * (n)
+dp[0] = 1
+dp2 = [0] * (n)
+dp2[0] = 1
+# print(graph1)
+# print(graph2)
+cnt = 1
+for i in range(1, n):
+    if graph[i - 1] <= graph[i]:
+        dp[i] = dp[i - 1] + 1
+    else:
+        dp[i] = 1
+
+for j in range(1, n):
+    if graph[j - 1] >= graph[j]:
+        dp2[j] = dp2[j - 1] + 1
+    else:
+        dp2[j] = 1
+
+# print(dp)
+# print(dp2)
+print(max(max(dp), max(dp2)))

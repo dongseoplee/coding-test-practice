@@ -781,3 +781,105 @@ for i in range(n):
 
 # print(trashSize)
 print(max(trashSize))
+
+#14502번 연구소
+import sys
+import copy
+from collections import deque
+
+n, m = map(int, sys.stdin.readline().split())
+graph = []
+visited = [[False for _ in range(m)] for _ in range(n)]
+for _ in range(n):
+    graph.append(list(map(int, sys.stdin.readline().split())))
+
+dx = [-1, 1, 0, 0]
+dy = [0, 0, -1, 1]
+
+max_res = 0
+
+
+def bfs():
+    global max_res  # 함수 밖 max_res를 사용하기위해 global 선언
+    temp = copy.deepcopy(graph)
+    res = 0
+    queue = deque()
+
+    for p in range(n):
+        for q in range(m):
+            if graph[p][q] == 2:
+                queue.append((p, q))
+
+    while queue:
+        x, y = queue.popleft()
+
+        for k in range(4):
+            nx = x + dx[k]
+            ny = y + dy[k]
+            if nx < 0 or nx >= n or ny < 0 or ny >= m:
+                continue
+            if temp[nx][ny] == 0:
+                queue.append((nx, ny))
+                temp[nx][ny] = 2
+
+    for row in range(n):
+        res += temp[row].count(0)
+    max_res = max(max_res, res)
+
+
+def makeWall(cnt):  # 백트래킹
+    if cnt == 3:
+        bfs()
+        # print(graph)
+        return
+    for i in range(n):
+        for j in range(m):
+            if graph[i][j] == 0:
+                graph[i][j] = 1  # 벽세우기
+                makeWall(cnt + 1)
+                graph[i][j] = 0  # 벽 허물기
+
+
+makeWall(0)
+print(max_res)
+
+#1389번 케빈 베이컨의 6단계 법칙
+import sys
+from collections import deque
+
+n, m = map(int, sys.stdin.readline().split())
+res = [0] * (n)
+graph = [[] for _ in range(n + 1)]
+visited = [0 for _ in range(n + 1)]
+for _ in range(m):
+    a, b = map(int, sys.stdin.readline().split())
+    graph[a].append(b)
+    graph[b].append(a)
+
+# print(graph)
+queue = deque()
+
+
+def bfs(j):
+    while queue:
+        a = queue.popleft()
+        for queueData in graph[a]:
+            if visited[queueData] == 0:
+                visited[queueData] = visited[a] + 1
+                queue.append(queueData)
+    res[j - 1] = sum(visited) - visited[j]
+
+
+for j in range(1, n + 1):
+    for graphIdx1 in graph[j]:
+        queue.append(graphIdx1)
+        visited[graphIdx1] = 1
+        visited[j] = 1
+
+    bfs(j)
+    # print(visited)
+    visited = [0 for _ in range(n + 1)]
+
+# print(res)
+print(res.index(min(res)) + 1)
+
