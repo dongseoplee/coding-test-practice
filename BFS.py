@@ -883,3 +883,35 @@ for j in range(1, n + 1):
 # print(res)
 print(res.index(min(res)) + 1)
 
+#11403번 경로 찾기
+import sys
+from collections import deque
+
+n = int(sys.stdin.readline())
+graph = []
+for _ in range(n):
+    graph.append(list(map(int, sys.stdin.readline().split())))
+
+visited = [[0 for _ in range(n)] for _ in range(n)]
+queue = deque()
+
+
+def bfs(idx, a):
+    queue.append(a)
+    visited[idx][a] = 1
+    while queue:
+        x = queue.popleft()
+        for i in range(n):
+            if graph[x][i] == 1 and visited[idx][i] == 0:
+                queue.append(i)
+                visited[idx][i] = 1
+
+
+for j in range(n):
+    for k in range(n):
+        if graph[j][k] == 1:
+            bfs(j, k)
+
+for l in range(n):
+    print(*visited[l])
+    # visited에서 True인 값

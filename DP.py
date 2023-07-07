@@ -761,3 +761,28 @@ for j in range(1, n):
 # print(dp)
 # print(dp2)
 print(max(max(dp), max(dp2)))
+
+#2302번 극장 좌석
+import sys #vip 좌석을 기준으로 나눠서 독립으로 경우의 수 구하고 곱해서 결과 도출
+n = int(sys.stdin.readline())
+m = int(sys.stdin.readline())
+partition = [0] * (m+1)
+partition[m] = n+1
+dp = [0] * (41)
+dp[0] = 1 #vip가 붙어있으면 1로 처리
+dp[1] = 1
+dp[2] = 2
+for i in range(3, 41):
+  dp[i] = dp[i-1] + dp[i-2] #(n-1에 n번째수만 더해서 n-1의 갯수) + (n-2에 n, n-1 차례로 더해서 n-2의 갯수)
+for k in range(m):
+  partition[k] = (int(sys.stdin.readline()))
+
+# print(partition)
+res = 1
+for j in range(m+1):
+  if j == 0:
+    res *= dp[partition[j]-1]
+  else:
+    res *= dp[partition[j] - partition[j-1] - 1]
+
+print(res)
