@@ -30,3 +30,19 @@ for j in price:
   cnt += k//j
   k %= j
 print(cnt)
+
+#1931번 회의실 배정
+import sys #회의 끝나는 시간 기준으로 정렬, 회의가 빨리 끝나야 최대한 많은 회의 가능하다.
+n = int(sys.stdin.readline())
+conference = []
+for i in range(n):
+  conference.append(list(map(int, sys.stdin.readline().split())))
+conference.sort(key=lambda x:(x[1], x[0]))
+cnt = 1
+endTime = conference[0][1]
+for j in range(1, n):
+  if conference[j][0] >= endTime:
+    cnt+=1
+    endTime = conference[j][1]
+
+print(cnt)
