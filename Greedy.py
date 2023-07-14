@@ -46,3 +46,17 @@ for j in range(1, n):
     endTime = conference[j][1]
 
 print(cnt)
+
+#5585번 거스름돈
+import sys
+n = int(sys.stdin.readline())
+price = 1000 - n
+coins = [500, 100, 50, 10, 5, 1]
+coinsNum = [0] * 6
+# print(coins)
+# print(coinsNum)
+for i in range(6):
+  coinsNum[i] = price // coins[i]
+  price = price % coins[i]
+
+print(sum(coinsNum))
