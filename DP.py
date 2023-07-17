@@ -786,3 +786,19 @@ for j in range(m+1):
     res *= dp[partition[j] - partition[j-1] - 1]
 
 print(res)
+
+#9507번 Generations of Tribbles
+import sys
+dp = [0]*(68)
+dp[0] = 1
+dp[1] = 1
+dp[2] = 2
+dp[3] = 4
+for i in range(4, 68):
+  dp[i] = dp[i-1] + dp[i-2] + dp[i-3] + dp[i-4]
+
+t = int(sys.stdin.readline())
+for _ in range(t):
+  k = int(sys.stdin.readline())
+  print(dp[k])
+
