@@ -60,3 +60,33 @@ for i in range(6):
   price = price % coins[i]
 
 print(sum(coinsNum))
+
+#1541번 잃어버린 괄호
+import sys
+exp = (sys.stdin.readline().split('-'))
+res = 0
+for i in exp[0].split('+'):
+  res += int(i)
+for i in exp[1:]:
+  for j in i.split('+'):
+    res -= int(j)
+print(res)
+
+#2217번 로프
+import sys  # 그리디 모든 경우의 수 다 해본다.
+
+n = int(sys.stdin.readline())
+
+rope = []
+greedy = [0] * n
+for _ in range(n):
+  rope.append(int(sys.stdin.readline()))
+
+# sorted(rope, reverse=True)
+rope.sort(reverse=True)  # 내림차순 정렬해서 i+1개 중에서는 i번째가 최소값이다.
+# print(rope)
+for i in range(n):
+  greedy[i] = rope[i] * (i + 1)
+
+print(max(greedy))
+
