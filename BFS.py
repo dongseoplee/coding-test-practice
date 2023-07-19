@@ -974,3 +974,59 @@ while True:
     result += 1
 
 print(result)
+
+#2636번 치즈
+import sys
+from collections import deque
+
+n, m = map(int, sys.stdin.readline().split())
+graph = []
+res = 0
+for _ in range(n):
+    graph.append(list(map(int, sys.stdin.readline().split())))
+# print(graph)
+visited = [[False for _ in range(m)] for _ in range(n)]
+melt = [[False for _ in range(m)] for _ in range(n)]
+dx = [-1, 1, 0, 0]
+dy = [0, 0, -1, 1]
+queue = deque()
+meltXYQueue = deque()
+meltTimeCnt = []
+
+
+def bfs(x, y):
+    meltCnt = 0
+    queue.append((x, y))
+    visited[x][y] = True
+    while queue:
+        a, b = queue.popleft()  # 큐에 넣었으니 popleft를 해야함
+        for i in range(4):
+            nx = a + dx[i]
+            ny = b + dy[i]
+            if nx < 0 or nx >= n or ny < 0 or ny >= m:
+                continue
+            if graph[nx][ny] == 0 and visited[nx][ny] is False:  # 0값으로 BFS 탐색한다.
+                queue.append((nx, ny))
+                visited[nx][ny] = True
+            if graph[nx][ny] == 1 and visited[nx][ny] is False:
+                visited[nx][ny] = True
+                meltCnt += 1
+                meltXYQueue.append((nx, ny))
+
+    meltTimeCnt.append(meltCnt)
+
+
+while (1):
+
+    bfs(0, 0)
+    while meltXYQueue:  # 큐를 이용해 녹은 것 처리 1->0
+        a, b = meltXYQueue.popleft()
+        graph[a][b] = 0
+
+    visited = [[False for _ in range(m)] for _ in range(n)]
+    res += 1
+    if meltTimeCnt[res - 1] == 0:  # 녹는 갯수가 0개라고 확인되면 다 녹은것임으로 종료
+        break
+
+print(res - 1)
+print(meltTimeCnt[res - 2])
