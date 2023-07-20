@@ -90,3 +90,17 @@ for i in range(n):
 
 print(max(greedy))
 
+#1789번 수들의 합
+import sys
+
+n = int(sys.stdin.readline())
+plusNum = 0
+res = 0
+for i in range(1, n + 1):
+  plusNum += i
+  res += 1
+  if n < plusNum:
+    res -= 1
+    break
+
+print(res)

@@ -802,3 +802,31 @@ for _ in range(t):
   k = int(sys.stdin.readline())
   print(dp[k])
 
+#2670번 연속부분최대곱
+#직전*현재 VS 현재
+import sys
+
+n = int(sys.stdin.readline())
+nums = []
+max = [0]*n
+for _ in range(n):
+  a = float(sys.stdin.readline())
+  nums.append(a)
+
+# for i in range(n):
+#   print(nums[i])
+
+# print(nums)
+max[0] = nums[0]
+for i in range(1, n):
+  if max[i-1]*nums[i] <= nums[i]:
+    max[i] = nums[i]
+  else:
+    max[i] = max[i-1]*nums[i]
+
+maxNum = nums[0]
+for j in range(n):
+  if max[j] >= maxNum:
+    maxNum = max[j]
+# print(round(maxNum, 4)) #항상 4자리로 나오지 않음
+print('%.3f' % maxNum)
