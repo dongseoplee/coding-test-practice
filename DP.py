@@ -830,3 +830,24 @@ for j in range(n):
     maxNum = max[j]
 # print(round(maxNum, 4)) #항상 4자리로 나오지 않음
 print('%.3f' % maxNum)
+
+#9657번 돌 게임 3
+import sys
+
+n = int(sys.stdin.readline())
+
+dp = ['0']*1001
+
+dp[1],dp[2],dp[3],dp[4] = "SK","CY","SK","SK"
+
+stones = [1,3,4]
+
+
+for i in range(5,n+1):
+    for s in stones:
+        if dp[i-s] == "CY":
+            dp[i] = "SK"
+            break
+        dp[i] = "CY"
+
+print(dp[n])
