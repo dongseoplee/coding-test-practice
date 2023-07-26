@@ -104,3 +104,18 @@ for i in range(1, n + 1):
     break
 
 print(res)
+
+#13305번 주유소
+import sys
+
+# 매번 최소값을 업데이트 시켜서 가격 책정
+n = int(sys.stdin.readline())
+dis = list(map(int, sys.stdin.readline().split()))
+price = list(map(int, sys.stdin.readline().split()))
+minPrice = price[0]
+sum = 0
+for i in range(n - 1):
+  minPrice = min(price[i], minPrice)
+  sum += dis[i] * minPrice
+
+print(sum)
