@@ -119,3 +119,37 @@ for i in range(n - 1):
   sum += dis[i] * minPrice
 
 print(sum)
+
+#10162번 전자레인지
+import sys
+num = int(sys.stdin.readline())
+button = [300, 60, 10] * 3
+count = [0] * 3
+for i in range(3):
+  count[i] = num // button[i]
+  num = num % button[i]
+
+if num == 0:
+  print(*count)
+else:
+  print(-1)
+
+#10610번 30
+import sys
+
+num = str(sys.stdin.readline().rstrip())
+sum = 0
+digit = []
+if '0' not in num:
+  print(-1)
+  exit()
+else:
+  for i in range(len(num)):
+    sum += int(num[i])
+
+  if sum % 3 != 0:
+    print(-1)
+  else:
+    sortedNum = sorted(num, reverse=True)  # 내림차순 정렬
+    res = "".join(sortedNum)  # 배열에 문자 하나씩 들어있는 sortNum 배열을 문자열로 변환
+    print(res)
