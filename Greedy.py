@@ -153,3 +153,21 @@ else:
     sortedNum = sorted(num, reverse=True)  # 내림차순 정렬
     res = "".join(sortedNum)  # 배열에 문자 하나씩 들어있는 sortNum 배열을 문자열로 변환
     print(res)
+
+#4796번 캠핑
+import sys
+cnt = 0
+while(1):
+  cnt += 1
+  l, p, v = map(int, sys.stdin.readline().split())
+  if l == 0 and p == 0 and v == 0:
+    break
+  #나머지가 l보다 작냐 크냐 구분 필요
+  if v%p >= l:
+    day = l*(v//p) + l
+  else:
+    day = l*(v//p) + v%p
+  print("Case ", end = '')
+  print(cnt, end='')
+  print(": ", end='')
+  print(day)
