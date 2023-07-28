@@ -1030,3 +1030,58 @@ while (1):
 
 print(res - 1)
 print(meltTimeCnt[res - 2])
+
+#7569번 토마토
+import sys  # 출발점이 여러개인 bfs는 출발점을 모두 큐에 넣고 시작한다.
+from collections import deque
+
+# 3차원 리스트 입력받기
+
+m, n, h = map(int, sys.stdin.readline().split())
+graph = [[list(map(int, sys.stdin.readline().split())) for _ in range(n)] for _ in range(h)]
+visited = [[[False] * m for _ in range(n)] for _ in range(h)]
+
+# print(graph)
+queue = deque()
+
+for k in range(h):
+    for i in range(n):
+        for j in range(m):
+            if graph[k][i][j] == 1:
+                queue.append((k, i, j))
+                visited[k][i][j] = True
+
+dy = [0, 0, 0, 0, -1, 1]
+dx = [0, 0, -1, 1, 0, 0]
+dz = [-1, 1, 0, 0, 0, 0]  # z는 -1, 1이 인덱스 0, 1에 적어야 함
+
+
+# print(visited)
+def bfs():
+    while queue:
+        z, x, y = queue.popleft()
+        for i in range(6):
+            nx = x + dx[i]
+            ny = y + dy[i]
+            nz = z + dz[i]
+            if nx < 0 or nx >= n or ny < 0 or ny >= m or nz < 0 or nz >= h:
+                continue
+            if graph[nz][nx][ny] == 0 and visited[nz][nx][ny] == False:
+                queue.append((nz, nx, ny))
+                visited[nz][nx][ny] = True
+                graph[nz][nx][ny] = graph[z][x][y] + 1
+
+
+bfs()
+# print(graph)
+maxDay = 0
+for graphHeight in graph:
+    for graphRow in graphHeight:
+        for graphRowNum in graphRow:
+            if graphRowNum >= maxDay:
+                maxDay = graphRowNum
+            if graphRowNum == 0:
+                print(-1)
+                exit()
+
+print(maxDay - 1)
