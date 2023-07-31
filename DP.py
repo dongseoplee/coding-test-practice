@@ -851,3 +851,27 @@ for i in range(5,n+1):
         dp[i] = "CY"
 
 print(dp[n])
+
+#12865번 평범한 배낭
+import sys  # DP의 Knapsack 알고리즘 2차원 배열을 만들고 물건 하나씩 추가
+
+n, k = map(int, sys.stdin.readline().split())
+wList = [0]
+vList = [0]
+graph = [[0 for _ in range(k + 1)] for _ in range(n + 1)]
+for _ in range(n):
+    a, b = map(int, sys.stdin.readline().split())
+    wList.append(a)
+    vList.append(b)
+
+for i in range(1, n + 1):  # 1~4
+    for j in range(1, k + 1):  # 1~7
+        weight = wList[i]
+        value = vList[i]
+        if j < weight:
+            graph[i][j] = graph[i - 1][j]
+        else:
+            graph[i][j] = max(graph[i - 1][j - weight] + value, graph[i - 1][j])
+
+print(graph[n][k])
+

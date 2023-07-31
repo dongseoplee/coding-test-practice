@@ -171,3 +171,60 @@ while(1):
   print(cnt, end='')
   print(": ", end='')
   print(day)
+
+
+#2864번 5와 6의 차이
+import sys #문자열 replace 함수를 사용해서 하면 코드가 간결해진다.
+
+num1, num2 = map(int, sys.stdin.readline().split())
+tempNum1, tempNum2 = num1, num2
+minNum1, minNum2, maxNum1, maxNum2 = 0, 0, 0, 0
+
+cnt = 0
+# 최소 5, 6 -> 5
+while num1 != 0:
+  if num1 % 10 == 5 or num1 % 10 == 6:
+    minNum1 = minNum1 + (5) * (10 ** (cnt))
+  else:
+    minNum1 = minNum1 + (num1 % 10) * (10 ** (cnt))
+  num1 = num1 // 10
+  cnt += 1
+
+cnt = 0
+while num2 != 0:
+  if num2 % 10 == 5 or num2 % 10 == 6:
+    minNum2 = minNum2 + (5) * (10 ** (cnt))
+  else:
+    minNum2 = minNum2 + (num2 % 10) * (10 ** (cnt))
+  num2 = num2 // 10
+  cnt += 1
+
+resMin = minNum1 + minNum2
+# print(minNum1, minNum2)
+# print(resMin)
+num1, num2 = tempNum1, tempNum2
+
+cnt = 0
+while num1 != 0:
+  if num1 % 10 == 5 or num1 % 10 == 6:
+    maxNum1 = maxNum1 + (6) * (10 ** (cnt))
+  else:
+    maxNum1 = maxNum1 + (num1 % 10) * (10 ** (cnt))
+  num1 = num1 // 10
+  cnt += 1
+
+cnt = 0
+while num2 != 0:
+  if num2 % 10 == 5 or num2 % 10 == 6:
+    maxNum2 = maxNum2 + (6) * (10 ** (cnt))
+  else:
+    maxNum2 = maxNum2 + (num2 % 10) * (10 ** (cnt))
+  num2 = num2 // 10
+  cnt += 1
+
+resMax = maxNum1 + maxNum2
+print(resMin, resMax)
+# 최대 5, 6 -> 6
+
+# print(num1)
+# print(num2)
