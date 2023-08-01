@@ -42,3 +42,36 @@ while num != 0:
 # print(count)
 for i in range(len(count)):
   print(count[i])
+
+
+#1913번 달팽이
+import sys
+
+n = int(sys.stdin.readline())
+num = int(sys.stdin.readline())
+graph = [[0 for _ in range(n)] for _ in range(n)]
+direction = [(1, 0), (0, 1), (-1, 0), (0, -1)]
+directionChange = 0
+nx = -1
+ny = 0
+for i in range(n ** 2, 0, -1):
+  mx, my = direction[directionChange % 4]
+  nx += mx
+  ny += my  # 다음 좌표 확인하고
+  if nx < 0 or nx >= n or ny < 0 or ny >= n or graph[nx][ny] != 0:  # 인덱스 범위 넘어감
+    nx -= mx
+    ny -= my  # 원래대로 돌리고
+    directionChange += 1
+    mx, my = direction[directionChange % 4]
+    nx += mx
+    ny += my
+
+  graph[nx][ny] = i
+
+for graphRow in graph:
+  print(*graphRow)
+
+for j in range(n):
+  for k in range(n):
+    if graph[j][k] == num:
+      print(j + 1, k + 1)
