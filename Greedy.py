@@ -228,3 +228,24 @@ print(resMin, resMax)
 
 # print(num1)
 # print(num2)
+
+#1715번 카드 정렬하기
+import sys  # 우선 순위  heapq.heappush, heapq.heappop
+import heapq
+
+n = int(sys.stdin.readline())
+cards = []
+for _ in range(n):
+  heapq.heappush(cards, int(sys.stdin.readline()))
+
+res = 0
+if len(cards) == 1:
+  print(res)
+else:
+  for _ in range(n - 1):
+    num1 = heapq.heappop(cards)
+    num2 = heapq.heappop(cards)
+    res += num1 + num2
+    heapq.heappush(cards, num1 + num2)
+  print(res)
+

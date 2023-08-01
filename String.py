@@ -26,3 +26,8 @@ for i in range(cnt):
   print(str1[i*10:(i+1)*10])
 
 print(str1[cnt*10:len(str1)])
+
+#11719번 그대로 출력하기 2
+import sys
+for line in sys.stdin:
+  print(line , end='')
