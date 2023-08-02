@@ -144,3 +144,86 @@ for i in range(5):
         dfs(i, j, graph[i][j])
     # print(graph)
 print(len(result))
+
+#13023번 ABCDE
+import sys
+
+sys.setrecursionlimit(10 ** 6)
+n, m = map(int, sys.stdin.readline().split())
+graph = [[] for _ in range(n)]
+visited = [False] * n
+for _ in range(m):
+    a, b = map(int, sys.stdin.readline().split())
+    graph[a].append(b)
+    graph[b].append(a)
+
+
+# print(graph)
+
+def dfs(i, cnt):
+    visited[i] = True  # 첫번째 시작 노드 방문처리
+    cnt += 1
+    if cnt == 5:
+        print(1)
+        exit()
+    for node in graph[i]:
+        if visited[node] == False:
+            dfs(node, cnt)
+            visited[node] = False  # dfs에서 빠져나온 상황은 제일 안쪽까지 갔다가 나온것이므로 방문처리 풀어줌!!
+
+
+for i in range(n):
+    dfs(i, 0)  # 모든 노드에 대해서 수행해보고
+    visited = [False] * n  # visited 초기화 해주고
+
+print(0)
+
+#1260번
+import sys
+from collections import deque
+
+sys.setrecursionlimit(10 ** 6)
+n, m, v = map(int, sys.stdin.readline().split())
+graph = [[] for _ in range(n + 1)]
+visited = [False] * (n + 1)
+for _ in range(m):
+    a, b = map(int, sys.stdin.readline().split())
+    graph[a].append(b)
+    graph[b].append(a)
+
+# print(graph)
+for k in range(1, n + 1):  # 정점 번호가 작은 것 부터 방문하도록 오름차순 정렬시킴
+    graph[k].sort()
+
+
+def dfs(i):
+    visited[i] = True
+    print(i, end=' ')
+    for node in graph[i]:
+        if visited[node] == False:
+            dfs(node)
+
+
+dfs(v)
+print()
+queue = deque()
+visited = [False] * (n + 1)
+
+
+def bfs(i):
+    print(i, end=' ')
+    visited[i] = True
+    for node in graph[i]:
+        queue.append(node)
+        visited[node] = True
+
+    while queue:
+        popNum = queue.popleft()
+        print(popNum, end=' ')
+        for a in graph[popNum]:
+            if visited[a] == False:
+                queue.append(a)
+                visited[a] = True
+
+
+bfs(v)
