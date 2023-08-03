@@ -249,3 +249,28 @@ else:
     heapq.heappush(cards, num1 + num2)
   print(res)
 
+#16953번 A → B
+import sys
+from collections import deque
+
+a, b = map(int, sys.stdin.readline().split())
+queue = deque()
+queue.append((a, 1))  # 숫자와 횟수를 넣는다. (숫자, 횟수)
+
+
+def bfs():
+  while queue:
+
+    i, cnt = queue.popleft()
+
+    if i * 2 == b or (i * 10) + 1 == b:
+      print(cnt + 1)
+      exit()
+    if i * 2 <= b:  # 큐에 넣을 수 있는 제한 조건을 b의 값과 크기 비교로 한다.
+      queue.append((i * 2, cnt + 1))
+    if (i * 10) + 1 <= b:
+      queue.append(((i * 10) + 1, cnt + 1))
+  print(-1)
+
+
+bfs()
