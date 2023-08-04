@@ -10,7 +10,7 @@ graph = [[] for _ in range(V + 1)]
 for _ in range(E):
     u, v, w = map(int, input().split())
     graph[u].append((w, v))
-
+이
 dist = [INF] * (V + 1)
 q = []
 

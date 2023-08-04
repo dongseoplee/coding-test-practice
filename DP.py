@@ -875,3 +875,47 @@ for i in range(1, n + 1):  # 1~4
 
 print(graph[n][k])
 
+
+#9251번 LCS
+import sys  # LCS 알고리즘!!!
+
+str1 = sys.stdin.readline().rstrip()
+str2 = sys.stdin.readline().rstrip()
+
+# print(str1, str2)
+route = [[0 for _ in range(len(str1) + 1)] for _ in range(len(str2) + 1)]
+graph = [[0 for _ in range(len(str1) + 1)] for _ in range(len(str2) + 1)]
+# 1. String1[n], String2[k]가 같다면 : [n, k] == [n-1, k-1] + 1
+# 2. String1[n], String2[k]가 다르면 : [n, k] == [n-1, k]와 [n, k-1] 중 큰 값
+for i in range(1, len(str2) + 1):
+    for j in range(1, len(str1) + 1):
+        if str2[i - 1] == str1[j - 1]:
+            graph[i][j] = graph[i - 1][j - 1] + 1
+            route[i][j] = 1
+        else:
+            graph[i][j] = max(graph[i - 1][j], graph[i][j - 1])
+            if graph[i][j] == graph[i - 1][j]:
+                route[i][j] = 2
+            else:
+                route[i][j] = 3
+
+print(max(graph[len(str2)]))
+res = ''
+x = len(str2)
+y = len(str1)
+
+print(route)
+while (1):
+
+    if route[x][y] == 1:
+        res += str2[x - 1]
+        x = x - 1
+        y = y - 1
+    elif route[x][y] == 2:
+        x = x - 1
+    elif route[x][y] == 3:
+        y = y - 1
+
+    if x <= 0 or y <= 0:
+        break
+print(res[::-1]) #공통 부분 수열까지 찾음
