@@ -123,3 +123,11 @@ else:
 print(bj, end='')
 print('/', end='')
 print(bm)
+
+
+#23971번 ZOAC 4
+import sys
+import math
+h, w, n, m = map(int, sys.stdin.readline().split())
+res = math.ceil(h/(n+1)) * math.ceil(w/(m+1))
+print(res)

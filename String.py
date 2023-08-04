@@ -31,3 +31,35 @@ print(str1[cnt*10:len(str1)])
 import sys
 for line in sys.stdin:
   print(line , end='')
+
+#1259번 팰린드롬수
+import sys
+
+while (1):
+    n = list(sys.stdin.readline().rstrip())
+    if n[0] == '0':
+        break
+
+    flag = True
+    for i in range(len(n) // 2):
+        if n[i] != n[len(n) - i - 1]:
+            flag = False
+            break
+
+    if flag:
+        print('yes')
+    else:
+        print('no')
+
+#다른 풀이
+import sys
+
+while (1):
+    n = sys.stdin.readline().rstrip()
+    if n == '0':
+        break
+
+    if n == n[::-1]:
+        print('yes')
+    else:
+        print('no')
