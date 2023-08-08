@@ -69,3 +69,121 @@ calculator()
 # print(res)
 print(max(res))
 print(min(res))
+
+#14889번 스타트와 링크
+import sys
+from itertools import combinations
+n = int(sys.stdin.readline())
+graph = []
+member = {i for i in range(n)}
+for _ in range(n):
+  graph.append(list(map(int, sys.stdin.readline().split())))
+
+# print(member)
+# print(graph)
+minScore = sys.maxsize
+for com in combinations(member, n//2):
+  # print(list(com), list(member - set(com)))
+  g1 = list(com)
+  g2 = list(member - set(com))
+  # print(g1, g2)
+  g1Score = 0
+  g2Score = 0
+  for i in g1:
+    for j in g1:
+      g1Score += graph[i][j]
+  for k in g2:
+    for l in g2:
+      g2Score += graph[k][l]
+
+  minScore = min(minScore, abs(g1Score - g2Score))
+
+print(minScore)
+
+
+#14503번 로봇 청소기
+import sys
+n, m = map(int, sys.stdin.readline().split())
+r, c, d = map(int, sys.stdin.readline().split())
+graph = []
+visited = [[False for _ in range(m)] for _ in range(n)]
+for _ in range(n):
+  graph.append(list(map(int, sys.stdin.readline().split())))
+
+# print(visited)
+# print(graph)
+dx = [-1, 1, 0, 0]
+dy = [0, 0, -1, 1]
+while(1):
+  nx = r
+  ny = c
+  if graph[nx][ny] == 0:
+    graph[nx][ny] = 'clean'
+
+  if graph[nx+1][ny] != 0 and graph[nx-1][ny] != 0 and graph[nx][ny+1] != 0 and graph[nx][ny-1] != 0:
+    if d == 0:
+      if graph[nx+1][ny] == 1:
+        break
+      else:
+        r = nx+1
+        c = ny
+        continue
+    if d == 1:
+      if graph[nx][ny-1] == 1:
+        break
+      else:
+        r = nx
+        c = ny-1
+        continue
+    if d == 2:
+      if graph[nx-1][ny] == 1:
+        break
+      else:
+        r = nx-1
+        c = ny
+        continue
+
+    if d == 3:
+      if graph[nx][ny+1] == 1:
+        break
+      else:
+        r = nx
+        c = ny+1
+        continue
+  if graph[nx+1][ny] == 0 or graph[nx-1][ny] == 0 or graph[nx][ny+1] == 0 or graph[nx][ny-1] == 0:
+    d = (d+3)%4
+    if d == 0:
+      if graph[nx-1][ny] == 0:
+        graph[nx-1][ny] = 'clean'
+        r = nx - 1
+        c = ny
+        continue
+    elif d == 1:
+      if graph[nx][ny+1] == 0:
+        graph[nx][ny+1] = 'clean'
+        r = nx
+        c = ny + 1
+        continue
+    elif d == 2:
+      if graph[nx+1][ny] == 0:
+        graph[nx+1][ny] = 'clean'
+        r = nx + 1
+        c = ny
+        continue
+    elif d == 3:
+      if graph[nx][ny-1] == 0:
+        graph[nx][ny-1] = 'clean'
+        r = nx
+        c = ny - 1
+        continue
+
+
+# print(graph)
+cnt = 0
+for graphRow in graph:
+  for graphRowData in graphRow:
+    if graphRowData == 'clean':
+      cnt += 1
+
+
+print(cnt)
