@@ -63,3 +63,41 @@ while (1):
         print('yes')
     else:
         print('no')
+
+
+#5430번 AC
+import sys
+from collections import deque
+
+testNum = int(sys.stdin.readline())
+for _ in range(testNum):
+    errorYN = 'N'
+    p = sys.stdin.readline()
+    n = int(sys.stdin.readline())
+    tempStr = sys.stdin.readline()
+    if n != 0:
+        str = deque(tempStr[1:len(tempStr) - 2].split(','))
+    elif n == 0:
+        str = deque()
+    r = 0
+    for i in range(len(p)):
+        if p[i] == 'R':
+            r += 1
+        elif p[i] == 'D':
+            if len(str) == 0:
+                errorYN = 'Y'
+            else:
+                if r % 2 == 0:
+                    str.popleft()
+                else:
+                    str.pop()
+
+    if errorYN == 'N':
+        if r % 2 == 0:
+            print('[' + ",".join(str) + ']')
+        else:
+            str.reverse()
+            print('[' + ",".join(str) + ']')
+
+    else:
+        print('error')
