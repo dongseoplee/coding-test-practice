@@ -187,3 +187,73 @@ for graphRow in graph:
 
 
 print(cnt)
+
+#14499번 주사위 굴리기
+import sys
+
+n, m, x, y, k = map(int, sys.stdin.readline().split())
+graph = []
+command = []
+dice = [0] * 6
+for _ in range(n):
+  graph.append(list(map(int, sys.stdin.readline().split())))
+command = list(map(int, sys.stdin.readline().split()))
+# print(graph)
+# print(command)
+# print(dice)
+for i in range(len(command)):
+  a, b, c, d, e, f = dice[0], dice[1], dice[2], dice[3], dice[4], dice[
+    5]  # 주사위 상하좌우왼위를 인덱스로 갖고 주사위가 굴러가면 인덱스에 대한 값을 변경한다.
+  if command[i] == 1:
+    if y + 1 >= m:
+      print("", end='')
+    else:
+      y += 1  # 동으로 굴린다.
+      dice[0], dice[1], dice[2], dice[3], dice[4], dice[5] = d, b, a, f, e, c
+      if graph[x][y] == 0:
+        graph[x][y] = dice[5]
+      else:
+        dice[5] = graph[x][y]
+        graph[x][y] = 0
+      print(dice[0])
+
+  if command[i] == 2:
+    if y - 1 < 0:
+      print("", end='')
+    else:
+      y -= 1  # 서쪽으로 굴린다.
+      dice[0], dice[1], dice[2], dice[3], dice[4], dice[5] = c, b, f, a, e, d
+      if graph[x][y] == 0:
+        graph[x][y] = dice[5]
+      else:
+        dice[5] = graph[x][y]
+        graph[x][y] = 0
+      print(dice[0])
+
+  if command[i] == 3:
+    if x - 1 < 0:
+      print("", end='')
+    else:
+      x -= 1  # 북쪽으로 굴린다.
+      dice[0], dice[1], dice[2], dice[3], dice[4], dice[5] = e, a, c, d, f, b
+      if graph[x][y] == 0:
+        graph[x][y] = dice[5]
+      else:
+        dice[5] = graph[x][y]
+        graph[x][y] = 0
+      print(dice[0])
+
+  if command[i] == 4:
+    if x + 1 >= n:
+      print("", end='')
+    else:
+      x += 1  # 남쪽으로 굴린다.
+      dice[0], dice[1], dice[2], dice[3], dice[4], dice[5] = b, f, c, d, a, e
+      if graph[x][y] == 0:
+        graph[x][y] = dice[5]
+      else:
+        dice[5] = graph[x][y]
+        graph[x][y] = 0
+      print(dice[0])
+
+
