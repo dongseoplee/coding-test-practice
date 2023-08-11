@@ -257,3 +257,90 @@ for i in range(len(command)):
       print(dice[0])
 
 
+#14500번 테트로미노
+import sys
+
+n, m = map(int, sys.stdin.readline().split())
+graph = []
+for _ in range(n):
+  graph.append(list(map(int, sys.stdin.readline().split())))
+
+# print(graph)
+res = []
+
+
+def rec1(i, j):  # 3x2
+  temp = []
+  for k in range(i, i + 3):
+    temp.append(graph[k][j:j + 2])
+  # print("temp", temp)
+  res.append(temp[0][0] + temp[1][0] + temp[1][1] + temp[2][0])  # 1
+  res.append(temp[0][1] + temp[1][0] + temp[1][1] + temp[2][1])  # 2
+
+  res.append(temp[0][0] + temp[1][0] + temp[1][1] + temp[2][1])  # 3
+  res.append(temp[0][1] + temp[1][0] + temp[1][1] + temp[2][0])  # 4
+
+  res.append(temp[0][0] + temp[1][0] + temp[2][0] + temp[2][1])  # 5
+  res.append(temp[0][1] + temp[1][1] + temp[2][0] + temp[2][1])  # 6
+
+  res.append(temp[0][0] + temp[0][1] + temp[1][1] + temp[2][1])  # 7
+  res.append(temp[0][0] + temp[0][1] + temp[1][0] + temp[2][0])  # 8
+
+
+def rec2(i, j):  # 2x3
+  temp = []
+  for k in range(i, i + 2):
+    temp.append(graph[k][j:j + 3])
+  # print("temp", temp)
+  res.append(temp[0][1] + sum(temp[1]))  # 1
+  res.append(sum(temp[0]) + temp[1][1])  # 2
+
+  res.append(temp[0][1] + temp[0][2] + temp[1][0] + temp[1][1])  # 3
+  res.append(temp[0][0] + temp[0][1] + temp[1][1] + temp[1][2])  # 4
+
+  res.append(temp[0][2] + temp[1][0] + temp[1][1] + temp[1][2])  # 5
+  res.append(temp[0][0] + temp[0][1] + temp[0][2] + temp[1][2])  # 6
+
+  res.append(temp[0][0] + temp[0][1] + temp[0][2] + temp[1][0])  # 7
+  res.append(temp[0][0] + temp[1][0] + temp[1][1] + temp[1][2])  # 8
+
+
+def rec3(i, j):  # 1x4
+  temp = []
+  temp.append(graph[i][j:j + 4])
+  # print("temp", temp)
+  res.append(temp[0][0] + temp[0][1] + temp[0][2] + temp[0][3])  # 1
+
+
+def rec4(i, j):  # 4x1
+  temp = [graph[i][j], graph[i + 1][j], graph[i + 2][j], graph[i + 3][j]]
+  # print("temp", temp)
+  res.append(sum(temp))  # 1
+
+
+def rec5(i, j):  # 2x2
+  temp = []
+  for k in range(i, i + 2):
+    temp.append(graph[k][j:j + 2])
+  # print(temp)
+
+  res.append(temp[0][0] + temp[0][1] + temp[1][0] + temp[1][1])
+
+
+for i in range(n - 2):  # 0123
+  for j in range(m - 1):  # 012
+    rec1(i, j)
+for i2 in range(n - 1):
+  for j2 in range(m - 2):
+    rec2(i2, j2)
+for i3 in range(n):
+  for j3 in range(m - 3):
+    rec3(i3, j3)
+for i4 in range(n - 3):
+  for j4 in range(m):
+    rec4(i4, j4)
+for i5 in range(n - 1):
+  for j5 in range(m - 1):
+    rec5(i5, j5)
+
+print(max(res))
