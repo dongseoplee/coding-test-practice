@@ -344,3 +344,135 @@ for i5 in range(n - 1):
     rec5(i5, j5)
 
 print(max(res))
+
+#3190번 뱀
+import sys
+from collections import deque
+
+n = int(sys.stdin.readline())
+graph = [[0 for _ in range(n)] for _ in range(n)]
+k = int(sys.stdin.readline())
+for _ in range(k):
+  a, b = map(int, sys.stdin.readline().split())
+  graph[a - 1][b - 1] = 1
+
+l = int(sys.stdin.readline())
+direction = []
+for _ in range(l):
+  a, b = sys.stdin.readline().split()
+  direction.append((int(a), b))
+
+dx = [0, 1, 0, -1]
+dy = [1, 0, -1, 0]
+time = 0
+idx = 0
+i = 0
+nx, ny = 0, 0
+queue = deque()
+queue.append((nx, ny))
+while (1):
+  nx = nx + dx[idx]
+  ny = ny + dy[idx]
+  time += 1
+
+  # print(queue)
+  # print()
+  if nx < 0 or nx >= n or ny < 0 or ny >= n or (nx, ny) in queue:
+    # print('nx, ny', nx, ny)
+    break
+  queue.append((nx, ny))
+  if graph[nx][ny] == 0:
+    queue.popleft()
+  else:
+    graph[nx][ny] = 0
+
+  if time == direction[i][0]:  # 방향전환 8가지 경우로 나눌필요 없음
+    if direction[i][1] == 'L':
+      idx = (idx + 3) % 4
+    else:
+      idx = (idx + 1) % 4
+
+    if i + 1 < len(direction):
+      i += 1
+
+print(time)
+# print(queue)
+# print(time)
+
+#1249번 보급로
+from collections import deque
+
+# 이동거리에 상관없이 최소 값으로 이동하기
+testNum = int(input())
+for testnum in range(testNum):
+  n = int(input())
+  graph = []
+  visited = [[10e6 for _ in range(n)] for _ in range(n)]
+  for _ in range(n):
+    graph.append(input().rstrip())
+
+  # print(graph)
+  queue = deque()
+  dx = [-1, 1, 0, 0]
+  dy = [0, 0, -1, 1]
+  queue.append((0, 0))
+  visited[0][0] = 0
+  while queue:
+    x, y = queue.popleft()
+    for i in range(4):
+      nx = x + dx[i]
+      ny = y + dy[i]
+      if nx < 0 or nx >= n or ny < 0 or ny >= n:
+        continue
+      else:
+        if visited[x][y] + int(graph[nx][ny]) < visited[nx][ny]: #방문여부 상관없음
+          visited[nx][ny] = visited[x][y] + int(graph[nx][ny])
+          queue.append((nx, ny))
+
+  print('#{}'.format(testnum + 1), end=' ')
+  print(visited[n - 1][n - 1])
+
+#1226번 미로1
+from collections import deque
+
+for _ in range(10):
+  testNum = int(input())
+  visited = [[False for _ in range(16)] for _ in range(16)]
+  graph = [list(map(int, list(input()))) for _ in range(16)]  # 스페이스 없이 주어지는 값 입력 받는 방법 ex)1111111111111111
+
+  sx, sy = 0, 0
+  fx, fy = 0, 0
+  for i in range(16):
+    for j in range(16):
+      if graph[i][j] == 2:
+        sx, sy = i, j
+      elif graph[i][j] == 3:
+        fx, fy = i, j
+
+  # print(sx, sy)
+  # print(fx, fy)
+  queue = deque()
+  # print(graph)
+  dx = [-1, 1, 0, 0]
+  dy = [0, 0, -1, 1]
+
+  queue.append((sx, sy))
+  visited[sx][sy] = True
+  while queue:
+    x, y = queue.popleft()
+    for k in range(4):
+      nx = x + dx[k]
+      ny = y + dy[k]
+      if nx < 0 or nx >= 16 or ny < 0 or ny >= 16:
+        continue
+      else:
+        if (graph[nx][ny] == 0 or graph[nx][ny] == 3) and visited[nx][ny] == False:
+          queue.append((nx, ny))
+          visited[nx][ny] = True
+
+  flag = 0
+  if visited[fx][fy] == True:
+    flag = 1
+
+  print('#{}'.format(testNum), end=' ')
+  print(flag)
