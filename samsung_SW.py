@@ -476,3 +476,57 @@ for _ in range(10):
 
   print('#{}'.format(testNum), end=' ')
   print(flag)
+
+
+#14890번 경사로
+import sys
+
+n, l = map(int, sys.stdin.readline().split())
+graph = []
+for _ in range(n):
+  graph.append(list(map(int, sys.stdin.readline().split())))
+
+# print(graph)
+cnt = []
+
+
+def isRoad(road):
+  for j in range(1, n):
+    if abs(road[j - 1] - road[j]) > 1:
+      return False
+
+    if road[j] < road[j - 1]:  # 오른쪽이 더 낮은 경우 (내리막 경사로)
+      for k in range(l):  # l:2 k:0,1
+        if j + k >= n or used[j + k] == True or road[j] != road[j + k]:  # 시작점과 높이가 계속 동일하면 된다.
+          return False
+        if road[j] == road[j + k]:
+          used[j + k] = True
+
+    elif road[j] > road[j - 1]:  # 왼쪽이 더 낮은 경우 (오르막 경사로)
+      for k in range(l):
+        if j - k - 1 < 0 or used[j - k - 1] == True or road[j - 1] != road[j - k - 1]:
+          return False
+        if road[j - 1] == road[j - k - 1]:
+          used[j - k - 1] = True
+
+  return True
+
+
+# print(isRoad(graph[0]))
+# 가로 길
+for i in range(n):
+  used = [False for _ in range(n)]
+  if isRoad(graph[i]) == True:
+    cnt.append(True)
+
+# 세로 길
+for j in range(n):
+  tempList = []
+  used = [False for _ in range(n)]
+  for k in range(n):
+    tempList.append(graph[k][j])
+
+  if isRoad(tempList) == True:
+    cnt.append(True)
+
+print(len(cnt))
