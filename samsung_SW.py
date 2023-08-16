@@ -530,3 +530,41 @@ for j in range(n):
     cnt.append(True)
 
 print(len(cnt))
+
+#14891번 톱니바퀴
+import sys
+from collections import deque
+
+#재귀함수로 왼쪽 오른쪽, 왼쪽 톱니들을 확인한다.
+def check_right(idx, d):
+  if idx > 4:
+    return
+
+  if q[idx-1][2] != q[idx][6]:
+    check_right(idx + 1, d*-1)
+    q[idx].rotate(d)
+
+def check_left(idx, d):
+  if idx < 1:
+    return
+  if q[idx+1][6] != q[idx][2]:
+    check_left(idx - 1, d*-1)
+    q[idx].rotate(d)
+
+q = {}
+for i in range(1, 5):
+  q[i] = deque(list(map(int, list(sys.stdin.readline().rstrip()))))
+
+k = int(sys.stdin.readline())
+for _ in range(k):
+  num, direction = map(int, sys.stdin.readline().split())
+
+  check_right(num + 1, direction*-1)
+  check_left(num - 1, direction*-1)
+  q[num].rotate(direction)
+
+res = 0
+for i in range(4):
+  res += (2**i)*q[i+1][0]
+
+print(res)
