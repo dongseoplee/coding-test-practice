@@ -568,3 +568,4 @@ for i in range(4):
   res += (2**i)*q[i+1][0]
 
 print(res)
+
