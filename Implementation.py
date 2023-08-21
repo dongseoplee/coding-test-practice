@@ -75,3 +75,25 @@ for j in range(n):
   for k in range(n):
     if graph[j][k] == num:
       print(j + 1, k + 1)
+
+#18406번 럭키 스트레이트
+import sys
+
+n = int(sys.stdin.readline())
+num1 = []
+while n > 0:
+  num1.append(int(n % 10))
+  n = n // 10
+
+# print(num1)
+sum1 = 0
+for i in range(len(num1) // 2):
+  sum1 += num1[i]
+
+# listSum = sum(num1)
+# print(listSum)
+
+if sum1 * 2 == int(sum(num1)):
+  print('LUCKY')
+else:
+  print('READY')
