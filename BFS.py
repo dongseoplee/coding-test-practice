@@ -1147,3 +1147,77 @@ while ice:
 
 if group < 2:
     print(0)
+
+#2146번 다리 만들기
+import sys
+from collections import deque
+
+q = deque()
+n = int(sys.stdin.readline())
+graph = []
+visited = [[False for _ in range(n)] for _ in range(n)]
+for _ in range(n):
+    graph.append(list(map(int, sys.stdin.readline().split())))
+
+# print(graph)
+# 섬 번호 매기기
+# 바다에 인접한 좌표에서 bfs 탐색한 후 출발 섬이 아니면 리스트에 담기 다음섬이 출발섬이 아니면 저장하고 종료
+dx = [-1, 1, 0, 0]
+dy = [0, 0, -1, 1]
+
+
+def bfs(x, y, num):
+    q.append((x, y))
+    visited[x][y] = True
+    graph[x][y] = num
+    while q:
+        a, b = q.popleft()
+        for i in range(4):
+            nx = a + dx[i]
+            ny = b + dy[i]
+            if nx < 0 or nx >= n or ny < 0 or ny >= n:
+                continue
+            else:
+                if graph[nx][ny] == 1 and visited[nx][ny] == False:
+                    graph[nx][ny] = num
+                    q.append((nx, ny))
+                    visited[nx][ny] = True
+
+
+def bfs2(num):
+    global answer
+    dist = [[-1 for _ in range(n)] for _ in range(n)]
+    q = deque()
+
+    for i in range(n):
+        for j in range(n):
+            if graph[i][j] == num:  # 본인의 섬이라면 ex) 1번 섬을 이루는 좌표가 모두 큐에 들어감!!
+                q.append((i, j))
+                dist[i][j] = 0  # 거리는 0
+    while q:
+        x, y = q.popleft()
+        for i in range(4):
+            nx = x + dx[i]
+            ny = y + dy[i]
+            if nx < 0 or nx >= n or ny < 0 or ny >= n:
+                continue
+            if graph[nx][ny] > 0 and graph[nx][ny] != num:  # 육지이며 본인 섬과 다른 섬
+                answer = min(answer, dist[x][y])
+            if graph[nx][ny] == 0 and dist[nx][ny] == -1:  # 바다이며 방문하지 않았던 바다
+                dist[nx][ny] = dist[x][y] + 1
+                q.append((nx, ny))
+
+
+num = 1
+for i in range(n):
+    for j in range(n):
+        if graph[i][j] == 1 and visited[i][j] == False:
+            # print(i, j)
+            bfs(i, j, num)
+            num += 1
+
+answer = sys.maxsize
+for l in range(1, num):
+    bfs2(l)
+
+print(answer)

@@ -569,3 +569,67 @@ for i in range(4):
 
 print(res)
 
+#15683번 감시
+import sys
+# 조합별로 사각지대를 판단, 모드가 여러가지가 있다면 한 리스트에 모든 cctv를 구현
+import copy
+
+n, m = map(int, sys.stdin.readline().split())
+graph = []
+cctv = []
+mode = [
+  [],
+  [[0], [1], [2], [3]],
+  [[0, 2], [1, 3]],
+  [[0, 1], [1, 2], [2, 3], [0, 3]],
+  [[0, 1, 2], [0, 1, 3], [1, 2, 3], [0, 2, 3]],
+  [[0, 1, 2, 3]],
+]
+dx = [-1, 0, 1, 0]
+dy = [0, 1, 0, -1]
+
+for i in range(n):
+  data = list(map(int, sys.stdin.readline().split()))
+  graph.append(data)
+  for j in range(m):
+    if data[j] in [1, 2, 3, 4, 5]:
+      cctv.append([data[j], i, j])
+
+
+# print(graph)
+
+def fill(board, mode, x, y):  # 감시
+  for i in mode:
+    nx = x
+    ny = y
+    while True:
+      nx += dx[i]
+      ny += dy[i]
+      if nx < 0 or nx >= n or ny < 0 or ny >= m:  # nx는 n, ny는 m 다른다!!
+        break
+      if board[nx][ny] == 6:
+        break
+      elif board[nx][ny] == 0:
+        board[nx][ny] = 7
+
+
+def dfs(depth, graph):
+  global minNum
+  if depth == len(cctv):
+    cnt = 0  # 사각지대 갯수
+    for i in range(n):
+      cnt += graph[i].count(0)  # 리스트에서 0인값 갯수 세기
+    minNum = min(minNum, cnt)
+    return
+
+  temp = copy.deepcopy(graph)
+  cctvNum, x, y = cctv[depth]
+  for i in mode[cctvNum]:
+    fill(temp, i, x, y)
+    dfs(depth + 1, temp)
+    temp = copy.deepcopy(graph)
+
+
+minNum = int(1e9)
+dfs(0, graph)
+print(minNum)
