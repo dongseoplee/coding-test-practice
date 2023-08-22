@@ -633,3 +633,49 @@ def dfs(depth, graph):
 minNum = int(1e9)
 dfs(0, graph)
 print(minNum)
+
+#15686번 치킨 배달
+import sys
+from itertools import combinations
+
+n, m = map(int, sys.stdin.readline().split())
+
+graph = []
+houseNum = []
+storeNum = []
+for _ in range(n):
+  graph.append(list(map(int, sys.stdin.readline().split())))
+
+for i in range(n):
+  for j in range(n):
+    if graph[i][j] == 1:
+      houseNum.append((i, j))
+    elif graph[i][j] == 2:
+      storeNum.append((i, j))
+
+dist = [[0] * len(storeNum) for _ in range(len(houseNum))]
+for k in range(len(houseNum)):  # 0123
+  for l in range(len(storeNum)):  # 012
+    # k번 집에서 l번 치킨집으로 가는 거리 -> dist[k][l]
+    hx, hy = houseNum[k]
+    sx, sy = storeNum[l]
+    dist[k][l] = abs(hx - sx) + abs(hy - sy)
+
+# print(dist)
+storeList = [i for i in range(len(storeNum))]
+
+resFinal = []
+res = []
+ans = []
+for st in combinations(storeList, m):
+  ans = []
+  for ii in range(len(houseNum)):
+    distance = sys.maxsize
+    res = []
+    for jj in range(len(st)):
+      res.append(dist[ii][st[jj]])  # 0번 집과 선택된 m개 치킨집까지의 거리 총 m개가 res에 담긴다.
+    ans.append(min(res))
+
+  resFinal.append(sum(ans))
+
+print(min(resFinal))
