@@ -679,3 +679,39 @@ for st in combinations(storeList, m):
   resFinal.append(sum(ans))
 
 print(min(resFinal))
+
+#15685번 드래곤 커브
+import sys
+import copy
+
+n = int(sys.stdin.readline())
+graph = [[False for _ in range(101)] for _ in range(101)]
+dx = [0, -1, 0, 1]
+dy = [1, 0, -1, 0]
+
+for i in range(n):
+  y, x, d, g =  map(int, sys.stdin.readline().split()) # x로 로 준 값을 나는 y값으로 보겠다. y=x 대칭
+  graph[x][y] = True
+
+  direction = [d]
+  for j in range(g):
+    for k in range(len(direction) - 1, -1, -1):
+      direction.append((direction[k] + 1)% 4)
+
+  for l in range(len(direction)):
+    x = x + dx[direction[l]]
+    y = y + dy[direction[l]]
+    if x < 0 or x >= 101 or y < 0 or y >= 101:
+      continue
+    else:
+      graph[x][y] = True
+
+res = 0
+for m in range(100):
+  for n in range(100):
+    if graph[m][n] == True and graph[m+1][n] == True and graph[m][n+1] == True and graph[m+1][n+1] == True:
+      res += 1
+
+print(res)
+
+
