@@ -227,3 +227,36 @@ def bfs(i):
 
 
 bfs(v)
+
+#2606번 바이러스
+import sys
+
+sys.setrecursionlimit(10 ** 9)
+
+n = int(sys.stdin.readline())
+graph = [[] for _ in range(n + 1)]
+visited = [False] * (n + 1)
+pairNum = int(sys.stdin.readline())
+for _ in range(pairNum):
+    a, b = map(int, sys.stdin.readline().split())
+    graph[a].append(b)
+    graph[b].append(a)
+
+# print(graph)
+cnt = 0
+
+
+def dfs(graph, i, visited):
+    global cnt
+    cnt += 1
+    # print("{}에 방문 함".format(i))
+    visited[i] = True
+    for a in graph[i]:
+        if visited[a] == False:
+            dfs(graph, a, visited)
+
+
+dfs(graph, 1, visited)
+print(cnt - 1)
+
+
