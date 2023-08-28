@@ -1221,3 +1221,76 @@ for l in range(1, num):
     bfs2(l)
 
 print(answer)
+
+#2468번 안전 영역
+import sys
+from collections import deque
+import copy
+
+n = int(sys.stdin.readline())
+visited = [[False for _ in range(n)] for _ in range(n)]
+graph = []
+min_num = sys.maxsize
+max_num = -1
+for i in range(n):
+    graph.append(list(map(int, sys.stdin.readline().split())))
+    for graph_num in graph[i]:
+        min_num = min(min_num, graph_num)
+        max_num = max(max_num, graph_num)
+
+# print(graph)
+# print(min_num)
+# print(max_num)
+res = [0] * (max_num + 1)
+
+
+def rain(height):
+    tempGraph = copy.deepcopy(graph)
+    for i in range(n):
+        for j in range(n):
+            if tempGraph[i][j] <= height:
+                tempGraph[i][j] = 0
+
+    return tempGraph
+
+
+# print(rain(2))
+queue = deque()
+
+dx = [-1, 1, 0, 0]
+dy = [0, 0, -1, 1]
+
+
+def bfs(x, y, cnt):
+    queue.append((x, y))
+    visited[x][y] = True
+    temp[x][y] = cnt
+    while queue:
+        a, b = queue.popleft()
+        for i in range(4):
+            nx = a + dx[i]
+            ny = b + dy[i]
+            if nx < 0 or nx >= n or ny < 0 or ny >= n:
+                continue
+            elif temp[nx][ny] != 0 and visited[nx][ny] == False:
+                queue.append((nx, ny))
+                visited[nx][ny] = True
+                temp[nx][ny] = cnt
+
+
+for l in range(min_num, max_num + 1):
+    temp = rain(l)
+    visited = [[False for _ in range(n)] for _ in range(n)]
+    cnt = 1
+    for j in range(n):
+        for k in range(n):
+            if temp[j][k] != 0 and visited[j][k] == False:
+                bfs(j, k, cnt)
+                cnt += 1
+
+    res[l] = cnt - 1
+
+if max(res) == 0:
+    print(1)
+else:
+    print(max(res))
