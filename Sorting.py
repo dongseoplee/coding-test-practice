@@ -36,3 +36,20 @@ temp.sort()
 
 # 길이의 간격이 높은 수부터 k-1개 제거
 print(sum(temp[:n-k]))
+
+#2309번 일곱 난쟁이
+import sys
+from itertools import combinations
+
+people = [0] * 9
+for k in range(9):
+  people[k] = int(sys.stdin.readline())
+
+for i in combinations(people, 7): #조합을 for문에 쓸 수 있다.
+  # print(i)
+  if sum(i) == 100:
+    temp = list(i)
+    temp.sort()
+    for j in range(len(temp)):
+      print(temp[j])
+    break

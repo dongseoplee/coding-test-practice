@@ -919,3 +919,19 @@ while (1):
     if x <= 0 or y <= 0:
         break
 print(res[::-1]) #공통 부분 수열까지 찾음
+
+#2293번 동전1
+import sys
+n, k = map(int, sys.stdin.readline().split())
+dp = [0] * (k+1)
+coin = []
+for _ in range(n):
+  coin.append(int(sys.stdin.readline()))
+
+dp[0] = 1
+for c in coin:
+  for j in range(1, k+1):
+    if j-c >= 0:
+      dp[j] = dp[j] + dp[j-c]
+
+print(dp[k])
