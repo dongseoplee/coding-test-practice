@@ -97,3 +97,34 @@ if sum1 * 2 == int(sum(num1)):
   print('LUCKY')
 else:
   print('READY')
+
+#10431번 줄세우기
+import sys
+
+testNum = int(sys.stdin.readline())
+graph = []
+for _ in range(testNum):
+  graph.append(list(map(int, sys.stdin.readline().split())))
+# print(graph)
+height = [[] for _ in range(testNum)]
+res = [[] for _ in range(testNum)]
+
+cnt = 0
+for i in range(testNum):
+  cnt = 0
+  height[i].append(graph[i][0])
+  height[i].append(graph[i][1])
+  for j in range(2, 21):
+    for k in range(1, len(height[i])):
+      if height[i][k] > graph[i][j]:
+        height[i].insert(k, graph[i][j])
+        cnt += len(height[i]) - 1 - k
+        break #가장 가까운 for문 하나만 break
+      if k == len(height[i]) - 1:
+        height[i].append(graph[i][j])
+  res[i].append(graph[i][0])
+  res[i].append(cnt)
+
+# print(res)
+for resData in res:
+  print(resData[0], resData[1])
