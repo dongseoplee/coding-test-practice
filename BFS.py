@@ -1341,3 +1341,46 @@ while q:
                 q.append((-1, nx, ny))
 
 print(ans)
+
+#14940번 쉬운 최단거리
+import sys
+from collections import deque
+n, m = map(int, sys.stdin.readline().split())
+graph = []
+visited = [[False for _ in range(m)] for _ in range(n)]
+dist = [[0 for _ in range(m)] for _ in range(n)]
+
+for _ in range(n):
+  graph.append(list(map(int, sys.stdin.readline().split())))
+queue = deque()
+for i in range(n):
+  for j in range(m):
+    if graph[i][j] == 2:
+      queue.append((i, j))
+      visited[i][j] = True
+dx = [-1, 1, 0, 0]
+dy = [0, 0, -1, 1]
+def bfs(graph, visited):
+  while queue:
+    x, y = queue.popleft()
+    for i in range(4):
+      nx = x + dx[i]
+      ny = y + dy[i]
+      if nx < 0 or nx >= n or ny < 0 or ny >= m:
+        continue
+      elif graph[nx][ny] == 1 and visited[nx][ny] == False:
+        queue.append((nx, ny))
+        visited[nx][ny] = True
+        dist[nx][ny] = dist[x][y] + 1
+
+
+bfs(graph, visited)
+for k in range(n):
+  for l in range(m):
+    if graph[k][l] != 0 and visited[k][l] == False:
+      dist[k][l] = -1
+
+for distRow in dist:
+  for distRowData in distRow:
+    print(distRowData, end=' ')
+  print()
