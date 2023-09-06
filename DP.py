@@ -935,3 +935,43 @@ for c in coin:
       dp[j] = dp[j] + dp[j-c]
 
 print(dp[k])
+
+#11054번 가장 긴 바이토닉 부분 수열
+import sys
+
+n = int(sys.stdin.readline())
+graph = list(map(int, sys.stdin.readline().split()))
+
+
+def long_increase_list(temp):
+    dp = [1] * (len(temp))
+    for i in range(1, len(temp)):
+        for j in range(i):
+            if temp[i] > temp[j]:
+                dp[i] = max(dp[i], dp[j] + 1)
+
+    return max(dp)
+
+
+def long_decrease_list(temp):
+    dp = [1] * (len(temp))
+    for i in range(1, len(temp)):
+        for j in range(i):
+            if temp[i] < temp[j]:
+                dp[i] = max(dp[i], dp[j] + 1)
+
+    return max(dp)
+
+
+res = []
+for k in range(n):
+    left_list = graph[:k + 1]
+    right_list = graph[k:]
+
+    left_length = long_increase_list(left_list)
+    right_length = long_decrease_list(right_list)
+
+    res.append(left_length + right_length - 1)
+
+print(max(res))
+
