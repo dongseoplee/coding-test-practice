@@ -274,3 +274,31 @@ def bfs():
 
 
 bfs()
+
+#1439번 뒤집기
+import sys
+
+s = list(sys.stdin.readline().rstrip())
+cnt = 0
+for i in range(len(s) - 1):
+  if s[i] != s[i+1]:
+    cnt += 1
+
+print((cnt + 1) // 2)
+
+#1543번 문서 검색
+import sys
+str1 = sys.stdin.readline().rstrip()
+str2 = sys.stdin.readline().rstrip()
+idx = 0
+cnt = 0
+while idx < (len(str1)-len(str2)+1):
+  temp = str1[idx:idx+len(str2)]
+  if temp == str2:
+    cnt += 1
+    idx += len(str2)
+    # print(idx)
+  else:
+    idx += 1
+
+print(cnt)
