@@ -260,3 +260,31 @@ dfs(graph, 1, visited)
 print(cnt - 1)
 
 
+#프로그래머스 타겟 넘버
+def solution(numbers, target):
+    # print(numbers, target)
+    res = []
+
+    def dfs(idx, sum_num):
+
+        if idx == len(numbers):
+            res.append(sum_num)
+            return
+        else:
+            temp_idx = idx + 1
+            temp_sum1 = sum_num + numbers[idx]
+            dfs(temp_idx, temp_sum1)
+
+            temp_sum2 = sum_num - numbers[idx]
+            dfs(temp_idx, temp_sum2)
+
+    dfs(0, 0)
+    # print(cnt)
+    # print(res)
+    cnt = 0
+    for resData in res:
+        if resData == target:
+            cnt += 1
+    return cnt
+
+
