@@ -86,3 +86,30 @@ else:
   print(len(res))
   res.sort()
   print(*res)
+
+#3079번 입국심사
+import sys
+n, m = map(int, sys.stdin.readline().split()) #n개 심사대, m명
+times = []
+res = []
+for _ in range(n):
+  times.append(int(sys.stdin.readline()))
+
+# print(times)
+
+left = min(times)
+right = max(times) * m
+
+while left <= right:
+  mid = (left + right) // 2
+  total = 0
+  for i in range(len(times)):
+    total += mid//times[i]
+
+  if total >= m:
+    res.append(mid)
+    right = mid - 1
+  else:
+    left = mid + 1
+
+print(min(res))
