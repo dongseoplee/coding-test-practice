@@ -800,3 +800,64 @@ for i in range(r) :
             result += room[i][j]
 
 print(result)
+
+#16235번 나무 재테크
+import sys
+from collections import deque
+
+n, m, k = map(int, sys.stdin.readline().split())
+a = []
+for _ in range(n):
+  a.append(list(map(int, sys.stdin.readline().split())))
+land = [[5] * n for _ in range(n)]
+trees = [[deque() for _ in range(n)] for _ in range(n)] #deque으로 설정하는 것
+
+for _ in range(m):
+  x, y, z = map(int, sys.stdin.readline().split())
+  trees[x-1][y-1].append(z)
+# print(trees)
+def spring_summer():
+  for i in range(n):
+    for j in range(n):
+      for k in range(len(trees[i][j])):
+        if trees[i][j][k] <= land[i][j]:
+          land[i][j] -= trees[i][j][k]
+          trees[i][j][k] += 1
+        else:
+          for _ in range(k, len(trees[i][j])):
+            land[i][j] += trees[i][j].pop()//2
+          break
+dx = [-1, -1, -1, 0, 0, 1, 1, 1]
+dy = [-1, 0, 1, -1, 1, -1, 0, 1]
+def fall_winter():
+  for x in range(n):
+    for y in range(n):
+      for k in range(len(trees[x][y])):
+        if trees[x][y][k] % 5 == 0:
+          for d in range(8):
+            nx = x + dx[d]
+            ny = y + dy[d]
+            if 0 <= nx < n and 0 <= ny < n:
+              trees[nx][ny].appendleft(1)
+      land[x][y] += a[x][y]
+# def fall_winter():
+#     for x in range(n):
+#         for y in range(n):
+#             for k in range(len(trees[x][y])):
+#                 if trees[x][y][k] % 5 == 0:
+#                     for d in range(8):
+#                         nx, ny, = x + dx[d], y + dy[d]
+#                         if 0 <= nx < n and 0 <= ny < n:
+#                             trees[nx][ny].appendleft(1)
+#             land[x][y] += a[x][y]
+
+for _ in range(k):
+  spring_summer()
+  fall_winter()
+
+res = 0
+for i in range(n):
+  for j in range(n):
+    res += len(trees[i][j])
+
+print(res)
