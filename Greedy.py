@@ -302,3 +302,65 @@ while idx < (len(str1)-len(str2)+1):
     idx += 1
 
 print(cnt)
+
+#2578번 빙고
+import sys
+
+graph = []
+num = []
+visited = [[False for _ in range(5)] for _ in range(5)]
+for _ in range(5):
+  graph.append(list(map(int, sys.stdin.readline().split())))
+for _ in range(5):
+  num.append(list(map(int, sys.stdin.readline().split())))
+
+
+# print(graph, num)
+# a = [1, 2, 3, 3]
+# print(a.count(3))
+def bingGo(temp):
+  cnt = 0
+  for i in range(5):  # 가로
+    if temp[i].count(True) == 5:
+      # print("가로")
+      cnt += 1
+  for j in range(5):
+    col = []
+    for k in range(5):
+      col.append(temp[k][j])
+    if col.count(True) == 5:
+      # print("세로")
+
+      cnt += 1
+
+  col2 = []
+  for l in range(5):  # 좌상향 대각
+    col2.append(temp[l][l])
+  if col2.count(True) == 5:
+    # print("우대각")
+    cnt += 1
+
+  col3 = []
+  for m in range(5):  # 우상향 대각
+    col3.append(temp[4 - m][m])
+  if col3.count(True) == 5:
+    # print("좌대각")
+
+    cnt += 1
+
+  return cnt
+
+
+# bbb = [[False, False, True, False, True], [True, True, True, True, True], [True, False, True, False, True], [False, True, True, False, False], [True, False, True, False, True]]
+# print(bingGo(bbb))
+for a in range(25):
+  tellNum = num[a // 5][a % 5]
+  for b in range(5):
+    for c in range(5):
+      if graph[b][c] == tellNum:
+        visited[b][c] = True
+      if bingGo(visited) >= 3:
+        print(a + 1)
+        # print(visited)
+        exit()
+
