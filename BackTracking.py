@@ -189,3 +189,24 @@ def bt():
 
 
 bt()
+
+#15657번 N과 M (8)
+import sys
+
+n, m = map(int, sys.stdin.readline().split())
+# n, m = 4, 2
+arr = sorted(list(map(int, input().split())))
+
+temp = []
+def bt(start):
+  if len(temp) == m:
+    # temp.append(res)
+    print(*temp)
+    return
+
+  for i in range(start, n):
+    temp.append(arr[i])
+    bt(i)
+    temp.pop()
+
+bt(0)
