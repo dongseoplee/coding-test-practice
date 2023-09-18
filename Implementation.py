@@ -128,3 +128,33 @@ for i in range(testNum):
 # print(res)
 for resData in res:
   print(resData[0], resData[1])
+
+
+#14719번 빗물
+import sys
+h, w = map(int, sys.stdin.readline().split())
+graph = [[False for _ in range(w)] for _ in range(h)]
+water = list(map(int, sys.stdin.readline().split()))
+# print(water)
+for i in range(len(water)):
+  waterSize = water[i]
+  for j in range(waterSize):
+    graph[j][i] = True
+
+# print(graph)
+res = 0
+for k in range(h): #4
+  temp = []
+  for l in range(w): #8
+    # print(k, l)
+    if graph[k][l] == True:
+      # print(l)
+      temp.append(l)
+  # print(temp)
+
+  if len(temp) > 1:
+    # print(temp)
+    for m in range(1, len(temp)):
+      res += temp[m] - temp[m-1] - 1
+      # print("res", res)
+print(res)
