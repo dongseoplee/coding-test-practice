@@ -975,3 +975,16 @@ for k in range(n):
 
 print(max(res))
 
+#15989번 1, 2, 3 더하기 4
+import sys
+
+testNum = int(sys.stdin.readline())
+dp = [1] * 10001
+
+for i in range(2, 10001):
+    dp[i] += dp[i - 2]
+for j in range(3, 10001):
+    dp[j] += dp[j - 3]
+for _ in range(testNum):
+    num = int(sys.stdin.readline())
+    print(dp[num])
