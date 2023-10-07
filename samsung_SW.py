@@ -861,3 +861,78 @@ for i in range(n):
     res += len(trees[i][j])
 
 print(res)
+
+#21610번 마법사 상어와 비바라기
+n, m = map(int, input().split())  # n*n, m번 이동
+graph = []
+commands = []
+
+for _ in range(n):
+  temp = list(map(int, input().split()))
+  graph.append(temp)
+
+for _ in range(m):
+  a, b = map(int, input().split())
+  commands.append((a, b))
+
+dx = [0, 0, -1, -1, -1, 0, 1, 1, 1]
+dy = [0, -1, -1, 0, 1, 1, 1, 0, -1]
+dx4 = [-1, -1, 1, 1]
+dy4 = [-1, 1, -1, 1]
+clouds = [[n - 1, 0], [n - 1, 1], [n - 2, 0], [n - 2, 1]]
+
+for d, s in commands:  # 명령어 횟수
+  for i in range(len(clouds)):  # 구름 이동
+    nx = (clouds[i][0] + dx[d] * s) % n
+    ny = (clouds[i][1] + dy[d] * s) % n
+    clouds[i][0] = nx
+    clouds[i][1] = ny
+  # 구름 이동 완료
+  # print("clouds", clouds)
+  # print()
+  # 비내리기
+  for p in range(len(clouds)):
+    graph[clouds[p][0]][clouds[p][1]] += 1
+  #
+  for x, y in clouds:  # 물이 증가한 칸에 물복사 버그 시전 4,2 파악
+    waterCnt = 0  # 대각선에 물이 있는 바구니 수
+    for j in range(4):
+      nx = x + dx4[j]
+      ny = y + dy4[j]
+      if nx < 0 or nx >= n or ny < 0 or ny >= n:
+        continue
+      else:
+        if graph[nx][ny] > 0:  # 바구니에 물이 있으면
+          waterCnt += 1
+
+    graph[x][y] += waterCnt
+  # print(graph)
+  # print()
+  # #구름 삭제
+  visited = [[False for _ in range(n)] for _ in range(n)]
+  for q in range(len(clouds)):
+    visited[clouds[q][0]][clouds[q][1]] = True  # 구름
+  clouds = []
+  for k in range(n):
+    for l in range(n):
+      if visited[k][l] == True:
+        continue
+      else:
+        if graph[k][l] >= 2:
+          clouds.append([k, l])
+          graph[k][l] -= 2
+#   print(clouds)
+#   print()
+
+#   print(graph)
+#   print()
+
+#   #
+#   print()
+
+# print(graph)
+res = 0
+for graphData in graph:
+  res += sum(graphData)
+
+print(res)
