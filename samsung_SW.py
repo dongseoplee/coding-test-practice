@@ -993,3 +993,147 @@ for i in range(n):
     answer += score[count]
 
 print(answer)
+
+#23288번 주사위 굴리기2
+from collections import deque
+
+n, m, k = map(int, input().split())
+graph = []
+queue = deque()
+nowDirection = 'E'
+dx = [-1, 1, 0, 0]
+dy = [0, 0, -1, 1]
+dice = [1, 3, 5, 4, 2, 6]
+for _ in range(n):
+  graph.append(list(map(int, input().split())))
+
+
+# print(graph)
+
+def bfs(i, j):
+  visited = [[False for _ in range(m)] for _ in range(n)]
+  num = graph[i][j]
+  cnt = 0
+  queue.append((i, j))
+  visited[i][j] = True
+  while queue:
+    x, y = queue.popleft()
+    for i in range(4):
+      nx = x + dx[i]
+      ny = y + dy[i]
+      if nx < 0 or nx >= n or ny < 0 or ny >= m:
+        continue
+      else:
+        if graph[nx][ny] == num and visited[nx][ny] == False:
+          cnt += 1
+          queue.append((nx, ny))
+          visited[nx][ny] = True
+
+  return cnt + 1
+
+
+# print(bfs(2, 0))
+
+def rotateDice(temp, d):
+  if d == 'E':
+    arr = [temp[0], temp[1], temp[3], temp[5]]
+    temp[0] = arr[2]
+    temp[1] = arr[0]
+    temp[3] = arr[3]
+    temp[5] = arr[1]
+    return
+    # return temp
+  elif d == 'W':
+    arr = [temp[0], temp[1], temp[3], temp[5]]
+    temp[0] = arr[1]
+    temp[1] = arr[3]
+    temp[3] = arr[0]
+    temp[5] = arr[2]
+    return
+    # return temp
+  elif d == 'S':
+    arr = [temp[0], temp[2], temp[4], temp[5]]
+    temp[0] = arr[2]
+    temp[2] = arr[0]
+    temp[4] = arr[3]
+    temp[5] = arr[1]
+    # return temp
+    return
+
+  elif d == 'N':
+    arr = [temp[0], temp[2], temp[4], temp[5]]
+    temp[0] = arr[1]
+    temp[2] = arr[3]
+    temp[4] = arr[0]
+    temp[5] = arr[2]
+    # return temp
+    return
+
+
+def moveDice(d, nx, ny):  # d로 어디로 굴려야하는지 알려줌, nx,ny 굴리기 전 주사위 좌표
+  # 리턴 값: 어느 좌표로 이동했고 바닥 수는 무엇인지, 진행 방향은 어디쪽인지
+  if d == 'E':  # 동
+    if ny + 1 >= m:  # 밖으로 넘어가는 경우
+      # 반대방향으로 굴린다. 서
+      rotateDice(dice, 'W')
+      return 'W', nx, ny - 1
+    else:  # 동으로 굴린다.
+      rotateDice(dice, 'E')
+      return 'E', nx, ny + 1
+  elif d == 'W':  # 서
+    if ny - 1 < 0:  # 밖으로 넘어감
+      # 동으로 굴린다.
+      rotateDice(dice, 'E')
+      return 'E', nx, ny + 1
+    else:  # 서쪽으로 굴린다.
+      rotateDice(dice, 'W')
+      return 'W', nx, ny - 1
+  elif d == 'N':  # 북
+    if nx - 1 < 0:
+      rotateDice(dice, 'S')
+      return 'S', nx + 1, ny
+    else:
+      rotateDice(dice, 'N')
+      return 'N', nx + 1, ny
+  elif d == 'S':  # 남
+    if nx + 1 >= n:
+      rotateDice(dice, 'N')
+      return 'N', nx + 1, ny
+    else:
+      rotateDice(dice, 'S')
+      return 'S', nx + 1, ny
+
+
+# print('dice1', dice)
+nowDirection = 'E'
+sx = 0
+sy = 0
+score = 0
+for j in range(k):
+  nowDirection, sx, sy = moveDice(nowDirection, sx, sy)  # 굴러가는 방향이랑
+  # print('dice2', dice)
+  score += graph[sx][sy] * bfs(sx, sy)  # 점수 합산
+
+  if dice[5] > graph[sx][sy]:  # 90도 시계
+    if nowDirection == 'N':
+      nowDirection = 'E'
+    elif nowDirection == 'E':
+      nowDirection = 'S'
+    elif nowDirection == 'W':
+      nowDirection = 'N'
+    elif nowDirection == 'S':
+      nowDirection = 'W'
+  elif dice[5] < graph[sx][sy]:
+    if nowDirection == 'N':
+      nowDirection = 'W'
+    elif nowDirection == 'E':
+      nowDirection = 'N'
+    elif nowDirection == 'W':
+      nowDirection = 'S'
+    elif nowDirection == 'S':
+      nowDirection = 'E'
+  # print("asd", nowDirection, sx, sy)
+
+  # print()
+
+print(score)
