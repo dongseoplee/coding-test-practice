@@ -309,3 +309,37 @@ for j in range(N):
     if graph[0][j] == 0:
         dfs(0, j)
 print("YES" if 2 in graph[-1] else "NO")
+
+#1987번 알파벳
+import sys
+r, c = map(int, sys.stdin.readline().split())
+graph = []
+for _ in range(r):
+  temp = list(sys.stdin.readline().rstrip())
+  graph.append(temp)
+
+# visited = [[False for _ in range(c)] for _ in range(r)]
+# print(graph)
+dx = [-1, 1, 0, 0]
+dy = [0, 0, -1, 1]
+res = 0
+def dfs(x, y, temp):
+  global res
+  res = max(res, temp)
+  # print(x, y, temp)
+  for i in range(4):
+    nx = x + dx[i]
+    ny = y + dy[i]
+    if nx < 0 or nx >= r or ny < 0 or ny >= c:
+      continue
+    else:
+      if graph[nx][ny] not in inputSet:
+        inputSet.add(graph[nx][ny])
+        dfs(nx, ny, temp + 1)
+        #함수 끝나고 나와서 빼는 로직!! 추가해줘야함
+        inputSet.remove(graph[nx][ny])
+
+inputSet = set() #시간초과때문에 set 사용
+inputSet.add(graph[0][0])
+dfs(0, 0, 1)
+print(res)
