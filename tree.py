@@ -64,11 +64,98 @@ print()
 inorder('A')
 print()
 postorder('A')
-# 7
-# A B C
-# B D .
-# C E F
-# E . .
-# F . G
-# D . .
-# G . .
+
+#5639번 이진 검색 트리
+import sys
+sys.setrecursionlimit(10**9)
+nums = []
+while True:
+    try:
+        nums.append(int(sys.stdin.readline()))
+    except:
+        break
+
+# print(nums)
+
+def postorder(start, end):
+    if start > end:
+        return
+    mid = end + 1
+    for i in range(start + 1, end + 1): #1~8
+        if nums[i] > nums[start]: # 루트보다 큰 값까지
+            mid = i
+            break
+    postorder(start+1, mid-1)
+    postorder(mid, end)
+    print(nums[start])
+
+postorder(0, len(nums) - 1)
+
+#1967번 트리의 지름
+import sys #임의의 한점에서 가장먼 거리 노드 A 찾고 A 에서 가장 먼 거리 노드  B 찾기 #임의로 아무 노드로 시작하는 점이 중요!
+from collections import deque
+n = int(sys.stdin.readline())
+tree = [[] for _ in range(n+1)]
+tree2 = [[] for _ in range(n+1)]
+# print(tree)
+for _ in range(n-1):
+    a, b, c = map(int, sys.stdin.readline().split())
+    tree[a].append([b, c])
+    tree2[a].append([b, c])
+    tree2[b].append([a, c])
+    # tree[b].append([a, c])
+
+queue = deque()
+visited = [False] * (n+1)
+def bfs():
+    maxDist = 0
+    maxNode = -1
+    while queue:
+        nowNode, nowNodeDist = queue.popleft()
+        if nowNodeDist >= maxDist:
+            maxNode = nowNode
+            maxDist = nowNodeDist
+        # print(nowNode, nowNodeDist)
+        # print()
+        # maxDist = max(maxDist, nowNodeDist)
+        for nextNode, nextNodeDist in tree[nowNode]:
+            # print(nextNode, nextNodeDist)
+            queue.append([nextNode, nextNodeDist + nowNodeDist])
+            # print(nextNode, nextNodeDist + nowNodeDist)
+            # if visited[nextNode] == False:
+            #     queue.append([nextNode, nextNodeDist + nowNodeDist])
+            #     visited[nextNode] = True
+    return maxNode, maxDist
+
+
+
+
+
+queue.append([1, 0]) # 1을 시작 노드로
+tempNode, tempDist = bfs()
+queue.append([tempNode, 0])
+visited[tempNode] = True
+
+def bfs2():
+    # print("bfs2")
+    # print(queue)
+    maxNode = -1
+    maxDist = 0
+    while queue:
+        nowNode, nowDist = queue.popleft()
+        if nowDist >= maxDist:
+            maxNode = nowNode
+            maxDist = nowDist
+        # print(nowNode, nowDist)
+        # print(visited[nowNode])
+        for nextNode, nextDist in tree2[nowNode]:
+            if visited[nextNode] == False:
+                queue.append([nextNode, nowDist + nextDist])
+                # print(nextNode, nowDist + nextDist)
+                visited[nextNode] = True
+                # print(nextNode, nowDist + nextDist)
+    return maxDist
+# print(bfs2())
+
+print(bfs2())
+# print(queue.popleft())
