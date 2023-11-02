@@ -158,3 +158,47 @@ for k in range(h): #4
       res += temp[m] - temp[m-1] - 1
       # print("res", res)
 print(res)
+
+#프로그래머스 주차 요금 계산
+import math
+def solution(fees, records):
+    answer = []
+    cars = set()
+    for record in records:
+        car_time, car_num, car_state = record.split(' ')
+        # print(car_time, car_num, car_state)
+        cars.add(car_num)
+    carsList = list(cars)
+    carsList.sort()
+    res = [[] for _ in range(len(carsList))]
+    idx = 0
+    for car in carsList:
+        res[idx].append(car)
+        for record in records:
+            car_time, car_num, car_state = record.split(' ')
+            if int(car) == int(car_num):
+                hh, mm = car_time.split(':')
+                res[idx].append(int(hh)*60 + int(mm))
+        idx += 1
+    # print(res)
+    for i in range(len(res)):
+        if len(res[i]) % 2 == 0: #짝수면 23시59분 넣어줘라
+            res[i].append(23*60 + 59)
+    print(res)
+    #총시간 구하기
+    timeSum = []
+    for j in range(len(res)):
+        sum = 0
+        for k in range(1, len(res[j]), 2):
+            print("k", k)
+            print(res[j][k+1]-res[j][k])
+            sum += res[j][k+1]-res[j][k]
+        timeSum.append(sum)
+    print(timeSum)
+    # 요금계산하기
+    for i in range(len(timeSum)):
+        if timeSum[i] <= fees[0]:
+            answer.append(fees[1])
+        else:
+            answer.append(math.ceil((timeSum[i] - fees[0]) / fees[2])*fees[3] + fees[1])
+    return answer
