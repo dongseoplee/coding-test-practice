@@ -398,3 +398,32 @@ def dijkstra(start):  # 다익스트라
 
 dijkstra(N)  # 시작 위치 다익스트라 실행
 print(distance[K])  # 시작 위치로부터 K가 떨어진 최소 거리
+
+#18352번 특정 거리의 도시 찾기
+import sys
+from collections import deque
+
+queue = deque()
+n, m, k, x = map(int, sys.stdin.readline().split())
+graph = [[] for _ in range(n + 1)]
+visited = [-1] * (n + 1)
+for _ in range(m):
+    a, b = map(int, sys.stdin.readline().split())
+    graph[a].append(b)
+
+queue.append(x)
+visited[x] = 0
+# bfs에서 너비 우선이므로 처음 방문이 최단(depth)으로 방문한 것이다. !!!!!!!
+while queue:
+    nowNode = queue.popleft()
+    for nextNode in graph[nowNode]:
+        if visited[nextNode] == -1:
+            visited[nextNode] = visited[nowNode] + 1
+            queue.append(nextNode)
+
+if k in visited:
+    for i in range(1, n + 1):
+        if visited[i] == k:
+            print(i)
+else:
+    print(-1)
