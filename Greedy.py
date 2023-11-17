@@ -364,3 +364,27 @@ for a in range(25):
         # print(visited)
         exit()
 
+#12904번 A와 B
+import sys #t를 s로 변경하는 로직, 재귀 함수가 아닌 while문으로 진행
+s = sys.stdin.readline().rstrip()
+t = sys.stdin.readline().rstrip()
+
+res = False
+
+
+def check():
+    # print(newStr)
+    global t
+    while True:
+        if len(s) == len(t):
+            if s == t:
+                print(1)
+            else:
+                print(0)
+            return
+        if t[-1] == 'A':
+            t = t[:len(t)-1]
+        else:
+            t = t[:len(t)-1][::-1]
+
+check()
