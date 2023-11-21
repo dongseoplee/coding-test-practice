@@ -388,3 +388,47 @@ def check():
             t = t[:len(t)-1][::-1]
 
 check()
+
+#12919번 A와 B 2
+import sys
+s = sys.stdin.readline().rstrip()
+t = sys.stdin.readline().rstrip()
+
+res = False
+def check(t):
+    global res
+    if t == s:
+        res = True
+        return
+    if len(t) == 0:
+        return 0
+    if t[-1] == 'A':
+        check(t[:-1])
+    if t[0] == 'B':
+        check(t[1:][::-1])
+
+check(t)
+if res:
+    print(1)
+else:
+    print(0)
+
+#1522번 문자열 교환
+import sys
+s = sys.stdin.readline().rstrip()
+aNum = s.count('a')
+minNum = int(sys.maxsize)
+for i in range(len(s)):
+    start = i
+    end = i + aNum - 1
+    if end > len(s):
+        temp = s[start:] + s[:end - len(s)+1]
+        # print(i, len(temp))
+    else:
+        temp = s[start:end+1]
+        # print(i, len(temp))
+    minNum = min(minNum, temp.count('b'))
+    # if minNum == 3:
+    #     print(start, end, temp)
+
+print(minNum)
