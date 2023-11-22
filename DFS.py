@@ -427,3 +427,79 @@ if k in visited:
             print(i)
 else:
     print(-1)
+
+#9466번 텀 프로젝트
+import sys
+
+sys.setrecursionlimit(10 ** 6)
+input = sys.stdin.readline
+
+
+def dfs(x, result):
+    visited[x] = True
+    cycle.append(x)  # 사이클을 이루는 팀을 확인하기 위함
+    number = arr[x]
+
+    if visited[number]:  # 방문가능한 곳이 끝났는지
+        if number in cycle:  # 사이클 가능 여부
+            result += cycle[cycle.index(number):]  # 사이클 되는 구간 부터만 팀을 이룸 사이클이 있으면 해당 인덱스에서 잘라서 res 리스트에 이어 붙이기
+        return
+    else:
+        dfs(number, result)
+
+
+for _ in range(int(input())):
+    n = int(input())
+    arr = [0] + list(map(int, input().split()))
+    visited = [False for _ in range(n + 1)]
+    result = []
+
+    for i in range(1, n + 1):
+        if not visited[i]:  # 방문 안한 곳이라면
+            cycle = []
+            dfs(i, result)  # DFS 함수 돌림
+
+    print(n - len(result))  # 팀에 없는 사람 수
+    print(result)
+
+# 내 풀이
+import sys
+from collections import deque
+testNum = int(sys.stdin.readline())
+for _ in range(testNum):
+    n = int(sys.stdin.readline())
+    graph = [0]
+    graph += list(map(int, sys.stdin.readline().split()))
+    # print(graph)
+    # print(visited)
+    visitedAll = [False] *(n+1)
+    queue = deque()
+
+    def dfs(i):
+        temp = []
+        queue.append(i)
+        temp.append(i)
+        visited = [False] * (n + 1)
+        visited[i] = True
+        while queue:
+            x = queue.popleft()
+            # print("x", x)
+            if visited[graph[x]] == False:
+                queue.append(graph[x])
+                temp.append(graph[x])
+                visited[x] = True
+            if visited[graph[x]] == True and graph[x] == i:
+                # print("팀 형성")
+                #visited True 인 것 갯수 세기
+                for tempData in temp:
+                    visitedAll[tempData] = True
+                # for j in range(1, n+1): # 이 지점 for문 시간 오래 걸릴 것으로 예상
+                #     if visited[j] == True:
+                #         visitedAll[j] = True
+
+
+    for i in range(1, n+1):
+        if visitedAll[i] == False:
+            dfs(i)
+
+    print(visitedAll.count(False) - 1)
