@@ -202,3 +202,34 @@ def solution(fees, records):
         else:
             answer.append(math.ceil((timeSum[i] - fees[0]) / fees[2])*fees[3] + fees[1])
     return answer
+
+#11723번 집합
+import sys
+m = int(sys.stdin.readline())
+# print(m)
+s = set()
+for _ in range(m):
+    command = sys.stdin.readline().rstrip()
+    commandList = command.split()
+    # print(commandList)
+    if commandList[0] == 'add':
+        if int(commandList[1]) not in s:
+            s.add(int(commandList[1]))
+    if commandList[0] == 'remove':
+        if int(commandList[1]) in s:
+            s.remove(int(commandList[1]))
+    if commandList[0] == 'check':
+        if int(commandList[1]) in s:
+            print(1)
+        else:
+            print(0)
+    if commandList[0] == 'toggle':
+        if int(commandList[1]) in s:
+            s.remove(int(commandList[1]))
+        else:
+            s.add(int(commandList[1]))
+    if commandList[0] == 'all':
+        s = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20}
+    if commandList[0] == 'empty':
+        s = set()
+
