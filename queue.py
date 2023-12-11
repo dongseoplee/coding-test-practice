@@ -47,3 +47,22 @@ for _ in range(num):
 
 for i in range(len(res)):
     print(res[i])
+
+#2493번 탑
+import sys
+n = int(sys.stdin.readline())
+graph = list(map(int, sys.stdin.readline().split()))
+res = [0] * (n)
+stack = []
+# print(graph)
+for i in range(n):
+    while stack:
+        if stack[-1][1] > graph[i]:
+            res[i] = stack[-1][0] + 1
+            # print(stack[-1][1], graph[i])
+            break
+        else:
+            stack.pop()
+    stack.append([i, graph[i]])
+
+print(*res)
