@@ -432,3 +432,35 @@ for i in range(len(s)):
     #     print(start, end, temp)
 
 print(minNum)
+
+#1339번 단어 수학
+import sys
+#등장하는 모든 알파벳에 자릿수의 합을 더해주고, 그 값이 큰 알파벳부터 큰 값을 부여해주면 된다.
+# 단순히 알파벳의 자리 수만 보고 숫자를 부여하는 것은 잘못된 접근법
+n = int(sys.stdin.readline())
+wordList = []
+res = 0
+dic = {}
+
+for _ in range(n):
+    wordList.append(sys.stdin.readline().rstrip())
+
+for wordListData in wordList:
+    cnt = len(wordListData)
+    for j in wordListData:
+        if j not in dic:
+            dic[j] = 10**(cnt-1)
+        else:
+            dic[j] += 10**(cnt-1)
+        cnt -= 1
+
+# print(dic)
+valueList = list(dic.values())
+valueList.sort(reverse=True)
+# print(valueList)
+num = 9
+for valueListData in valueList:
+    res += valueListData*num
+    num-=1
+
+print(res)
