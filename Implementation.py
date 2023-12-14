@@ -233,3 +233,21 @@ for _ in range(m):
     if commandList[0] == 'empty':
         s = set()
 
+#8979번 올림픽
+import sys
+n, k = map(int, sys.stdin.readline().split())
+country = []
+for _ in range(n):
+    country.append(list(map(int, sys.stdin.readline().split())))
+
+country.sort(key=lambda x: (-x[1], -x[2], -x[3]))
+idx = 0
+for i in range(n):
+    if country[i][0] == k:
+        idx = i
+
+for i in range(n):
+    if country[idx][1:] == country[i][1:]:
+        print(i+1) #등수가 같으면 첫번째 동순위 idx에서 끝난다.
+        break
+
