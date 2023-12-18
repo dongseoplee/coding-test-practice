@@ -251,3 +251,79 @@ for i in range(n):
         print(i+1) #등수가 같으면 첫번째 동순위 idx에서 끝난다.
         break
 
+#16236번 아기 상어
+import sys
+from collections import deque
+n = int(sys.stdin.readline())
+INF = 1e9
+graph = []
+for _ in range(n):
+    graph.append(list(map(int, sys.stdin.readline().split())))
+
+# print(graph)
+dx = [-1, 1, 0, 0]
+dy = [0, 0, -1, 1]
+shark_size = 2
+nowX, nowY = 0, 0
+
+for i in range(n):
+    for j in range(n):
+        if graph[i][j] == 9:
+            nowX, nowY = i, j
+            graph[nowX][nowY] = 0
+
+def bfs():
+    visited = [[-1 for _ in range(n)] for _ in range(n)]
+    queue = deque()
+    queue.append((nowX, nowY))
+    visited[nowX][nowY] = 0
+    while queue:
+        x, y = queue.popleft()
+        for i in range(4):
+            nx = x + dx[i]
+            ny = y + dy[i]
+
+            if 0 <= nx < n and 0 <= ny < n:
+                if shark_size >= graph[nx][ny] and visited[nx][ny] == -1:
+                    visited[nx][ny] = visited[x][y] + 1
+                    queue.append((nx, ny))
+    return visited
+
+def solve(visited):
+    # print(visited)
+    x, y = 0, 0
+    min_dis = INF
+    for i in range(n):
+        for j in range(n):
+            if visited[i][j] != -1 and (1 <= graph[i][j] < shark_size):
+                #잡아먹음
+                if min_dis > visited[i][j]:
+                    min_dis = visited[i][j]
+                    x, y = i, j
+    # print(min_dis)
+    if min_dis == INF:
+        #먹을게 없는 경우
+        return False
+    else:
+        return x, y, min_dis
+
+answer = 0
+food = 0
+while True:
+    res = solve(bfs())
+    # print(res)
+    if not res: #False 라면 다 먹었다면
+        print(answer)
+        break
+    else:
+        nowX, nowY = res[0], res[1]
+        answer += res[2]
+        graph[nowX][nowY] = 0
+        food += 1
+    if food >= shark_size:
+        shark_size += 1
+        food = 0
+
+
+
+
