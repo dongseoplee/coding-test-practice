@@ -1137,3 +1137,69 @@ for j in range(k):
   # print()
 
 print(score)
+
+#20057번 마법사 상어와 토네이도
+import sys
+n = int(sys.stdin.readline())
+graph = []
+for _ in range(n):
+    graph.append(list(map(int, sys.stdin.readline().split())))
+dx = [0, 1, 0, -1] #왼, 아, 오, 위
+dy = [-1, 0, 1, 0]
+
+nowX = n//2
+nowY = n//2
+
+cnt = 1
+idx = 0
+cnt2 = 0
+checkNum = 2
+
+left = [(-1, 1, 0.01), (1, 1, 0.01), (-1, 0, 0.07), (1, 0, 0.07), (-1, -1, 0.1), (1, -1, 0.1), (-2, 0, 0.02), (2, 0, 0.02), (0, -2, 0.05), (0, -1, 0)]
+right = [(x, -y, z) for x, y, z in left]
+down = [(-y, x, z) for x, y, z in left]
+up = [(y, x, z) for x, y, z in left]
+
+trans = {0: left, 1: down, 2: right, 3: up}
+
+
+res = 0
+def move(x, y, direction):
+    global res
+    #x, y 의 모래가 이동한다.
+    if y < 0:
+        return
+    total = 0
+    for dx, dy, z in direction:
+        nx = x + dx
+        ny = y + dy
+        if z == 0:
+            new_sand = graph[x][y] - total
+        else:
+            new_sand = int(graph[x][y]*z)
+            total += new_sand
+        if nx < 0 or nx >= n or ny < 0 or ny >= n:
+            res += new_sand
+        else:
+            graph[nx][ny] += new_sand
+    graph[x][y] = 0
+
+
+for _ in range(n*2 - 1):
+    for _ in range(cnt):
+        nowX += dx[idx]
+        nowY += dy[idx]
+        move(nowX, nowY, trans[idx])
+        # print(nowX, nowY)
+
+        cnt2 += 1
+    idx = (idx + 1) % 4
+    if cnt2 == checkNum:
+        cnt += 1
+        checkNum += 2
+        cnt2 = 0
+
+
+print(res)
+
+
