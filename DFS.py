@@ -503,3 +503,42 @@ for _ in range(testNum):
             dfs(i)
 
     print(visitedAll.count(False) - 1)
+
+#1707번 이분 그래프
+import sys
+sys.setrecursionlimit(int(1e9))
+k = int(sys.stdin.readline())
+
+def dfs(now, group):
+    #이분 그래프: 인접 노드와 다른 색상 칠한다.
+    visited[now] = group
+    for nextNode in graph[now]:
+        if visited[nextNode] == False:
+            if dfs(nextNode, group*(-1)) == False:
+                return False
+        else: # 방문 한곳
+            if visited[nextNode] == visited[now]:
+                return False
+    return True
+for _ in range(k):
+    v, e = map(int, sys.stdin.readline().split())
+    graph = [[] for _ in range(v+1)]
+    visited = [False for _ in range(v+1)]
+    for _ in range(e):
+        u, v = map(int, sys.stdin.readline().split())
+        graph[u].append(v)
+        graph[v].append(u)
+    # print(graph)
+    res = True
+    for i in range(1, v+1):
+        if visited[i] == False:
+            res = dfs(i, 1)
+            if res == False:
+                break
+
+    if res:
+        print("YES")
+    else:
+        print("NO")
+
+
