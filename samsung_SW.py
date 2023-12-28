@@ -1203,3 +1203,67 @@ for _ in range(n*2 - 1):
 print(res)
 
 
+#17140번 이차원 배열과 연산
+import sys
+r, c, k = map(int, sys.stdin.readline().split())
+graph = []
+for _ in range(3):
+    graph.append(list(map(int, sys.stdin.readline().split())))
+
+# print(len(graph[0]))
+time = 0
+#R? C?
+
+
+#등장횟수 정렬
+#R 연산
+
+def calculate(matrix, calType):
+    sorted_matrix = []
+    max_count = 0
+    for i in range(len(matrix)):
+        temp = []
+        dic = dict()
+        for j in range(len(matrix[i])):
+            if matrix[i][j] != 0:
+                if matrix[i][j] not in dic:
+                    dic[matrix[i][j]] = 1
+                else:
+                    dic[matrix[i][j]] += 1
+
+        for key, value in dic.items():
+            temp.append([key, value])
+        temp.sort(key=lambda x: [x[1], x[0]])
+        C = sum(temp, [])
+        max_count = max(max_count, len(C))
+        sorted_matrix.append(C)
+    for m in sorted_matrix:
+        m += [0] * (max_count-len(m))
+        if len(m) > 100:
+            m = m[:100]
+
+    if calType == 'C':
+        return list(zip(*sorted_matrix))
+    else:
+        return sorted_matrix
+
+res = 0
+
+while True:
+    if res > 100:
+        res = -1
+        break
+    if r-1 < len(graph) and c-1 < len(graph[0]):
+        if graph[r-1][c-1] == k:
+            break
+    if len(graph) >= len(graph[0]):  # 행 >= 열
+        graph = calculate(graph, "R")
+    else:
+        graph = calculate(list(zip(*graph)), "C")
+    res += 1
+
+print(res)
+
+
+
+
