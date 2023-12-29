@@ -113,3 +113,33 @@ while left <= right:
     left = mid + 1
 
 print(min(res))
+
+
+#17266번 어두운 굴다리
+import sys
+n = int(sys.stdin.readline())
+m = int(sys.stdin.readline())
+position = list(map(int, sys.stdin.readline().split()))
+len_positions = len(position)
+
+min_height = 0
+
+if len_positions == 1:
+    min_height = max(position[0], n-position[0])
+else:
+    for i in range(len_positions):
+        if i == 0:
+            height = position[0]
+        elif i == len_positions - 1:
+            height = n - position[i]
+        else:
+            temp = position[i] - position[i-1]
+            if temp % 2:
+                height = temp // 2 + 1
+            else:
+                height = temp // 2
+
+        min_height = max(height, min_height)
+print(min_height)
+
+
