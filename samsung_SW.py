@@ -1264,6 +1264,66 @@ while True:
 
 print(res)
 
+#17779번 게리맨더링2
+import sys
+n = int(sys.stdin.readline())
+graph = [[]]
+for _ in range(n):
+    graph.append([0] + list(map(int, sys.stdin.readline().split())))
+
+res = 1e9
+# print(graph)
+section = [[0 for _ in range(n + 1)] for _ in range(n + 1)]
+# print(section)
+def calculate(x, y, d1, d2):
+    num = [0] * (5)
+    section = [[0 for _ in range(n+1)] for _ in range(n+1)]
+    #경계선구역
+    for i in range(d1 + 1):
+        section[x+i][y-i] = 5 #1번 조건
+        section[x+d2+i][y+d2-i] = 5 # 4번 조건
+    for i in range(d2+1):
+        section[x+i][y+i] = 5 # 2번 조건
+        section[x+d1+i][y-d1+i] = 5 # 3번 조건
+    for i in range(x+1, x+d1+d2):
+        flag = False
+        for j in range(1, n+1):
+            if section[i][j] == 5:
+                flag = not flag
+            if flag:
+                section[i][j] = 5
+
+    for r in range(1, n+1):
+        for c in range(1, n+1):
+            if 1 <= r < x + d1 and 1 <= c <= y and section[r][c] == 0:
+                num[0] += graph[r][c]
+            elif 1 <= r <= x + d2 and y < c <= n and section[r][c] == 0:
+                num[1] += graph[r][c]
+
+            elif x+d1 <= r <= n and 1 <= c < y-d1+d2 and section[r][c] == 0:
+                num[2] += graph[r][c]
+
+            elif x+d2 < r <= n and y-d1+d2 <= c <= n and section[r][c] == 0:
+                num[3] += graph[r][c]
+            elif section[r][c] == 5:
+                num[4] += graph[r][c] # 경계선 안에 구역
+    return max(num) - min(num)
+
+
+
+
+
+
+
+# x, y, d1, d2를 정하자
+for x in range(1, n+1):
+    for y in range(1, n+1):
+        for d1 in range(1, n+1):
+            for d2 in range(1, n+1):
+                if 1 <= x < x + d1 + d2 <= n and 1 <= y - d1 < y < y + d2 <= n:
+                    res = min(res, calculate(x, y, d1, d2))
+
+print(res)
 
 
 
