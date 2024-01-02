@@ -1518,3 +1518,40 @@ if __name__ == "__main__":
                     fire.append((i, j, 0))
 
         print(bfs())
+
+#9205번 맥주 마시면서 걸어가기
+import sys
+from collections import deque
+
+t = int(sys.stdin.readline())
+
+
+def bfs():
+    # x, y = queue.popleft()
+
+    while queue:
+        x, y = queue.popleft()
+        if abs(x - festX) + abs(y - festY) <= 1000:
+            print("happy")
+            return
+        for i in range(n):
+            if visited[i] == False:
+                if abs(x - store[i][0]) + abs(y - store[i][1]) <= 1000:
+                    queue.append((store[i][0], store[i][1]))
+                    visited[i] = True
+
+    print("sad")
+    return
+
+for _ in range(t):
+    queue = deque()
+    n = int(sys.stdin.readline())
+    store = []
+    visited = [False for _ in range(n)]
+    homeX, homeY = map(int, sys.stdin.readline().split())
+    for _ in range(n):
+        storeX, storeY = map(int, sys.stdin.readline().split())
+        store.append([storeX, storeY])
+    festX, festY = map(int, sys.stdin.readline().split())
+    queue.append((homeX, homeY))
+    bfs()
