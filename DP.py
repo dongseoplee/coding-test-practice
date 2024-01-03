@@ -988,3 +988,15 @@ for j in range(3, 10001):
 for _ in range(testNum):
     num = int(sys.stdin.readline())
     print(dp[num])
+
+#11659번 구간 합 구하기 4
+import sys
+n, m = map(int, sys.stdin.readline().split())
+nums = list(map(int, sys.stdin.readline().split()))
+dp = [0]
+for i in range(n):
+    dp.append(dp[i] + nums[i])
+
+for _ in range(m):
+    i, j = map(int, sys.stdin.readline().split())
+    print(dp[j] - dp[i-1])
