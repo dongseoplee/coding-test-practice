@@ -324,6 +324,24 @@ while True:
         shark_size += 1
         food = 0
 
+#7568번 덩치
+import sys
+n = int(sys.stdin.readline())
+nums = []
+for _ in range(n):
+    x, y = map(int, sys.stdin.readline().split())
+    nums.append((x, y))
+
+for i in range(n):
+    res = 0
+    nowX, nowY = nums[i]
+    for j in range(n):
+        a, b = nums[j]
+        if i==j:
+            continue
+        if nowX < a and nowY < b:
+            res += 1
+    print(res + 1, end=' ')
 
 
 
