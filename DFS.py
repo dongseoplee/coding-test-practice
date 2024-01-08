@@ -542,3 +542,28 @@ for _ in range(k):
         print("NO")
 
 
+#10451번 순열 사이클
+import sys
+sys.setrecursionlimit(2000) #dfs 항상 설정 해주기
+testNum = int(sys.stdin.readline())
+
+def dfs(start):
+    # print(start)
+    visited[start] = True #방문 처리
+    if visited[nodes[start]] == False:
+        dfs(nodes[start])
+    elif visited[nodes[start]] == True:
+        return
+
+
+for _ in range(testNum):
+
+    n = int(sys.stdin.readline())
+    nodes = [0] + list(map(int, sys.stdin.readline().split()))
+    visited = [False for _ in range(n+1)]
+    res = 0
+    for i in range(1, n+1):
+        if visited[i] == False:
+            res += 1
+            dfs(i)
+    print(res)
