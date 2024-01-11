@@ -567,3 +567,30 @@ for _ in range(testNum):
             res += 1
             dfs(i)
     print(res)
+
+#1167번 트리의 지름
+import sys #한 지점에서 가장 먼 곳을 찾고 그 곳에서 가장 먼곳을 찾으면 지름이 구해진다.
+sys.setrecursionlimit(10**9)
+v = int(sys.stdin.readline())
+graph = [[] for _ in range(v+1)]
+visited = [False for _ in range(v+1)]
+
+for _ in range(v):
+    temp = list(map(int, sys.stdin.readline().split()))
+    for j in range(1, len(temp)-2, 2): #2씩 간격을 두고 graph 만들기
+        graph[temp[0]].append([temp[j], temp[j+1]])
+
+def dfs(x, y):
+    for node, dis in graph[x]:
+        if visited[node] == False: #방문 안한노드
+            visited[node] = dis + y
+            dfs(node, dis+y)
+
+visited[1] = True
+dfs(1, 0)
+# print(visited)
+startNode = visited.index(max(visited))
+visited = [False for _ in range(v+1)]
+visited[startNode] = True
+dfs(startNode, 0)
+print(max(visited))
