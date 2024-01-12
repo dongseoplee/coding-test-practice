@@ -1555,3 +1555,63 @@ for _ in range(t):
     festX, festY = map(int, sys.stdin.readline().split())
     queue.append((homeX, homeY))
     bfs()
+
+#3187 양치기 꿍
+import sys
+from collections import deque
+r, c = map(int, sys.stdin.readline().split())
+graph = []
+for _ in range(r):
+    graph.append(list(sys.stdin.readline().rstrip()))
+
+# print(graph)
+visited = [[False for _ in range(c)] for _ in range(r)]
+
+dx = [-1, 1, 0, 0]
+dy = [0, 0, -1, 1]
+
+def bfs(a, b):
+    vNum = 0
+    kNum = 0
+    queue = deque()
+    queue.append((a, b))
+    visited[a][b] = True
+    while queue:
+        x, y = queue.popleft()
+        if graph[x][y] == 'v':
+            vNum += 1
+        elif graph[x][y] == 'k':
+            kNum += 1
+        # print("xy", x, y)
+        for i in range(4):
+            nx = x + dx[i]
+            ny = y + dy[i]
+            # print("nxy", nx, ny)
+            if nx < 0 or nx >= r or ny < 0 or ny >= c:
+                continue
+            else:
+                if graph[nx][ny] != '#' and visited[nx][ny] == False:
+                    queue.append((nx, ny))
+                    visited[nx][ny] = True
+
+    if vNum >= kNum:
+        return vNum, 0
+    elif vNum < kNum:
+        return 0, kNum
+
+
+
+# bfs(0, 0)
+totalV = 0
+totalK = 0
+for i in range(r):
+    for j in range(c):
+        if graph[i][j] != '#' and visited[i][j] == False:
+        # if graph[r][c] == 'k' or graph[r][c] == 'v':
+            resV, resK = bfs(i, j)
+            # print(resV, resK)
+            # print("------")
+            totalV += resV
+            totalK += resK
+
+print(totalK, totalV)
