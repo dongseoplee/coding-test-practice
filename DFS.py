@@ -594,3 +594,34 @@ visited = [False for _ in range(v+1)]
 visited[startNode] = True
 dfs(startNode, 0)
 print(max(visited))
+
+#1068번 트리
+import sys
+n = int(sys.stdin.readline())
+nodes = [[] for _ in range(n)] # 자식 노드만 담는 배열
+a = list(map(int, sys.stdin.readline().split()))
+for i in range(n):
+    if a[i] == -1:
+        continue
+    else:
+        nodes[a[i]].append(i)
+deleteNum = int(sys.stdin.readline())
+
+visited = [False for _ in range(n)]
+
+def dfs(node):
+    visited[node] = True
+    for x in nodes[node]:
+        if visited[x] == False:
+            dfs(x)
+
+dfs(deleteNum)
+
+res = 0
+for i in range(n):
+    if visited[i] == False and not nodes[i]:
+        res += 1
+    if deleteNum in nodes[i] and len(nodes[i]) == 1: #삭제되는 노드의 부모 노드가 자식이 삭제되는 노드 1개 였는지 확인
+        res += 1
+
+print(res)
