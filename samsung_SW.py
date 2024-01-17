@@ -1416,3 +1416,119 @@ for i in range(n) :
     answer += sum(data[i])
 
 print(answer)
+
+#20061번 모노미노도미노2
+n = int(input())
+blue = [[0] * 6 for _ in range(4)]
+green = [[0] * 4 for _ in range(6)]
+
+result = 0
+
+def move_blue(t, x) :
+    global blue
+    y = 1
+    if t == 1 or t == 2 :
+        while True :
+            if y + 1 > 5 or blue[x][y + 1] : # 범위를 벗어나거나 블록이 있다면
+                blue[x][y] = 1
+                if t == 2 :
+                    blue[x][y-1] = 1
+                break
+            y += 1
+    else :
+        while True :
+            if y + 1 > 5 or blue[x][y+1] != 0 or blue[x+1][y+1] != 0 :
+                blue[x][y], blue[x+1][y] = 1, 1
+                break
+            y += 1
+
+    check_blue()
+
+    for j in range(2) :
+        for k in range(4) :
+            if blue[k][j] :
+                remove_blue(5)
+                break
+
+def check_blue() :
+    global result
+    for j in range(2, 6) :
+        cnt = 0
+        for k in range(4) :
+            if blue[k][j] :
+                cnt += 1
+
+        if cnt == 4 :
+            remove_blue(j)
+            result += 1
+
+def remove_blue(index) :
+    for j in range(index, 0, -1) :
+        for k in range(4) :
+            blue[k][j] = blue[k][j-1]
+    for j in range(4) :
+        blue[j][0] = 0
+
+def move_green(t, y) :
+    global green
+    x = 1
+    if t == 1 or t == 3 :
+        while True :
+            if x + 1 > 5 or green[x+1][y] :
+                green[x][y] = 1
+                if t == 3 :
+                    green[x-1][y] = 1
+                break
+            x += 1
+    else :
+        while True :
+            if x + 1 > 5 or green[x+1][y] or green[x+1][y+1] :
+                green[x][y], green[x][y+1] = 1, 1
+                break
+            x += 1
+
+    check_green()
+
+    for j in range(2) :
+        for k in range(4) :
+            if green[j][k] :
+                remove_green(5)
+                break
+
+def check_green() :
+    global result
+    for j in range(2, 6) :
+        cnt = 0
+        for k in range(4) :
+            if green[j][k] :
+                cnt += 1
+
+        if cnt == 4 :
+            remove_green(j)
+            result += 1
+
+def remove_green(index) :
+    for j in range(index, 0, -1) :
+        for k in range(4) :
+            green[j][k] = green[j-1][k]
+    for j in range(4) :
+        green[0][j] = 0
+
+for _ in range(n) :
+    t, x, y = map(int, input().split())
+    move_blue(t, x)
+    move_green(t, y)
+
+blue_count, green_count = 0, 0
+for i in range(4) :
+    for j in range(2, 6) :
+        if blue[i][j] : # 블록이 존재하면
+            blue_count += 1
+
+for i in range(2, 6) :
+    for j in range(4) :
+        if green[i][j] : # 블록이 존재하면
+            green_count += 1
+
+print(result)
+print(blue_count + green_count)
