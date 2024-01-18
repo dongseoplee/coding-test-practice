@@ -660,3 +660,63 @@ for m in range(n):
     res = max(res, max(dp[m]))
 
 print(res)
+
+#2638번 치즈
+import sys #치즈 내부 공간인지 어떻게 알지? 맨 가장자리는 치즈가 놓이지 않으므로 0,0에서 DFS로 바깥 공기 확인 가능
+sys.setrecursionlimit(10**6)
+n, m = map(int, sys.stdin.readline().split())
+visited = [[False for _ in range(m)] for _ in range(n)]
+graph = []
+for _ in range(n):
+    graph.append(list(map(int, sys.stdin.readline().split())))
+
+# print(graph)
+dx = [-1, 1, 0, 0]
+dy = [0, 0, -1, 1]
+def outer(x, y, visited):
+    graph[x][y] = 2
+    visited[x][y] = True
+    for i in range(4):
+        nx = x + dx[i]
+        ny = y + dy[i]
+        if nx < 0 or nx >= n or ny < 0 or ny >= m:
+            continue
+        elif visited[nx][ny] == False and (graph[nx][ny] == 0 or graph[nx][ny] == 2):
+            visited[nx][ny] = True
+            graph[nx][ny] = 2
+            outer(nx, ny, visited)
+
+
+def countOutNum(a, b):
+    cnt = 0
+    for i in range(4):
+        nx = a + dx[i]
+        ny = b + dy[i]
+        if 0<=nx<n and 0<=ny<m:
+            if graph[nx][ny] == 2:
+                cnt += 1
+    return cnt
+res = 0
+while True:
+    res += 1
+    visited = [[False for _ in range(m)] for _ in range(n)]
+    outer(0, 0, visited)
+    rmList = []
+    for i in range(n):
+        for j in range(m):
+            if graph[i][j] == 1 and countOutNum(i, j) >= 2:
+                rmList.append((i, j))
+
+
+    for x, y in rmList:
+        graph[x][y] = 2
+    flag = True
+    for i in range(n):
+        for j in range(m):
+            if graph[i][j] == 1:
+                flag = False
+    if flag == True:
+        break
+print(res)
+
+
