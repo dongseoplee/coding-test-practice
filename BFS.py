@@ -1615,3 +1615,49 @@ for i in range(r):
             totalK += resK
 
 print(totalK, totalV)
+
+#2589번 보물섬
+import sys
+from collections import deque
+import copy
+h, w = map(int, sys.stdin.readline().split())
+graph = []
+for _ in range(h):
+    graph.append(list(sys.stdin.readline().rstrip()))
+
+dx = [-1, 1, 0, 0]
+dy = [0, 0, -1, 1]
+
+def bfs(x, y):
+    queue = deque()
+    visited = [[False for _ in range(w)] for _ in range(h)]
+    temp = copy.deepcopy(graph)
+    temp[x][y] = 1
+    visited[x][y] = True
+    queue.append((x, y))
+    while queue:
+        a, b = queue.popleft()
+        for i in range(4):
+            nx = a + dx[i]
+            ny = b + dy[i]
+            if 0 <= nx < h and 0 <= ny < w and temp[nx][ny] == 'L' and visited[nx][ny] == False:
+                visited[nx][ny] = True
+                temp[nx][ny] = temp[a][b] + 1
+                queue.append((nx, ny))
+
+    for m in range(h):
+        for n in range(w):
+            if temp[m][n] == 'L' or temp[m][n] == 'W':
+                temp[m][n] = 0
+    res = 0
+    for tempData in temp:
+        res = max(res, max(tempData))
+    return res - 1
+
+answer = 0
+for i in range(h):
+    for j in range(w):
+        if graph[i][j] == 'L':
+            answer = max(answer, bfs(i, j))
+
+print(answer)
