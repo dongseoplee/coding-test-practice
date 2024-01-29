@@ -344,4 +344,26 @@ for i in range(n):
     print(res + 1, end=' ')
 
 
+#11866번 요세푸스 문제0
+import sys
+from collections import deque
 
+n, k = map(int, sys.stdin.readline().split())
+res = []
+queue = deque()
+
+for i in range(1, n+1):
+    queue.append(i)
+
+while queue:
+    for _ in range(k-1):
+        queue.append(queue.popleft())
+    res.append(queue.popleft())
+
+print("<", end="")
+for i in range(len(res)):
+    if i != len(res) - 1:
+        print(res[i], end=", ")
+    else:
+        print(res[i], end="")
+print(">")
