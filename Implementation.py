@@ -391,3 +391,34 @@ for i in range(len(res)):
     else:
         print(res[i], end="")
 print(">")
+
+#1966번 프린터 큐
+import sys
+from collections import deque
+
+testNum = int(sys.stdin.readline())
+for _ in range(testNum):
+    n, m = map(int, sys.stdin.readline().split())
+    temp = list(map(int, sys.stdin.readline().split()))
+    queue = deque()
+    for i in range(len(temp)):
+        queue.append((i, temp[i]))
+
+    res = []
+    # print(queue)
+    while queue:
+        #뒤에 큰게 있다면 맨뒤로 옮김
+        flag = True
+        for i in range(1, len(queue)):
+            if queue[0][1] < queue[i][1]: # 뒤에가 더 크다면
+                queue.append(queue.popleft())
+                flag = False
+                break
+        if flag:
+            res.append(queue.popleft())
+
+        #없다면 res에 담아라
+    # print(res)
+    for i in range(len(res)):
+        if m == res[i][0]:
+            print(i+1)
