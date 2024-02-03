@@ -422,3 +422,21 @@ for _ in range(testNum):
     for i in range(len(res)):
         if m == res[i][0]:
             print(i+1)
+
+#2167번 2차원 배열의 합
+import sys
+n, m = map(int, sys.stdin.readline().split())
+graph = []
+for _ in range(n):
+    graph.append(list(map(int, sys.stdin.readline().split())))
+k = int(sys.stdin.readline())
+xy = []
+for _ in range(k):
+    xy.append(list(map(int, sys.stdin.readline().split())))
+
+for i, j, x, y in xy:
+    sum = 0
+    for n in range(i-1, x):
+        for m in range(j-1, y):
+            sum += graph[n][m]
+    print(sum)
