@@ -440,3 +440,47 @@ for i, j, x, y in xy:
         for m in range(j-1, y):
             sum += graph[n][m]
     print(sum)
+
+#10866번 덱
+import sys
+from collections import deque
+queue = deque()
+n = int(sys.stdin.readline())
+for _ in range(n):
+    command = sys.stdin.readline().rstrip()
+    # print(command)
+    if "push_back" in command:
+        queue.append(int(command[10:]))
+
+    elif "push_front" in command:
+        queue.insert(0, int(command[11:]))
+    elif "pop_front" in command:
+        if len(queue) == 0:
+            print(-1)
+        else:
+            print(queue.popleft())
+    elif "pop_back" in command:
+        if len(queue) == 0:
+            print(-1)
+        else:
+            print(queue.pop())
+    elif "size" in command:
+        print(len(queue))
+    elif "empty" in command:
+        if len(queue) == 0:
+            print(1)
+        else:
+            print(0)
+    elif "front" in command:
+        if len(queue) == 0:
+            print(-1)
+        else:
+            print(queue[0])
+    elif "back" in command:
+        if len(queue) == 0:
+            print(-1)
+        else:
+            print(queue[len(queue) - 1])
+
+
+
