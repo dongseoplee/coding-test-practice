@@ -483,4 +483,26 @@ for _ in range(n):
             print(queue[len(queue) - 1])
 
 
+#17413번 단어 뒤집기 2
+import sys
+S = sys.stdin.readline().strip() + ' '
+stack = []
+res = ""
+cnt = 0
+for i in S:
+    if i == '<':
+        cnt = 1
+        for _ in range(len(stack)):
+            res += stack.pop()
+    stack.append(i)
+    if i == '>':
+        cnt = 0
+        for _ in range(len(stack)):
+            res += stack.pop(0)
+    if i == ' ' and cnt == 0:
+        stack.pop()
+        for _ in range(len(stack)):
+            res += stack.pop()
+        res += ' '
+print(res)
 
