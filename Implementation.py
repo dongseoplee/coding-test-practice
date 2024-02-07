@@ -506,3 +506,18 @@ for i in S:
         res += ' '
 print(res)
 
+#2161번 카드1
+import sys
+from collections import deque
+queue = deque()
+n = int(sys.stdin.readline())
+for i in range(1, n+1):
+    queue.append(i)
+res = []
+while len(queue) > 1:
+    res.append(queue.popleft())
+    queue.append(queue.popleft())
+
+for resData in res:
+    print(resData, end=" ")
+print(queue.popleft())
