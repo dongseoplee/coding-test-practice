@@ -521,3 +521,24 @@ while len(queue) > 1:
 for resData in res:
     print(resData, end=" ")
 print(queue.popleft())
+
+#2477번 참외밭
+import sys
+k = int(sys.stdin.readline())
+arr = [list(map(int, sys.stdin.readline().split())) for _ in range(6)]
+w, w_idx = 0, 0
+h, h_idx = 0, 0
+for i in range(6):
+    if arr[i][0] == 1 or arr[i][0] == 2:
+        if w < arr[i][1]:
+            w = arr[i][1]
+            w_idx = i
+    elif arr[i][0] == 3 or arr[i][0] == 4:
+        if h < arr[i][1]:
+            h = arr[i][1]
+            h_idx = i
+smallRec = abs(arr[(w_idx-1)%6][1] - arr[(w_idx+1)%6][1]) * abs(arr[(h_idx-1)%6][1] - arr[(h_idx+1)%6][1])
+bigRec = w*h
+# print(w, h, w_idx, h_idx)
+res = (bigRec - smallRec)*k
+print(res)
