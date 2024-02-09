@@ -542,3 +542,22 @@ bigRec = w*h
 # print(w, h, w_idx, h_idx)
 res = (bigRec - smallRec)*k
 print(res)
+
+#1051번 숫자 정사각형
+import sys
+n, m = map(int, sys.stdin.readline().split())
+graph = []
+for _ in range(n):
+    graph.append(list(map(int, sys.stdin.readline().rstrip())))
+
+minNum = min(n, m)
+size = 1
+res = 0
+while size <= minNum:
+    for row in range(n-size+1):
+        for col in range(m-size+1):
+            if graph[row][col] == graph[row+size-1][col+size-1] == graph[row][col+size-1] == graph[row+size-1][col]:
+                res = max(res, size**2)
+    size += 1
+
+print(res)
