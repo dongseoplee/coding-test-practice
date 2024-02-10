@@ -561,3 +561,33 @@ while size <= minNum:
     size += 1
 
 print(res)
+
+#17608번 막대기
+import sys
+n = int(sys.stdin.readline())
+graph = []
+for _ in range(n):
+    graph.append(int(sys.stdin.readline()))
+# print(graph)
+res = 1
+maxNum = graph[n-1]
+for i in range(n-2, -1, -1):
+    # print(graph[i])
+    if graph[i] > maxNum:
+        maxNum = graph[i]
+        res += 1
+print(res)
+
+#2669번 직사각형 네개의 합집합의 면적 구하기
+import sys
+graph = [[False for _ in range(100)] for _ in range(100)]
+for _ in range(4):
+    a, b, x, y = map(int, sys.stdin.readline().split())
+    for i in range(a-1, x-1):
+        for j in range(b-1, y-1):
+            graph[i][j] = True
+
+res = 0
+for graphData in graph:
+    res += graphData.count(True)
+print(res)
