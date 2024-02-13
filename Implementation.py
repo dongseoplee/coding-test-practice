@@ -591,3 +591,19 @@ res = 0
 for graphData in graph:
     res += graphData.count(True)
 print(res)
+
+#1138번 한 줄로 서기
+import sys
+n = int(sys.stdin.readline())
+graph = list(map(int, sys.stdin.readline().split()))
+res = [0 for _ in range(n)]
+personNum = 1
+for i in range(n):
+    cnt = 0
+    for j in range(n):
+        if cnt == graph[i] and res[j] == 0:
+            res[j] = i+1
+            break
+        elif res[j] == 0:
+            cnt += 1
+print(*res)
