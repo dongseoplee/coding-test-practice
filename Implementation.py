@@ -607,3 +607,15 @@ for i in range(n):
         elif res[j] == 0:
             cnt += 1
 print(*res)
+
+#14912번 숫자 빈도수
+import sys
+n, d = map(int, sys.stdin.readline().split())
+dp = [0 for _ in range(10)]
+#파이썬 숫자 자릿수
+for i in range(1, n+1):
+    while i != 0:
+        dp[i % 10] += 1
+        i = i // 10
+
+print(dp[d])
