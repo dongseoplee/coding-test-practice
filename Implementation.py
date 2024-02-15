@@ -619,3 +619,22 @@ for i in range(1, n+1):
         i = i // 10
 
 print(dp[d])
+
+#5635번 생일
+import sys
+n = int(sys.stdin.readline())
+name = []
+age = []
+for _ in range(n):
+    a, b, c, d = sys.stdin.readline().split()
+    # b, c가 한자리이면 앞에 0 넣어줘라
+    if len(b) == 1:
+        b = '0' + b
+    if len(c) == 1:
+        c = '0' + c
+    age.append((int(d+c+b), a))
+
+age.sort(key=lambda x:x[0])
+print(age[n-1][1])
+print(age[0][1])
+
