@@ -638,3 +638,19 @@ age.sort(key=lambda x:x[0])
 print(age[n-1][1])
 print(age[0][1])
 
+#11576번 Base Conversion
+import sys
+a, b = map(int, sys.stdin.readline().split())
+m = int(sys.stdin.readline())
+aNums = list(map(int, sys.stdin.readline().split()))
+
+tenNum = 0
+for i in range(m):
+    tenNum += aNums[i]*(a**(m-1-i))
+res = []
+while tenNum > 0:
+    res.append(tenNum % b)
+    tenNum = tenNum // b
+
+for j in range(len(res)-1, -1, -1):
+    print(res[j], end = " ")
