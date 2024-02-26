@@ -101,3 +101,37 @@ for _ in range(testNum):
 
     else:
         print('error')
+
+#4949번 균형잡힌 세상
+import sys
+
+while True:
+    stack = []
+    s = sys.stdin.readline().rstrip()
+    flag = 0
+    if s == '.':
+        break
+    for word in s:
+        if word == '(':
+            stack.append(word)
+        elif word == '[':
+            stack.append(word)
+        elif word == ')':
+            if len(stack) == 0 or stack[-1] == '[':
+                print("no")
+                flag = 1
+                break
+            else:
+                stack.pop()
+        elif word == ']':
+            if len(stack) == 0 or stack[-1] == '(': # 비어 있거나 마지막에 다른 괄호라면
+                print("no")
+                flag = 1
+                break
+            else:
+                stack.pop()
+    if flag == 0:
+        if len(stack) == 0:
+            print("yes")
+        else:
+            print("no")
