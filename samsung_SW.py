@@ -1584,3 +1584,69 @@ def dfs(sx, sy, score, board):
 
 dfs(0, 0, 0, board)
 print(res_score)
+
+#20058번 마법사 상어와 파이어스톰
+import sys
+from collections import deque
+n, q = map(int, sys.stdin.readline().split())
+n = 2**n
+arr = [[0]*(n+2)] + [[0] + list(map(int, sys.stdin.readline().split())) + [0] for _ in range(n)] + [[0]*(n+2)]
+lst = list(map(int, sys.stdin.readline().split()))
+# print(arr)
+for L in lst: #Q 시전하는 것을 for문 돌린다.
+    L = 2**L
+
+    #1. 부분 회전
+    new = [[0 for _ in range(n+2)] for _ in range(n+2)]
+    for si in range(1, n+1, L):
+        for sj in range(1, n+1, L):
+            # print(si, sj)
+            for i in range(L):
+                for j in range(L):
+                    # print(si+i, sj+j)
+                    new[si+i][sj+j] = arr[si+L-1-j][sj+i]
+            # print("-")
+    arr = new
+    #2. 상하좌우 0 2개이상이면 -1
+    new = [x[:] for x in arr]
+    for i in range(1, n+1):
+        for j in range(1, n+1):
+            if arr[i][j] == 0: continue
+            cnt = 0
+            for dx, dy in [(-1, 0), (1, 0), (0, -1), (0, 1)]:
+                nx, ny = i+dx, j+dy
+                if arr[nx][ny] == 0:
+                    cnt += 1
+                    if cnt >= 2:
+                        new[i][j] -= 1
+                        break
+    arr = new
+
+#3. BFS로 얼음덩어리 크기, visited 사용
+
+def bfs(x, y):
+    queue = deque()
+    queue.append((x, y))
+    visited[x][y] = True
+    cnt = 1
+    while queue:
+        x, y = queue.popleft()
+        for dx, dy in [(-1, 0), (1, 0), (0, -1), (0, 1)]:
+            nx = x + dx
+            ny = y + dy
+            if visited[nx][ny] == False and arr[nx][ny] != 0:
+                queue.append((nx, ny))
+                visited[nx][ny] = True
+                cnt += 1
+    return cnt
+
+
+
+visited = [[False for _ in range(n+2)] for _ in range(n+2)]
+res = 0
+for i in range(1, n+1):
+    for j in range(1, n+1):
+        if visited[i][j] == False and arr[i][j] != 0:
+            res = max(res, bfs(i, j))
+print(sum(map(sum, arr)))
+print(res)
