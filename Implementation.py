@@ -654,3 +654,19 @@ while tenNum > 0:
 
 for j in range(len(res)-1, -1, -1):
     print(res[j], end = " ")
+
+#10953번 A+B - 6
+import sys
+t = int(sys.stdin.readline())
+for _ in range(t):
+    a, b = map(int, sys.stdin.readline().split(','))
+    print(a+b)
+
+#10808번 알파벳 개수
+import sys
+s = sys.stdin.readline().rstrip()
+res = [0] * 26
+#아스키코드 변환 후 % 연산
+for word in s:
+    res[ord(word)%97] += 1
+print(*res)

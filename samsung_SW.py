@@ -1650,3 +1650,28 @@ for i in range(1, n+1):
             res = max(res, bfs(i, j))
 print(sum(map(sum, arr)))
 print(res)
+
+#20057번 마법사 상어와 토네이도
+# 토네이도 이동 좌표 연습
+# 7x7
+ci, cj = 7 // 2, 7 //2
+#3,3 -> 좌, 하, 우 ,상
+dx = [0, 1, 0, -1]
+dy = [-1, 0, 1, 0]
+
+flag = 0
+idx = 0
+maxcnt= 0
+print(ci, cj)
+while (ci, cj) != (0, 0):
+    if flag % 2 == 0:
+        maxcnt += 1
+    for _ in range(maxcnt):
+        ci += dx[idx%4]
+        cj += dy[idx%4]
+        # print(idx)
+        print(ci, cj)
+    idx += 1
+    flag += 1
+
+
