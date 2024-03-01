@@ -1675,3 +1675,69 @@ while (ci, cj) != (0, 0):
     flag += 1
 
 
+#17142번 연구소3
+import sys
+from collections import deque
+# sys.stdin = open("input.txt", "r")
+
+def bfs(tlst):
+    queue = deque()
+    visited = [[False for _ in range(n)] for _ in range(n)]
+    for ti, tj in tlst:
+        queue.append((ti, tj))
+        visited[ti][tj] = 1
+    cnt = CNT
+    while queue:
+        ci, cj = queue.popleft()
+        for di, dj in ((-1, 0), (1, 0), (0, -1), (0, 1)):
+            ni, nj = ci + di, cj + dj
+            if 0 <= ni < n and 0 <= nj < n and visited[ni][nj] == False and arr[ni][nj] != 1:
+                queue.append((ni, nj))
+                visited[ni][nj] = visited[ci][cj] + 1
+                if arr[ni][nj] == 0:
+                    cnt -= 1
+                    if cnt == 0:
+                        return visited[ni][nj] - 1
+    return n*n
+
+
+def dfs(a, s, tlst):
+    global ans
+    # 종료조건
+    if a == m:
+        ans = min(ans, bfs(tlst))
+        return
+    #하부 함수 호출
+    for j in range(s, VCNT):
+        dfs(a+1, j+1, tlst +[vlst[j]])
+
+#빈칸 갯수(CNT), 바이러스 좌표(vlst)
+n, m = map(int, sys.stdin.readline().split())
+arr = []
+for _ in range(n):
+    arr.append(list(map(int, sys.stdin.readline().split())))
+
+#1. 입력 처리 받기
+CNT = 0
+vlst = []
+for i in range(n):
+    for j in range(n):
+        if arr[i][j] == 0:
+            CNT += 1
+        if arr[i][j] == 2:
+            vlst.append((i, j))
+VCNT = len(vlst) # 바이러스 갯수
+
+#2. m개 선택 (조합) 후 최소값 갱신, 백트래킹
+
+
+
+
+if CNT == 0:
+    ans = 0
+else:
+    ans = n*n
+    dfs(0, 0, [])
+    if ans == n*n:
+        ans = -1
+print(ans)
