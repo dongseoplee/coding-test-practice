@@ -210,3 +210,46 @@ def bt(start):
     temp.pop()
 
 bt(0)
+
+#15650 N과 M(2)
+import sys
+# sys.stdin = open("input.txt", "r")
+
+def dfs(n, s, lst): #n 나타낼 수 들
+    # 1. 종료조건 처리(n에 관련되게)!!! + 정답처리
+    if n == M:
+        ans.append(lst)
+        return
+    # 2. 하부 함수 호출
+    for j in range(s, N+1):
+        dfs(n+1, j+1, lst+[j])
+    # dfs(n+1, lst+[n]) #숫자 선택하는 경우
+    # dfs(n+1, lst) #숫자 선택하지 않는 경우
+
+N, M = map(int, sys.stdin.readline().split())
+ans = [] # 정답 저장 리스트
+v = [0] * (N+1) # 중복 확인
+
+dfs(0, 1, [])
+for lst in ans:
+    print(*lst)
+
+#15651 N과 M(3)
+import sys
+sys.stdin = open("input.txt", "r")
+
+def dfs(n, lst): #n 선택한 숫자 갯수
+    # 1. 종료조건 처리(n에 관련되게)!!! + 정답처리
+    if n == M:
+        ans.append(lst)
+        return
+    # 2. 하부 함수 호출
+    for j in range(1, N+1):
+        dfs(n+1, lst+[j])
+
+N, M = map(int, sys.stdin.readline().split())
+ans = [] # 정답 저장 리스트
+
+dfs(0, [])
+for lst in ans:
+    print(*lst)
