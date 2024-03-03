@@ -1741,3 +1741,59 @@ else:
     if ans == n*n:
         ans = -1
 print(ans)
+
+#12100 2048 (Easy)
+import sys
+# sys.stdin = open("input.txt", "r")
+# 최대 5번 이동 상하좌우 -> DFS, 총 1024가지 계산 (백트래킹).
+# 판 기울임은 왼쪽으로 기울이는 것 하나만 만들고.
+# 우, 상, 하에 대해서는 배열의 구조를 바꿔서 왼쪽을 기울인 값이 우, 상, 하로 기울인 값으로 되게 진행!!!
+N = int(sys.stdin.readline())
+arr = [list(map(int, sys.stdin.readline().split())) for _ in range(N)]
+ans = 0
+def move(arr):
+    for i in range(len(arr)):
+        num = 0
+        tlst = []
+        for n in arr[i]:
+            if n==0:
+                continue
+            if n == num:
+                tlst.append(num*2)
+                num = 0
+            else:
+                if num == 0:
+                    num = n
+                else:
+                    tlst.append(num)
+                    num = n
+        if num > 0:
+            tlst.append(num)
+        arr[i] = tlst + [0]*(N-len(tlst))
+
+def dfs(n, arr):
+    global ans
+    if n == 5:
+        ans = max(ans, max(map(max, arr))) # 2차원 리스트에서의 최댓값!!
+        return
+    narr = [lst[:] for lst in arr] #딥 카피
+    move(narr)
+    dfs(n+1, narr)
+
+    narr = [lst[::-1] for lst in arr] #딥 카피
+    move(narr)
+    dfs(n+1, narr)
+
+    arr_t = list(map(list, zip(*arr))) #열을 행으로 바꾸기!!
+    narr = [lst[:] for lst in arr_t]
+    move(narr)
+    dfs(n+1, narr)
+
+    narr = [lst[::-1] for lst in arr_t]
+    move(narr)
+    dfs(n+1, narr)
+
+dfs(0, arr)
+print(ans)
+
+
