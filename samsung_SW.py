@@ -1797,3 +1797,52 @@ dfs(0, arr)
 print(ans)
 
 
+#17837번 새로운 게임 2
+import sys
+# sys.stdin = open("input.txt", "r")
+N, K = map(int, sys.stdin.readline().split())
+arr = [[2]*(N+2)]
+for _ in range(N):
+    arr.append([2] + list(map(int, sys.stdin.readline().split())) + [2])
+arr.append([2]*(N+2))
+lst = []
+v = [[[] for _ in range(N+2)] for _ in range(N+2)]
+for k in range(K):
+    i, j, d = list(map(int, sys.stdin.readline().split()))
+    lst.append([i, j, d])
+    v[i][j].append(k)
+di = [0, 0, 0, -1, 1]
+dj = [0, 1, -1, 0, 0]
+opp_dr = {1:2, 2:1, 3:4, 4:3}
+def solve():
+    #for, else 구문
+    for ans in range(1, 1001):
+        #[1] 파란색
+        for i in range(K):
+            ci, cj, dr = lst[i]
+            ni, nj = ci + di[dr], cj + dj[dr]
+            if arr[ni][nj] == 2: # 이동 위치가 파란색 -> 방향 반대하고 한칸이동
+                dr = opp_dr[dr]
+                ni, nj = ci + di[dr], cj + dj[dr]
+                lst[i][2] = dr # 방향 업데이트 해주기
+                if arr[ni][nj] == 2: # 갈 위치도 파란색 -> 가면 안됨
+                    continue #다음 말로
+            #[2] 흰색, 빨간색
+            for idx in range(len(v[ci][cj])):
+                if v[ci][cj][idx] == i: #리스트에서 현재 말 번호 찾음
+                    mlst = v[ci][cj][idx:] #내 말 위에 있는 이동시킬 말들
+                    if arr[ni][nj] == 1: # 빨간
+                        mlst = mlst[::-1]
+                    v[ni][nj] += mlst
+                    if len(v[ni][nj]) >= 4: #정답 처리, 종료조건
+                        return ans
+                    v[ci][cj] = v[ci][cj][:idx] # 현재 위치 말 제거
+
+                    for j in mlst: # 이동시킨 번호
+                        lst[j][0], lst[j][1] = ni, nj
+                    break
+    else:
+        return -1
+
+ans = solve()
+print(ans)

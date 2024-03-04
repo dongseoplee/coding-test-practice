@@ -253,3 +253,50 @@ ans = [] # 정답 저장 리스트
 dfs(0, [])
 for lst in ans:
     print(*lst)
+
+#15655번 N과 M (6)
+import sys
+# sys.stdin = open("input.txt", "r")
+N, M = map(int, sys.stdin.readline().split())
+tlst = list(map(int, sys.stdin.readline().split()))
+lst = sorted(tlst)
+visited = [False] * (N)
+ans = []
+def dfs(n, s, tlst):
+    # 1. 종료 조건
+    if n == M:
+        ans.append(tlst)
+        return
+    # 2. 하부 함수 호출
+    for j in range(s, N):
+        dfs(n+1, j+1, tlst+[lst[j]])
+
+
+dfs(0, 0, [])
+
+for temp in ans:
+    print(*temp)
+
+#15656번 N과 M (7)
+import sys
+sys.stdin = open("input.txt", "r")
+N, M = map(int, sys.stdin.readline().split())
+tlst = list(map(int, sys.stdin.readline().split()))
+lst = sorted(tlst)
+visited = [False] * (N)
+ans = []
+def dfs(n, tlst):
+    # 1. 종료 조건
+    if n == M:
+        ans.append(tlst)
+        return
+    # 2. 하부 함수 호출
+    for j in range(N):
+        dfs(n+1, tlst+[lst[j]])
+
+
+dfs(0, [])
+
+for temp in ans:
+    print(*temp)
+
