@@ -135,3 +135,17 @@ while True:
             print("yes")
         else:
             print("no")
+
+#2744번 대소문자 바꾸기
+import sys
+# sys.stdin = open("input.txt", "r")
+str = sys.stdin.readline().rstrip()
+# print(ord(str[0]))
+ans = ''
+# print(ord('Z'), ord('z'))
+for char in str:
+    if 65 <= ord(char) <= 90: #대문자
+        ans += chr(ord(char) + 32)
+    elif 97 <= ord(char) <= 122: #소문자
+        ans += chr(ord(char) - 32)
+print(ans)
