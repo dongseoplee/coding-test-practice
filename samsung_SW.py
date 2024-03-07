@@ -1876,3 +1876,68 @@ def dfs(n, sm):
 
 dfs(0, 0)
 print(ans)
+
+#17822번 원판 돌리기
+import sys
+from collections import deque
+# sys.stdin = open("input.txt", "r")
+
+N, M, T = map(int, sys.stdin.readline().split())
+arr = [list(map(int, sys.stdin.readline().split())) for _ in range(N)]
+# print(arr)
+def bfs(si, sj):
+    q = deque()
+    q.append((si, sj))
+    v[si][sj] = 1
+    cnt = 1
+    while q:
+        ci, cj = q.popleft()
+        for di, dj in ((-1,0), (1,0), (0,-1), (0,1)):                 #네 방향, 미방문, 값이 같으면
+            ni, nj = ci + di, (cj + dj)%M               # 2차원 리스트 양 끝 idx 이어졌을 때 처리법
+            if 0 <= ni < N and v[ni][nj] == 0 and arr[ci][cj] == arr[ni][nj]:
+                q.append((ni, nj))
+                v[ni][nj] = 1
+                cnt += 1
+    if cnt == 1:
+        v[si][sj] = 0
+
+for _ in range(T):
+    x, d, k = map(int, sys.stdin.readline().split())
+    # [1] x의 배수 (arr에서는 x-1) d가 0이면 시계방향, K칸 회전
+    for i in range(x-1, N, x):      # x의 배수자리 회전
+        if d == 0:
+            arr[i] = arr[i][-k:] + arr[i][:-k]
+        else:
+            arr[i] = arr[i][k:] + arr[i][:k]
+    # [2] 인접하며 같은 숫자 표시 v[]
+    v = [[0] * M for _ in range(N)]
+    for i in range(N):
+        for j in range(M):      # 전체 순회하면서 미방문, >0
+            if v[i][j] == 0 and arr[i][j] > 0:
+                bfs(i, j)       # (i, j)와 인접한 값 표시
+
+    # [2-1] v표시 있으면 모두 지움
+    del_flag, sm, cnt = 0, 0, 0
+    for i in range(N):
+        for j in range(M):
+            if v[i][j] == 1:        # 인접한 같은 값 있음
+                arr[i][j] = 0
+                del_flag = 1
+            else:                   # 표시안된 값
+                if arr[i][j] > 0:
+                    sm += arr[i][j]
+                    cnt += 1
+    # [2-2] 없으면 평균 구해서 크면 -1, 작으면 +1
+    if del_flag == 0 and cnt > 0:
+        avg = sm / cnt
+        for i in range(N):
+            for j in range(M):
+                if avg < arr[i][j]:
+                    arr[i][j] -= 1
+                elif 0 < arr[i][j] < avg:
+                    arr[i][j] += 1
+    if sm == 0:
+        break
+
+
+print(sum(map(sum, arr)))
