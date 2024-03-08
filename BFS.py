@@ -1693,3 +1693,49 @@ bfs(0, 0)
 # print(graph)
 print(graph[n-1][m-1])
 # print(visited)
+
+#1260번 DFS와 BFS
+import sys
+from collections import deque
+# sys.stdin = open("input.txt", "r")
+
+N, M, V = map(int, sys.stdin.readline().split())
+adj = [[] for _ in range(N+1)]
+q = deque()
+for _ in range(M):
+    s, e = map(int, sys.stdin.readline().split())
+    adj[s].append(e)
+    adj[e].append(s)
+
+def dfs(c):
+    ans_dfs.append(c)
+    v[c] = 1
+    for n in adj[c]:
+        if v[n] == 0:
+            dfs(n)
+
+def bfs(s):
+    q.append(s)
+    ans_bfs.append(s)
+    v[s] = 1
+    while q:
+        c = q.popleft()
+        for n in adj[c]:
+            if v[n] == 0:
+                q.append(n)
+                ans_bfs.append(n)
+                v[n] = 1
+#오름차순 정렬
+for i in range(1, N+1):
+    adj[i].sort()
+
+v = [0] * (N+1)
+ans_dfs = []
+dfs(V)
+
+v = [0]* (N+1)
+ans_bfs = []
+bfs(V)
+
+print(*ans_dfs)
+print(*ans_bfs)
