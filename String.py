@@ -160,3 +160,27 @@ set = {'A+': 4.3, 'A0': 4.0, 'A-': 3.7, 'B+': 3.3, 'B0': 3.0, 'B-': 2.7,
 # sys.stdin = open("input.txt", "r")
 score = sys.stdin.readline().rstrip()
 print(set[score])
+
+#9012번 괄호
+import sys
+from collections import deque
+# sys.stdin = open("input.txt", "r")
+
+n = int(sys.stdin.readline())
+for _ in range(n):
+    q = deque()
+    flag = True
+    temp = sys.stdin.readline().rstrip()
+    for a in temp:
+        if a == '(':
+            q.append('(')
+        elif a == ')':
+            if len(q) == 0:
+                q.append(')')
+                break
+            else:
+                q.pop()
+    if len(q) != 0:
+        print("NO")
+    else:
+        print("YES")
