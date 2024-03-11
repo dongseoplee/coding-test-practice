@@ -184,3 +184,32 @@ for _ in range(n):
         print("NO")
     else:
         print("YES")
+
+
+#1100번 하얀 칸
+import sys
+from collections import deque
+# sys.stdin = open("input.txt", "r")
+
+graph = [list(sys.stdin.readline().rstrip()) for _ in range(8)]
+ans = 0
+for i in range(8):
+    if i % 2 == 0:
+        s = 0
+    else:
+        s = 1
+    for j in range(s, 8, 2):
+            if graph[i][j] == 'F':
+                ans += 1
+print(ans)
+
+#9003번 단어 뒤집기
+import sys
+# sys.stdin = open("input.txt", "r")
+T = int(sys.stdin.readline())
+for _ in range(T):
+    lst = list(sys.stdin.readline().split())
+    ans = ""
+    for lst_str in lst:
+        ans += lst_str[::-1] + " "
+    print(ans)
