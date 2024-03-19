@@ -213,3 +213,28 @@ for _ in range(T):
     for lst_str in lst:
         ans += lst_str[::-1] + " "
     print(ans)
+
+#15829번 Hashing
+import sys
+# sys.stdin = open("input.txt", "r")
+L = int(sys.stdin.readline())
+temp = sys.stdin.readline().rstrip()
+ans = 0
+sum = 0
+for i in range(len(temp)):
+    sum += (ord(temp[i]) - 96)*(31**i)
+ans = sum % 1234567891
+print(ans)
+
+#11656번 접미사 배열
+import sys
+# sys.stdin = open("input.txt", "r")
+
+temp = sys.stdin.readline().rstrip()
+ans = []
+for i in range(len(temp)):
+    ans.append(temp[i:])
+ans.sort()
+for ansData in ans:
+    print(ansData)
+

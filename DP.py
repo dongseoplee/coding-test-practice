@@ -1020,3 +1020,47 @@ if dp[k] == 10001:
     print(-1)
 else:
     print(dp[k])
+
+#2747번 피보나치 수
+import sys
+# sys.stdin = open("input.txt", "r")
+
+n = int(sys.stdin.readline())
+
+dp = [0] * (n+1)
+dp[0], dp[1] = 0, 1
+for i in range(2, n+1):
+    dp[i] = dp[i-2] + dp[i-1]
+
+print(dp[n])
+
+#1463번 1로 만들기
+import sys
+# sys.stdin = open("input.txt", "r")
+
+N = int(sys.stdin.readline())
+
+dp = [0] * (N+1)
+dp[0] = 0
+dp[1] = 0
+for i in range(2, N+1):
+    dp[i] = dp[i-1] + 1
+    if i % 2 == 0:
+        dp[i] = min(dp[i], dp[i//2]+1)
+    if i % 3 == 0:
+        dp[i] = min(dp[i], dp[i//3]+1)
+print(dp[N])
+
+#11057번 오르막 수
+import sys
+# sys.stdin = open("input.txt", "r")
+n = int(sys.stdin.readline())
+dp = [[0] * (10) for _ in range(n+1)]
+dp[1] = [1]*(10)
+# print(dp)
+
+for i in range(2, n+1):
+    for j in range(10):
+        dp[i][j] = sum(dp[i-1][j:])
+print(sum(dp[n])%10007)
+
