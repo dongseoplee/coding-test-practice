@@ -1064,3 +1064,51 @@ for i in range(2, n+1):
         dp[i][j] = sum(dp[i-1][j:])
 print(sum(dp[n])%10007)
 
+#10844번 쉬운 계단 수
+import sys
+sys.stdin = open("input.txt", "r")
+N = int(sys.stdin.readline())
+dp = [[0]*(12) for _ in range(N+1)]
+dp[1][2:11] = [1] * 9
+
+# print(dp)
+for i in range(2, N+1):
+    for j in range(1, 11):
+        dp[i][j] = dp[i-1][j-1] + dp[i-1][j+1]
+
+ans = sum(dp[N])
+print(ans % 1000000000)
+
+#11048번 이동하기
+import sys
+sys.stdin = open("input.txt", "r")
+N, M = map(int, sys.stdin.readline().split())
+arr = [[0]*(M+1)] + [[0] + list(map(int, sys.stdin.readline().split())) for _ in range(N)]
+# print(arr)
+# i, j의 최대는 위 왼쪽 대각 중에 가장 큰 값, 위쪽, 왼쪽에 패딩을 주어라.
+for i in range(1, N+1):
+    for j in range(1, M+1):
+        arr[i][j] = max(arr[i][j] + arr[i-1][j], arr[i][j] + arr[i][j-1], arr[i][j] + arr[i-1][j-1])
+        #arr[i][j] = arr[i][j] + max(arr[i-1][j], arr[i][j-1], arr[i-1][j-1]) 위와 같은 표현
+
+
+print(arr[N][M])
+
+#1890번 점프
+import sys
+# sys.stdin = open("input.txt", "r")
+N = int(sys.stdin.readline())
+arr = [list(map(int, sys.stdin.readline().split())) for _ in range(N)]
+
+dp = [[0]*N for _ in range(N)]
+dp[0][0] = 1
+for i in range(N):
+    for j in range(N):
+        if arr[i][j] > 0 and dp[i][j] > 0:
+            jump = arr[i][j]
+            if j+jump < N :# 우측
+                dp[i][j+jump] += dp[i][j]
+            if i + jump < N : #아래
+                dp[i+jump][j] += dp[i][j]
+
+print(dp[N-1][N-1])
