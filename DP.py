@@ -1112,3 +1112,27 @@ for i in range(N):
                 dp[i+jump][j] += dp[i][j]
 
 print(dp[N-1][N-1])
+
+#1520번 내리막 길
+import sys
+# sys.stdin = open("input.txt", "r")
+
+def dfs(ci, cj):
+    if dp[ci][cj] == -1:
+        dp[ci][cj] = 0
+        for di, dj in ((-1, 0), (1, 0), (0, -1), (0, 1)):
+            pi, pj = ci + di, cj + dj
+            if arr[pi][pj] > arr[ci][cj]:
+                dp[ci][cj] += dfs(pi, pj)
+    return dp[ci][cj]
+
+N, M = map(int, sys.stdin.readline().split())
+# print(M)
+arr = [[0] * (M+2)] + [[0] + list(map(int, sys.stdin.readline().split())) + [0] for _ in range(N)] + [[0]*(M+2)]
+
+dp = [[-1] * (M+2) for _ in range(N+2)]
+dp[1][1] = 1
+
+# print(arr)
+# print(dp)
+print(dfs(N, M))
