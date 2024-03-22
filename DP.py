@@ -1136,3 +1136,47 @@ dp[1][1] = 1
 # print(arr)
 # print(dp)
 print(dfs(N, M))
+
+#2193번 이친수
+import sys
+# sys.stdin = open("input.txt", "r")
+N = int(sys.stdin.readline())
+dp = [[0] * 2 for _ in range(N+1)]
+dp[1][0], dp[1][1] = 0, 1
+for i in range(2, N+1):
+    for j in range(2):
+        dp[i][0] = dp[i-1][0] + dp[i-1][1]
+        dp[i][1] = dp[i-1][0]
+
+ans = sum(dp[N])
+print(ans)
+
+# 11053번 가장 긴 증가하는 부분 수열
+import sys
+# sys.stdin = open("input.txt", "r")
+N = int(sys.stdin.readline())
+lst = [0] + list(map(int, sys.stdin.readline().split()))
+dp = [0] * (N+1)
+
+for i in range(1, N+1):
+    for j in range(i):
+        if lst[j] < lst[i]:
+            dp[i] = max(dp[i], dp[j] + 1)
+
+print(max(dp))
+
+#1912번 연속합
+import sys
+# sys.stdin = open("input.txt", "r")
+
+n = int(sys.stdin.readline())
+lst = [0] + list(map(int, sys.stdin.readline().split()))
+dp = [0] * (n+1)
+
+if max(lst[1:]) < 0: # 모두 음수인 경우
+    print(max(lst[1:]))
+else:
+    for i in range(1, n+1):
+        dp[i] = max(dp[i-1] + lst[i], 0)
+
+    print(max(dp))
