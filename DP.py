@@ -1180,3 +1180,55 @@ else:
         dp[i] = max(dp[i-1] + lst[i], 0)
 
     print(max(dp))
+
+#1699번 제곱수의 합
+import sys
+# sys.stdin = open("input.txt", "r")
+N = int(sys.stdin.readline())
+M = int(N**(0.5))
+
+#dp의 행을 결정하는 것이 중요
+dp = [[0 for _ in range(N+1)] for _ in range(M+1)]
+dp[1][1:] = [i for i in range(1, N+1)]
+for i in range(2, M+1):
+    for j in range(1, N+1):
+        if j >= i**2:
+            dp[i][j] = min(dp[i-1][j], dp[i][j-i*i] + 1)
+        else:
+            dp[i][j] = dp[i-1][j]
+print(dp[M][N])
+
+#11052번 카드 구매하기
+import sys
+# sys.stdin = open("input.txt", "r")
+
+N = int(sys.stdin.readline())
+lst = [0] + list(map(int, sys.stdin.readline().split()))
+
+dp = [0]*(N+1)
+
+for i in range(1, N+1):
+    for j in range(1, N+1):
+        if j-i >= 0:
+            dp[j] = max(dp[j], dp[j-i] + lst[i])
+
+print(dp[N])
+
+#2294번 동전 2
+import sys
+# sys.stdin = open("input.txt", "r")
+n, k = map(int, sys.stdin.readline().split())
+coin_set = set()
+for _ in range(n):
+    coin_set.add(int(sys.stdin.readline()))
+dp = [k+1] * (k+1)
+dp[0] = 0
+
+for coin in coin_set:
+    for i in range(1, k+1):
+        if i - coin >= 0:
+            dp[i] = min(dp[i-coin] + 1, dp[i])
+if dp[k] == k+1:
+    print(-1)
+else:
+    print(dp[k])
