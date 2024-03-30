@@ -238,3 +238,26 @@ ans.sort()
 for ansData in ans:
     print(ansData)
 
+#1302번 베스트셀러
+import sys
+# sys.stdin = open("input.txt", "r")
+N = int(sys.stdin.readline())
+d = dict()
+
+for _ in range(N):
+    book = sys.stdin.readline().rstrip()
+    if book in d:
+        d[book] += 1
+    else:
+        d[book] = 1
+
+max = max(d.values())
+# print(max)
+ans = []
+for k, v in d.items():
+    if max == v:
+        ans.append(k)
+ans.sort()
+print(ans[0])
+
+

@@ -1941,3 +1941,120 @@ for _ in range(T):
 
 
 print(sum(map(sum, arr)))
+
+#20056번 마법사 상어와 파이어볼
+import sys
+sys.stdin = open("input.txt", "r")
+N,M,K = map(int, input().split())
+arr = [list(map(int, input().split())) for _ in range(M)]
+
+di,dj = [-1,-1,0,1,1,1,0,-1],[0,1,1,1,0,-1,-1,-1]
+for _ in range(K):
+    # [0]:i, [1]:j, [2]:질량, [3]:속도, [4]:방향
+    # [1] 개체별 이동
+    for i in range(len(arr)):
+        arr[i][0]=(arr[i][0]+di[arr[i][4]]*arr[i][3])%N+1
+        arr[i][1]=(arr[i][1]+dj[arr[i][4]]*arr[i][3])%N+1
+
+    # [2] 전체개체 정렬(좌표기준으로 정렬 => 같은좌표 처리)
+    arr.sort(key=lambda x:(x[0],x[1]))
+    arr.append([100,100,0,0,0])         # 패딩: 마지막요소 처리를 위한 인덱스
+    new=[]
+
+    # [3] 같은좌표 합치고(2개이상) + 나누고(2개이상)=>new에 추가
+    i=0
+    while i<len(arr)-1:
+        si,sj,m,s,d = arr[i]            # 기준좌표
+        start = 0                       # 같으면 0,2,4,8
+        for j in range(i+1, len(arr)):
+            if (si,sj)==(arr[j][0],arr[j][1]):  #  같은좌표
+                m += arr[j][2]
+                s += arr[j][3]
+                if d%2 != arr[j][4]%2:  # 다른방향 start=1
+                    start=1
+            else:                       # 다른좌표!
+                if j-i==1:              # 1개 => 그냥추가
+                    new.append(arr[i])
+                else:                   # 여러개
+                    if m//5>0:          # 나눠도 1이상이면(파이어볼이 있는경우)
+                        for dr in range(start,start+8,2):
+                            new.append([si,sj,m//5,s//(j-i),dr])
+                break
+        i=j
+    arr=new
+
+ans = 0
+for lst in arr:
+    ans+=lst[2]
+print(ans)
+
+#19237번 어른 상어
+import sys
+sys.stdin = open("input.txt", "r")
+N,M,K = map(int, input().split())
+arr = [list(map(int, input().split())) for _ in range(N)]
+
+# [0] 상어 정보 저장 + 초기 냄새 남김
+shk = [[0]*4 for _ in range(M)]
+v = [[[-1]*2 for _ in range(N)] for _ in range(N)]
+for i in range(N):
+    for j in range(N):
+        if arr[i][j]>0:
+            sn = arr[i][j]-1
+            shk[sn]=[sn,i,j,0]              # 상어번호,i,j,dr
+            v[i][j][0],v[i][j][1] = sn, K   # 상어번호, 냄새남김(초기냄새)
+
+lst = list(map(int, input().split()))
+for i in range(M):                  # 상어마리수
+    shk[i][3]=lst[i]                # 방향저장
+
+dtbl = [[[0]*4 for _ in range(5)] for _ in range(M)]    # 방향에따른 방향우선순위 룩업테이블 설정
+for i in range(M):
+    for j in range(1,5):
+        dtbl[i][j]=list(map(int,input().split()))
+
+#       상,하,좌,우
+di = [0,-1, 1, 0, 0]
+dj = [0, 0, 0,-1, 1]
+
+for ans in range(1, 1001):  # 1초~1000초
+    # [1] 각 상어를 이동: 현재방향기준, 빈칸->자기냄새
+    for i in range(len(shk)):
+        sn,si,sj,sd=shk[i]
+        for dr in dtbl[sn][sd]:
+            ni,nj=si+di[dr],sj+dj[dr]
+            # 범위내 냄새가 없는 경우(빈칸 ==-1)
+            if 0<=ni<N and 0<=nj<N and v[ni][nj][0]==-1:
+                shk[i]=[sn,ni,nj,dr]
+                break
+        else:               # 빈칸이 없는 경우=>내냄새
+            for dr in dtbl[sn][sd]:
+                ni,nj=si+di[dr],sj+dj[dr]
+                if 0<=ni<N and 0<=nj<N and v[ni][nj][0]==sn:
+                    shk[i]=[sn,ni,nj,dr]
+                    break
+
+    # [2-1] 각 칸 냄새 -1
+    for i in range(N):
+        for j in range(N):
+            if v[i][j][0]!=-1:      # 빈칸이 아닌경우(냄새있음)
+                v[i][j][1]-=1       # 0되면 빈칸으로 처리
+                if v[i][j][1]==0:
+                    v[i][j][0]=-1
+
+    # [2-2] 낮은번호상어처리(냄새있고, 내냄새 아니면 => 삭제)
+    i=0
+    while i<len(shk):
+        sn,si,sj,sd=shk[i]
+        # 냄새있고(==빈칸이 아니고), 내냄새 아니면 !=sn
+        if v[si][sj][0]!=-1 and v[si][sj][0]!=sn:
+            shk.pop(i)
+        else:                       # 빈칸에 내가 처음 또는 내냄새 => 새냄새 뿌림
+            v[si][sj]=[sn,K]
+            i+=1
+
+    if len(shk)<=1:                 # 1마리 이하면 종료
+        break
+else:
+    ans=-1
+print(ans)
