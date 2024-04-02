@@ -26,3 +26,18 @@ for i in range(N):
         ans[idx] = A[i]
     q.append((A[i], i))             #값과 인덱스 저장.
 print(*ans)
+
+#2164번 카드2
+import sys
+from collections import deque
+sys.stdin = open("input.txt", "r")
+N = int(sys.stdin.readline())
+q = deque([i for i in range(1, N+1)])
+
+while True:
+    if len(q) == 1:
+        break
+    q.popleft()
+    num1 = q.popleft()
+    q.append(num1)
+print(q[0])
