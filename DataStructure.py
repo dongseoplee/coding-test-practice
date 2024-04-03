@@ -41,3 +41,28 @@ while True:
     num1 = q.popleft()
     q.append(num1)
 print(q[0])
+
+#1874번 스택 수열
+import sys
+from collections import deque
+# sys.stdin = open("input.txt", "r")
+n = int(sys.stdin.readline())
+stack, ans, find = [], [], True
+now = 1
+for _ in range(n):
+    num = int(sys.stdin.readline())
+    while now <= num:
+        stack.append(now)
+        ans.append('+')
+        now += 1
+    if stack[-1] == num:
+        stack.pop()
+        ans.append('-')
+    else:
+        find = False
+
+if not find:
+    print('NO')
+else:
+    for i in ans:
+        print(i)
