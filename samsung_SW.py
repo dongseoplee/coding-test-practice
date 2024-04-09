@@ -2263,3 +2263,77 @@ for turn in range(1, M+1):
             score[i]+=1
 
 print(*score[1:])
+
+# 코드트리 나무박멸
+import sys
+sys.stdin = open("input.txt", "r")
+INF = -10000
+N, M, K, C = map(int, sys.stdin.readline().split())
+C = -(C+1)
+arr = [[INF]*(N+2)] + [[INF] + list(map(int, sys.stdin.readline().split())) + [INF] for _ in range(N)] + [[INF]*(N+2)]
+for i in range(1, N+1):
+    for j in range(1, N+1):
+        if arr[i][j] == -1:
+            arr[i][j] = INF
+
+ans = 0
+for _ in range(M):
+    # [0] 1년 시작 제초제 감소
+    for i in range(1, N+1):
+        for j in range(1, N+1):
+            if arr[i][j] < 0:
+                arr[i][j] += 1
+
+    # [1] 나무 인접 네칸 중 빈칸 수 만큼 성장
+    narr = [x[:] for x in arr]
+    for i in range(1, N+1):
+        for j in range(1, N+1):                         # 나무 +1 성장
+            if arr[i][j] > 0:
+                for ni, nj in ((i-1, j), (i+1, j), (i, j-1), (i, j+1)):
+                    if arr[ni][nj] > 0:
+                        narr[i][j] += 1
+    arr = narr
+    # [2] 인접 빈칸에 번식
+    narr = [x[:] for x in arr]
+    for i in range(1, N+1):                             # 빈칸 갯수 narr에 넣기
+        for j in range(1, N+1):
+            if arr[i][j]>0:                             # 나무면 번식
+                tlst = []
+                for ni, nj in ((i-1, j), (i+1, j), (i, j-1), (i, j+1)):
+                    if arr[ni][nj] == 0:
+                        tlst.append((ni, nj))
+                if len(tlst) > 0:
+                    cnt = arr[i][j] // len(tlst)
+                    for ti, tj in tlst:
+                        narr[ti][tj] += cnt
+    arr = narr
+    # [3] 가장 많이 박멸되는 칸
+    mx, mx_i, mx_j = 0, 0, 0
+    for i in range(1, N+1):
+        for j in range(1, N+1):
+            if arr[i][j] > 0:
+                cnt = arr[i][j]
+                for di, dj in ((-1, -1), (1, -1), (-1, 1), (1, 1)):                                # 대각선으로 나아가기
+                    for mul in range(1, K+1):
+                        ni, nj = i + di*mul, j + dj*mul
+                        if arr[ni][nj] <= 0:
+                            break
+                        else:
+                            cnt += arr[ni][nj]
+                if mx < cnt:
+                    mx, mx_i, mx_j = cnt, i, j
+    if mx == 0:
+        break
+    ans += mx
+    # [2] 제초제 뿌릴 나무 선정
+    arr[mx_i][mx_j] = C
+    for di, dj in ((-1, -1), (1, -1), (-1, 1), (1, 1)):
+        for mul in range(1, K + 1):
+            ni, nj = mx_i + di*mul, mx_j + dj*mul
+            if arr[ni][nj] <= 0:
+                if C<=arr[ni][nj]:
+                    arr[ni][nj]=C
+                break
+            else:
+                arr[ni][nj] = C
+print(ans)
