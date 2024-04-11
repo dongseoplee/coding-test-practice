@@ -2337,3 +2337,87 @@ for _ in range(M):
             else:
                 arr[ni][nj] = C
 print(ans)
+
+# 코드트리 싸움땅
+import sys
+sys.stdin = open("input.txt", "r")
+N, M, K = map(int, sys.stdin.readline().split())
+arr = [list(map(int, sys.stdin.readline().split())) for _ in range(N)]
+gun = [[[] for _ in range(N)] for _ in range(N)]
+for i in range(N):
+    for j in range(N):
+        if arr[i][j] > 0:
+            gun[i][j].append(arr[i][j])
+
+arr = [[0]*N for _ in range(N)]
+players = {}
+opp = {0:2, 2:0, 1:3, 3:1}#0123 -> 상 우 하 좌
+di = [-1, 0, 1, 0]
+dj = [0, 1, 0, -1]
+def leave(num, ci, cj, cd, cp, cg, cs):
+    for k in range(4):
+        ni, nj = ci+di[(cd+k)%4], cj + dj[(cd+k)%4]
+        if 0<=ni<N and 0<=nj<N and arr[ni][nj] == 0:                                     #범위내, 빈자리
+            if len(gun[ni][nj])>0:
+                cg=max(gun[ni][nj])
+                gun[ni][nj].remove(cg)
+            arr[ni][nj]=num
+            players[num] = [ni, nj, (cd+k)%4, cp, cg, cs]
+            return
+
+for m in range(1, M+1):
+    i, j, d, p = map(int, sys.stdin.readline().split())
+    players[m] = [i-1, j-1, d, p, 0, 0]
+    arr[i-1][j-1] = m
+
+for _ in range(K):
+    # [1] 플레이어 이동
+    for i in players:           #딕셔너리의 key가 불려진다.
+        ci, cj, cd, cp, cg, cs = players[i]
+        ni, nj = ci + di[cd], cj + dj[cd]
+        if ni<0 or ni>=N or nj<0 or nj>=N:
+            cd = opp[cd]
+            ni, nj = ci + di[cd], cj + dj[cd]
+        arr[ci][cj] = 0
+        # [1-2] 이동한 위치에 총이 있는 경우
+        if arr[ni][nj] == 0:                    # 사람이 없고
+            if len(gun[ni][nj]) > 0:            # 총이 있다.
+                mx = max(gun[ni][nj])
+                if cg < mx:                     # 더 강한 총이 있으면 바꾼다.
+                    if cg > 0:                  # 플레이어 총 가지고 있다.
+                        gun[ni][nj].append(cg)
+                    gun[ni][nj].remove(mx)
+                    cg = mx
+            arr[ni][nj] = i
+            players[i] = [ni, nj, cd, cp, cg, cs]       # 정보갱
+        # [1-3] 이동한 위치에 사람이 있어서 싸우는 경우
+        else:
+            enemy = arr[ni][nj]
+            ei, ej, ed, ep, eg, es = players[enemy]
+            if cp+cg>ep+eg or ((cp+cg==ep+eg) and cp>ep):
+                cs += (cp+cg)-(ep+eg)
+                leave(enemy, ni, nj, ed, ep, 0, es)
+                if cg < eg:
+                    if cg>0:
+                        gun[ni][nj].append(cg)
+                    cg=eg
+                else:
+                    if eg>0:
+                        gun[ni][nj].append(eg)
+                arr[ni][nj] = i
+                players[i] = [ni, nj, cd, cp, cg, cs]
+            else:
+                es += (ep+eg)-(cp+cg)
+                leave(i, ni, nj, cd, cp, 0, cs)
+                if eg < cg:
+                    if eg>0:
+                        gun[ni][nj].append(eg)
+                    eg = cg
+                else:
+                    if cg>0:
+                        gun[ni][nj].append(eg)
+                arr[ni][nj] = enemy
+                players[enemy] = [ni, nj, ed, ep, eg, es]
+    print(arr)
+for i in players:
+    print(players[i][5], end=" ")
