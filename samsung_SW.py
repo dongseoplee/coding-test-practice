@@ -2421,3 +2421,172 @@ for _ in range(K):
     print(arr)
 for i in players:
     print(players[i][5], end=" ")
+
+# 코드트리 루돌프의 반란
+import sys
+sys.stdin = open("input.txt", "r")
+
+N, M, P, C, D = map(int, sys.stdin.readline().split())
+v = [[0]*N for _ in range(N)]
+ri, rj = map(int, sys.stdin.readline().split())
+ri, rj = ri-1, rj-1
+v[ri][rj] = -1
+
+score = [0]*(P+1)
+alive = [1]*(P+1)
+alive[0]=0
+wakeup_turn = [1]*(P+1)
+santa = [[N]*2 for _ in range(P+1)]
+for _ in range(1, P+1):
+    n, i, j = map(int, sys.stdin.readline().split())
+    santa[n] = [i-1, j-1]
+    v[i-1][j-1] = n
+
+def move_santa(cur, si, sj, di, dj, mul):
+    q = [(cur, si, sj, mul)]
+    while q:
+        cur, ci, cj, mul = q.pop(0)
+        ni, nj = ci + di*mul, cj + dj*mul
+        if 0<=ni<N and 0<=nj<N:         # 범위 내
+            if v[ni][nj] == 0:
+                v[ni][nj] = cur
+                santa[cur] = [ni, nj]
+                return
+            else:
+                q.append((v[ni][nj], ni, nj, 1))
+                v[ni][nj] = cur
+                santa[cur] = [ni, nj]
+        else:
+            alive[cur] = 0
+            return
+
+
+for turn in range(1, M+1):
+    # [0] 살아있는 산타 없으면 break
+    if alive.count(1) == 0:
+        break
+    # [1-1] 루돌프 이동 8방향
+    mn = 2*(N**2)
+    for idx in range(1, P+1):
+        if alive[idx] == 0: continue       # 살아있는 산타만 진행
+        si, sj = santa[idx]
+        dist = (si-ri)**2 + (sj-rj)**2
+        if mn > dist:                   # 가장 가까운 산타 위치, 번호 찾기
+            mlst = [(si, sj, idx)]
+            mn = dist
+        elif mn == dist:        # 같을때!
+            mlst.append((si, sj, idx))
+    mlst.sort(reverse=True)
+    si, sj, mn_idx = mlst[0]            # 가장 가까운 산타 찾고 여기 방향으로 돌진
+    # [1-2] 루돌프 이동방향 결정 8방향 중 1방향
+    rdi, rdj = 0, 0
+    if ri > si: rdi = -1
+
+    elif ri < si: rdi = 1
+
+    if rj > sj: rdj = -1
+
+    elif rj < sj: rdj = 1
+    v[ri][rj] = 0
+    ri, rj = ri+rdi, rj+rdj
+    v[ri][rj] = -1
+    # [1-2] 루돌프 이동 위치가 산타 위치랑 동일해서 부딪힘
+    if (ri, rj) == (si, sj):
+        score[mn_idx] += C
+        wakeup_turn[mn_idx] = turn + 2
+        move_santa(mn_idx, si, sj, rdi, rdj, C)     # 밀려나는 산타 정보, 방향, 칸 수
+    # [2] 산타 이동
+    for idx in range(1, P+1):
+        if wakeup_turn[idx] > turn: continue
+        if alive[idx] == 0: continue
+
+        si, sj = santa[idx]                 # 루돌프와 가까워지는 방향으로 이동
+        mn_dist = (si-ri)**2 + (sj-rj)**2
+        tlst = []
+        # [2-1] 상우하좌 순으로 최단거리 찾기
+        for di, dj in ((-1, 0), (0, 1), (1, 0), (0, -1)):
+            ni, nj = si+di, sj+dj
+            dist = (ri-ni)**2 + (rj-nj)**2
+            # 범위내, 산타 없고, 짧은거리
+            if 0<=ni<N and 0<=nj<N and v[ni][nj] <= 0 and mn_dist > dist:           # 작아야만 추가, 등호 X
+                mn_dist = dist
+                tlst.append((ni, nj, di, dj))
+        if len(tlst) == 0: continue         # 이동할 위치 없음
+        ni, nj, di, dj = tlst[-1]           # 산타가 이동할 위치 ni,nj di, dj 방향으로
+        # [2-2] 루돌프와 충돌
+        if (ri, rj) == (ni, nj):
+            score[idx] += D
+            wakeup_turn[idx] = turn + 2
+            v[si][sj] = 0
+            move_santa(idx, ni, nj, -di, -dj, D)           # (-1) 곱하면 반대방향
+        else:
+            v[si][sj] = 0
+            v[ni][nj] = idx
+            santa[idx] = [ni, nj]
+
+    # [3] 탈락하지 않은 산타 점수 +1
+    for idx in range(1, P+1):
+        if alive[idx] == 1:
+            score[idx] += 1
+
+print(*score[1:])
+
+# 코드트리 왕실의 기사
+import sys
+sys.stdin = open("input.txt", "r")
+di = [-1, 0, 1, 0]
+dj = [0, 1, 0, -1]
+N, M, Q = map(int, sys.stdin.readline().split())
+arr = [[2]*(N+2)] + [[2] + list(map(int, sys.stdin.readline().split())) + [2] for _ in range(N)] + [[2]*(N+2)]
+units = {}              # 딕셔너리
+init_k = [0]*(M+1)
+for m in range(1, M+1):
+    si, sj, h, w, k = map(int, sys.stdin.readline().split())
+    units[m] = [si, sj, h, w, k]
+    init_k[m] = k           # 초기 체력 저장
+
+def push_unit(start, dr):
+    # [1] start 번 기사를 dr 방향으로 밀기
+    q = []
+    pset = set()
+    damage = [0]*(m+1)
+    q.append(start)
+    pset.add(start)
+    while q:
+        cur = q.pop(0)
+        ci, cj, h, w, k = units[cur]
+
+        # [1-2] 명령받은 방향 벽이 아니고, 겹치는 기사있으면 큐에 삽입
+        ni, nj = ci + di[dr], cj + dj[dr]
+        for i in range(ni, ni+h):
+            for j in range(nj, nj+w):       # 이동할 구역의 좌표들
+                if arr[i][j] == 2:          # 벽이라면 모두 이동 취소
+                    return
+                if arr[i][j] == 1:
+                    damage[cur] += 1
+        for idx in units:       # 딕셔너리의 key값
+            if idx in pset: continue
+
+            ti, tj, th, tw, tk = units[idx]
+            if ni<=ti+th-1 and ni+h-1>=ti and tj<=nj+w-1 and nj<=tj+tw-1:
+                q.append(idx)
+                pset.add(idx)
+    damage[start] = 0
+    for idx in pset:
+        si, sj, h, w, k = units[idx]
+
+        if k <= damage[idx]:
+            units.pop(idx)          # 딕셔너리 삭제 pop
+        else:
+            ni, nj = si + di[dr], sj + dj[dr]
+            units[idx] = [ni, nj, h, w, k - damage[idx]]
+
+for _ in range(Q):
+    idx, dr = map(int, sys.stdin.readline().split())
+    if idx in units:
+        push_unit(idx, dr)      # idx번 기사를 dr 방향으로 밀어라
+
+ans = 0
+for i in units:
+    ans += init_k[i] - units[i][4]
+print(ans)
