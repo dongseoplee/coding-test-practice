@@ -2590,3 +2590,144 @@ ans = 0
 for i in units:
     ans += init_k[i] - units[i][4]
 print(ans)
+
+# 코드트리 술래잡기
+# import sys
+# sys.stdin = open("input.txt", "r")          # 제출할 때 주석처리
+N, MM, H, K = map(int, input().split())
+arr = []
+for _ in range(MM):
+    arr.append(list(map(int, input().split())))
+
+tree = set()
+for _ in range(H):
+    i, j = map(int, input().split())
+    tree.add((i, j))
+
+# 좌 우 하 상
+di = [0, 0, 1, -1]
+dj = [-1, 1, 0, 0]
+opp = {0:1, 1:0, 2:3, 3:2}
+# 상 우 하 좌
+tdi = [-1, 0, 1, 0]
+tdj = [0, 1, 0, -1]
+mx_cnt, cnt,flag, val = 1, 0, 0, 1
+M = (N+1)//2
+ti, tj, td = M, M, 0
+
+ans = 0
+for k in range(1, K+1):
+    # [1] 도망자 이동
+    for i in range(len(arr)):
+        if abs(arr[i][0] - ti) + abs(arr[i][1] - tj) <= 3:
+            ni, nj = arr[i][0] + di[arr[i][2]], arr[i][1] + dj[arr[i][2]]
+            if 1 <= ni <= N and 1 <= nj <= N:       # 이동할 위치 범위 내
+                if (ni, nj) != (ti, tj):
+                    arr[i][0], arr[i][1] = ni, nj
+            else:                                   # 범위 밖으로 나간다면
+                arr[i][2] = opp[arr[i][2]]          # 방향 반대 저장
+                ni, nj = arr[i][0] + di[arr[i][2]], arr[i][1] + dj[arr[i][2]]
+                if (ni, nj) != (ti, tj):
+                    arr[i][0], arr[i][1] = ni, nj
+    # [2] 술래 이동
+    cnt += 1
+    ti, tj = ti + tdi[td], tj + tdj[td]             # 술래 위치 이동 시킴
+    if (ti, tj) == (1, 1):
+        mx_cnt, cnt, flag, val = N, 1, 1, -1
+        td = 2
+    elif (ti, tj) == (M, M):
+        mx_cnt, cnt, flag, val = 1, 0, 0, 1
+        td = 0
+    else:
+        if cnt == mx_cnt:           # 방향 변경
+            cnt = 0
+            td = (td+val)%4
+            if flag == 0:
+                flag = 1
+            else:
+                flag = 0
+                mx_cnt += val
+    # [3] 도망자 잡기
+    # [3-1] 술래 현재 방향으로 3칸 확인
+    # set에 괄호 3개 쓴다.
+    tset = set(((ti, tj), (ti + tdi[td], tj + tdj[td]), (ti + tdi[td]*2, tj + tdj[td]*2)))
+    for i in range(len(arr) -1, -1, -1):
+        if (arr[i][0], arr[i][1]) in tset and (arr[i][0], arr[i][1]) not in tree:
+            arr.pop(i)
+            ans += k
+    if len(arr) == 0:           # 도망자가 다 잡힌 경우
+        break
+print(ans)
+
+# 코드트리 꼬리잡기놀이
+import sys
+sys.stdin = open("input.txt", "r")
+from collections import deque
+N, M, K = map(int, input().split())
+arr = [list(map(int, input().split())) for _ in range(N)]
+ans = 0
+def bfs(si, sj, team_n):
+    q = deque()
+    team = deque()
+    q.append((si, sj))
+    v[si][sj] = 1
+    team.append((si, sj))
+    arr[si][sj] = team_n
+    while q:
+        ci, cj = q.popleft()
+        # 네방향, 범위내, 미방문, 조건:2, 3
+        for di, dj in((-1, 0), (1, 0), (0, -1), (0, 1)):
+            ni, nj = ci + di, cj + dj
+            if 0<=ni<N and 0<=nj<N and v[ni][nj] == 0:
+                # 머리->꼬리 순서대로 좌표를 저장해야하기 때문에 이전좌표가 머리가 아니고 이동할 좌표가 꼬리
+                if arr[ni][nj] == 2 or ((ci, cj) != (si, sj) and arr[ni][nj] == 3):
+                    q.append((ni, nj))
+                    v[ni][nj] = 1
+                    team.append((ni, nj))
+                    arr[ni][nj] = team_n
+    teams[team_n] = team        # 딕셔너리에 추가
+
+v = [[0]*N for _ in range(N)]
+team_n, teams = 5, {}
+for i in range(N):
+    for j in range(N):
+        if v[i][j] == 0 and arr[i][j] == 1:                # 미방문, 머리
+            bfs(i, j, team_n)
+            team_n += 1
+# 우 상 좌 하
+di = [0, -1, 0, 1]
+dj = [1, 0, -1, 0]
+for k in range(K):
+    # [1] 팀 사람들 이동
+    for team in teams.values():
+        ei, ej = team.pop()             # 꼬리 삭제
+        arr[ei][ej] = 4                 # 길로 변경시킴
+        si, sj = team[0]                # 머리 좌표
+        # 네방향, 범위 내, 4인 값
+        for ni, nj in ((si-1, sj), (si+1, sj), (si, sj-1), (si, sj+1)):
+            if 0<=ni<N and 0<=nj<N and arr[ni][nj] == 4:
+                team.appendleft((ni, nj))       # 꼬리를 떼고, 머리붙여주면 같은 길이됨!!!!!
+                arr[ni][nj] = arr[si][sj]
+                break
+    # [2] 공 던지기
+    dr = (k//N)%4           # 공 던지는 방향 우 상 좌 하
+    offset = k%N            # 몇번째 칸
+    if dr == 0:
+        ci, cj = offset, 0
+    elif dr == 1:
+        ci, cj = N-1, offset
+    elif dr == 2:
+        ci, cj = N - 1 - offset, N-1
+    elif dr == 3:
+        ci, cj = 0, N - 1 - offset
+    # [3] 점수 계산
+    for _ in range(N):
+        if 0<=ci<N and 0<=cj<N and arr[ci][cj] > 4:
+            team_n = arr[ci][cj]
+            ans += (teams[team_n].index((ci, cj)) + 1)**2
+            # teams[team_n] = teams[team_n][::-1]        # 이동 방향 반대 전환
+            teams[team_n].reverse()
+            break
+        ci, cj = ci + di[dr], cj + dj[dr]
+
+print(ans)
