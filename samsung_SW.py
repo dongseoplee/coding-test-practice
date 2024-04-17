@@ -2816,3 +2816,94 @@ for T in range(1, K+1):
         break
 
 print(max(map(max, arr)))
+
+# SWEA 1945 소인수분해
+# import sys
+# sys.stdin = open("input.txt", "r")
+T = int(input())
+for t in range(T):
+    print("#{}".format(t+1), end=" ")
+    N = int(input())
+    lst = [2, 3, 5, 7, 11]
+    ans = [0]*5
+    idx = 0
+    for tnum in lst:
+        while N % tnum == 0:
+            ans[idx] += 1
+            N = N // tnum
+        idx += 1
+
+    print(*ans)
+
+# SWEA 5789 현주의 상자 바꾸기
+# import sys
+# sys.stdin = open("input.txt", "r")
+T = int(input())
+for t in range(1, T+1):
+    N, Q = map(int, input().split())
+    # [1] 자료형 선언
+    arr = [0]*(N+1)
+    # [2] Q번 반복, LR, 반복문 j
+    for i in range(1, Q+1):
+        L, R = map(int, input().split())
+        for j in range(L, R+1):
+            arr[j] = i
+    print("#{}".format(t), end=" ")
+    print(*arr[1:])
+
+# SWEA 6485 삼성시의 버스노선
+# import sys
+# sys.stdin = open("input.txt", "r")
+T = int(input())
+for t in range(1, T+1):
+    arr = [0]*5001
+    ans = []
+    N = int(input())
+    for _ in range(N):
+        A, B = (map(int, input().split()))
+        for j in range(A, B+1):
+            arr[j] += 1
+    P = int(input())
+    for _ in range(P):
+        idx = int(input())
+        ans.append(arr[idx])
+    print("#{}".format(t), end=" ")
+    print(*ans)
+
+# SWEA 파리 퇴치
+# import sys
+# sys.stdin = open("input.txt", "r")
+T = int(input())
+for t in range(1, T+1):
+    N, M = map(int, input().split())
+    arr = [list(map(int, input().split())) for _ in range(N)]
+    mx, sm = 0, 0
+    for i in range(N-M+1):
+        for j in range(N-M+1):
+            sm = 0
+            # i, j에서 시작
+            for k in range(i, i+M):
+                for l in range(j, j+M):
+                    sm += arr[k][l]
+            mx = max(mx, sm)
+
+    print("#{}".format(t), end=' ')
+    print(mx)
+
+# SWEA 파스칼의 삼각형
+T = int(input())
+for t in range(1, T+1):
+    N = int(input())            # 주변 0 두르는 padding
+    arr = [[0]*(N+1) for _ in range(N+1)]
+    arr[1][1] = 1
+
+    for i in range(2, N+1):               # 2부터 범위 잡자
+        for j in range(1, i+1):
+            arr[i][j] = arr[i-1][j-1] + arr[i-1][j]
+
+    # 0은 출력하지 않고 숫자 출력 -> 2중 for문 범위까지만.
+    print("#{}".format(t))
+    for i in range(1, N+1):
+        for j in range(1, i+1):
+            print(arr[i][j], end= ' ')
+        print()
