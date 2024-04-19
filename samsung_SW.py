@@ -2907,3 +2907,39 @@ for t in range(1, T+1):
         for j in range(1, i+1):
             print(arr[i][j], end= ' ')
         print()
+
+# SWEA 1206 View
+# import sys
+# sys.stdin = open("input.txt", "r")
+for t in range(10):
+    N = int(input())
+    tower = list(map(int, input().split()))
+    ans = 0
+    # [1] idx 2 ~ (길이 - 2)
+    for i in range(2, N-2):
+        temp = []
+        for j in (-2, -1, 1, 2):
+            temp.append(max(0, tower[i]-tower[i-j]))
+        ans += min(temp)
+
+    print("#{}".format(t+1), end=' ')
+    print(ans)
+
+# SWEA 1208 Flatten
+# import sys
+# sys.stdin = open("input.txt", "r")
+for t in range(10):
+    D = int(input())
+    blst = list(map(int, input().split()))
+    # [1] 최대 최소 값과 idx 알아내기
+    for d in range(D):          # 덤프 횟수
+        mx_num, mn_num = max(blst), min(blst)
+        mx_idx, mn_idx = blst.index(mx_num), blst.index(mn_num)
+        if mx_num == mn_num:        # 최대 최소 같은 평탄화 완료
+            break
+        blst[mx_idx], blst[mn_idx] = blst[mx_idx] - 1, blst[mn_idx] + 1
+    ans = max(blst) - min(blst)
+
+
+    print("#{}".format(t+1), end=' ')
+    print(ans)
