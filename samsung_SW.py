@@ -2943,3 +2943,30 @@ for t in range(10):
 
     print("#{}".format(t+1), end=' ')
     print(ans)
+
+# SWEA 1210 ladder1
+# import sys
+# sys.stdin = open("input.txt", "r")
+T = 10
+for test_case in range(1, T+1):
+    _ = int(input())
+    arr = [[0] + list(map(int, input().split())) + [0] for _ in range(100)]
+    ci, cj = 0, 0
+    for j in range(1, 101):         # 좌, 우 padding으로 0,1,2~100,101
+        if arr[99][j] == 2:
+            ci, cj = 99, j
+            break
+    # print(ci, cj)
+    while ci != 0:          # 첫번째 행이 될때까지 계속 올라옴
+        if arr[ci][cj-1] == 1:
+            arr[ci][cj] = 0
+            ci, cj = ci, cj-1
+
+        elif arr[ci][cj+1] == 1:                        # 좌, 우로 갈 수 있다면 이동
+            arr[ci][cj] = 0
+            ci, cj = ci, cj+1
+        elif arr[ci-1][cj] == 1:
+            arr[ci][cj] = 0
+            ci, cj = ci-1, cj                                     # 좌, 우 못가면 위로 이동
+    print("#{} {}".format(test_case, cj-1))
+
