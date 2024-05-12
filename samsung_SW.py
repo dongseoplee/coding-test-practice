@@ -2970,3 +2970,41 @@ for test_case in range(1, T+1):
             ci, cj = ci-1, cj                                     # 좌, 우 못가면 위로 이동
     print("#{} {}".format(test_case, cj-1))
 
+# SWEA 1211 ladder2
+# import sys
+# sys.stdin = open("input.txt", "r")
+T = 10
+for test_case in range(1, 11):
+    _ = int(input())
+    arr = [[0] + list(map(int, input().split())) + [0] for _ in range(100)]
+    ans = 100 * 100
+    ansIdx = 0
+    for sj in range(1, 101):
+
+        if arr[0][sj] == 1:                      # 1이면 사다리 타기 시작
+            ci, cj = 0, sj
+            cnt = 0
+            t = [x[:] for x in arr]
+            while ci < 99:                      # 바닥까지 도착했다면 반복 끝, 99에서 빠져나옴
+                cnt += 1
+                if t[ci][cj - 1] == 1:          # 좌
+                    t[ci][cj] = 0
+                    ci, cj = ci, cj-1
+                    cnt += 1
+                elif t[ci][cj + 1] == 1:         # 우
+                    t[ci][cj] = 0
+                    ci, cj = ci, cj+1
+                    cnt += 1
+                elif t[ci+1][cj] == 1:           # 아래
+                    t[ci][cj] = 0
+                    ci, cj = ci+1, cj
+                    cnt += 1
+                else:                           # 그래프에 2가 있음
+                    t[ci][cj] = 0
+                    ci, cj = ci+1, cj
+                    cnt += 1
+            cnt += 1
+            if cnt < ans:
+                ans = cnt
+                ansIdx = sj
+    print("#{} {}".format(test_case, ansIdx-1))
