@@ -3008,3 +3008,21 @@ for test_case in range(1, 11):
                 ans = cnt
                 ansIdx = sj
     print("#{} {}".format(test_case, ansIdx-1))
+
+
+# SWEA 4408 자기 방으로 돌아가기
+# import sys
+# sys.stdin = open("input.txt", "r")
+# 빈도 수 배열
+T = int(input())
+for test_case in range(1, T+1):
+    N = int(input())
+    arr = [0] * (200)
+    for _ in range(N):
+        sn, en = map(int, input().split())
+        if sn > en:
+            sn, en = en, sn
+        for idx in range((sn-1)//2, (en-1)//2 + 1):
+            arr[idx] += 1
+    print("#{}".format(test_case), end=" ")
+    print(max(arr))
