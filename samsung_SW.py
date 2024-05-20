@@ -3026,3 +3026,23 @@ for test_case in range(1, T+1):
             arr[idx] += 1
     print("#{}".format(test_case), end=" ")
     print(max(arr))
+
+# SWEA 1860 진기의 최고급 붕어빵
+# import sys
+# sys.stdin = open("input.txt", "r")
+T = int(input())
+for test_case in range(1, T+1):
+    flag = True
+    N, M, K = map(int, input().split())
+    guest = list(map(int, input().split()))
+    guest.sort()
+    cnt = 0
+    ans = "Possible"        # flag 대신 ans 변수 생성해서 변수를 변경
+    for t in guest:
+        cnt += 1
+        if (t//M)*K < cnt:
+            ans = "Impossible"
+            break
+    print("#{}".format(test_case), end=" ")
+    print(ans)
+
