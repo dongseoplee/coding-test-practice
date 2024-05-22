@@ -3046,3 +3046,70 @@ for test_case in range(1, T+1):
     print("#{}".format(test_case), end=" ")
     print(ans)
 
+# SWEA 1206 View
+# import sys
+# sys.stdin = open("input.txt", "r")
+T = 10
+for test_case in range(1, T+1):
+    N = int(input())
+    lst = list(map(int, input().split()))
+    ans = 0
+    for idx in range(2, N-2):
+        l_lst, r_lst = lst[idx-2:idx], lst[idx+1:idx+3]
+        # tlst = lst[idx-2:idx] + lst[idx+1:idx+3]
+        r_max, l_max = max(l_lst), max(r_lst)
+        # t_max = max(tlst)
+        if lst[idx] > r_max and lst[idx] > l_max:
+            ans += lst[idx] - max(r_max, l_max)
+    print("#{}".format(test_case), end=" ")
+    print(ans)
+
+# SWEA 4047 영준이의 카드 카운팅
+# import sys
+# sys.stdin = open("input.txt", "r")
+T = int(input())
+for test_case in range(1, T+1):
+    ans = 0
+    lst = list(input().rstrip())
+    S, D, H, C = [False]*14, [False]*14, [False]*14, [False]*14
+    for idx in range(0, len(lst), 3):
+        tlst = lst[idx:idx+3]
+        if tlst[0] == 'S':
+            num = int(tlst[1] + tlst[2])
+            if S[num]:
+                ans = "ERROR"
+                break
+            else:
+                S[num] = True
+
+        elif tlst[0] == 'D':
+            num = int(tlst[1] + tlst[2])
+            if D[num]:
+                ans = "ERROR"
+
+                break
+            else:
+                D[num] = True
+        elif tlst[0] == 'H':
+            num = int(tlst[1] + tlst[2])
+            if H[num]:
+                ans = "ERROR"
+
+                break
+            else:
+                H[num] = True
+        elif tlst[0] == 'C':
+            num = int(tlst[1] + tlst[2])
+            if C[num]:
+                ans = "ERROR"
+
+                break
+            else:
+                C[num] = True
+    s_ans, d_ans, h_ans, c_ans = S.count(False) - 1, D.count(False) - 1, H.count(False) - 1, C.count(False) - 1
+    print("#{}".format(test_case), end=" ")
+    if ans == "ERROR":
+        print("ERROR")
+    else:
+        print(s_ans, d_ans, h_ans, c_ans)
+
