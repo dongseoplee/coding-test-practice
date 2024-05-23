@@ -3113,3 +3113,50 @@ for test_case in range(1, T+1):
     else:
         print(s_ans, d_ans, h_ans, c_ans)
 
+# SWEA 2805 농작물 수확하기
+# import sys
+# sys.stdin = open("input.txt", "r")
+
+def solve():
+    for si in range(N):
+        for sj in range(N):
+            for di, dj in ((0, 1), (1, 0), (1, 1), (-1, 1)):
+                for mul in range(5):
+                    ni, nj = si+di*mul, sj+dj*mul
+                    if 0 <= ni < N and 0 <= nj < N and arr[ni][nj] == 'o':
+                        pass
+                    else:
+                        break
+                else:
+                    return "YES"
+    return "NO"
+
+
+T = int(input())
+for test_case in range(1, T+1):
+    N = int(input())
+    arr = [list(input()) for _ in range(N)]
+    ans = solve()
+    print(f"#{test_case} {ans}")
+
+# SWEA 2805 농작물 수확하기
+# import sys
+# sys.stdin = open("input.txt", "r")
+
+T = int(input())
+for test_case in range(1, T+1):
+    N = int(input())
+    arr = [list(map(int, input())) for _ in range(N)]
+    # print(arr)
+    ans = 0
+    M = s = e = N//2            # 투 포인터
+    for i in range(N):          # 행
+        for j in range(s, e+1):
+            ans += arr[i][j]
+        if i >= M:
+            s, e = s + 1, e - 1
+        else:
+            s, e = s - 1, e + 1
+
+    print(f"#{test_case} {ans}")
+
