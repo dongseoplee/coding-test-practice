@@ -3160,3 +3160,60 @@ for test_case in range(1, T+1):
 
     print(f"#{test_case} {ans}")
 
+# SWEA 1974 스도쿠 검증
+# import sys
+# sys.stdin = open("input.txt", "r")
+T = int(input())
+for test_case in range(1, T+1):
+    arr = [list(map(int, input().split())) for _ in range(9)]
+    ans = 1
+    # [1] 가로 줄
+    for i in range(9):
+        if len(set(arr[i])) != 9:       # 중복 있으면
+            ans = 0
+            break
+    # [2] 세로 줄
+    for j in range(9):
+        temp = []
+        for i in range(9):
+            temp.append(arr[i][j])
+        if len(set(temp)) != 9:
+            ans = 0
+            break
+
+    # [3] 3x3 배열
+    for i in range(0, 9, 3):
+        for j in range(0, 9, 3):
+            # 시작 위치 i, j
+            temp = []
+            for si in range(i, i+3):
+                for sj in range(j, j+3):
+                    temp.append(arr[si][sj])
+            if len(set(temp)) != 9:
+                ans = 0
+                break
+
+    print(f"#{test_case} {ans}")
+
+# SWEA 1961 숫자 배열 회전
+# import sys
+# sys.stdin = open("input.txt", "r")
+def rotate(arr):
+    arrR = [[0]*N for _ in range(N)]
+    for i in range(N):
+        for j in range(N):
+            arrR[i][j] = arr[N-1-j][i]
+    return arrR
+
+T = int(input())
+for test_case in range(1, T+1):
+    N = int(input())
+    arr = [list(map(int, input().split())) for _ in range(N)]
+
+    arr1 = rotate(arr)
+    arr2 = rotate(arr1)
+    arr3 = rotate(arr2)
+
+    print(f"#{test_case}")
+    for a, b, c in zip(arr1, arr2, arr3):
+        print(f'{"".join(map(str, a))} {"".join(map(str, b))} {"".join(map(str, c))}')
