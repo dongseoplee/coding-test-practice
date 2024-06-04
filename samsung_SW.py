@@ -3217,3 +3217,32 @@ for test_case in range(1, T+1):
     print(f"#{test_case}")
     for a, b, c in zip(arr1, arr2, arr3):
         print(f'{"".join(map(str, a))} {"".join(map(str, b))} {"".join(map(str, c))}')
+
+
+# SWEA 1216 회문2
+# import sys
+# sys.stdin = open("input.txt", "r")
+
+# 모든 길이 확인해보기
+def is_pal(arr, leng):
+    for lst in arr:         # 한 줄씩 확인, 길이 leng 확인하기 앞 뒤,
+        for i in range(N-leng+1):
+            for j in range((leng+1)//2):
+                if lst[i+j] != lst[i+leng-j-1]:
+                    break
+            else:
+                return True
+    return False
+
+T = 10
+for test_case in range(1, T+1):
+    _ = input()
+    N = 100
+    arr1 = [input() for _ in range(N)]
+    arr2 = [''.join(x) for x in zip(*arr1)]         # 가로를 세로로 변경
+    # print(arr1, arr2)
+    for leng in range(N, 1, -1):        # 길이 100부터 2까지 확인
+        if is_pal(arr1, leng) or is_pal(arr2, leng):        # 가로 세로 한번에 확인
+            break
+    print(f"#{test_case} {leng}")
+# 1문장에 대해서 회문 찾기
