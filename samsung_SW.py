@@ -3246,3 +3246,31 @@ for test_case in range(1, T+1):
             break
     print(f"#{test_case} {leng}")
 # 1문장에 대해서 회문 찾기
+
+# SWEA 1979 어디에 단어가 들어갈 수 있을까?
+# import sys
+# sys.stdin = open("input.txt", "r")
+
+def count(arr):
+    ans = 0
+    for lst in arr:
+        cnt = 0
+        for j in range(len(lst)):
+            if lst[j] == 1:
+                cnt += 1
+            else:
+                if cnt == K:
+                    ans += 1
+                # 세면서 가다가 막히면 세는것 초기화
+                if lst[j] == 0:
+                    cnt = 0
+    return ans
+
+T = int(input())
+for test_case in range(T):
+    N, K = map(int, input().split())
+    arr = [list(map(int, input().split())) + [0] for _ in range(N)] + [[0]*(N+1)]
+    arr_t = list(map(list, zip(*arr)))
+    print(f"#{test_case+1} {count(arr) + count(arr_t)}")
+
+
